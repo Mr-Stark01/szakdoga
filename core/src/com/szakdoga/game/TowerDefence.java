@@ -2,7 +2,6 @@ package com.szakdoga.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.szakdoga.game.screens.MainMenu;
@@ -13,8 +12,6 @@ public class TowerDefence extends Game {
 	public BitmapFont fontHover;
 	public int screenHeight;
 	public int screenWidth;
-
-	Texture img;
 	
 	@Override
 	public void create () {
@@ -37,6 +34,5 @@ public class TowerDefence extends Game {
 		batch.dispose();
 		font.dispose();
 		fontHover.dispose();
-		img.dispose();
 	}
 }
