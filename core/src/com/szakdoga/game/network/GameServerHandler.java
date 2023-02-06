@@ -7,6 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
 
 public class GameServerHandler implements Callable<Integer> {
     private final Socket clientSocket;
@@ -14,8 +15,10 @@ public class GameServerHandler implements Callable<Integer> {
     private static ObjectInputStream objectInputStream = null;
     private DTO dtoIn;
     private DTO dtoOut;
-    public GameServerHandler(Socket socket) throws InterruptedException{
+    private ExecutorService ex;
+    public GameServerHandler(Socket socket, ExecutorService ex) throws InterruptedException{
         this.clientSocket=socket;
+        this.ex=ex;
         try {
             objectInputStream = new ObjectInputStream(clientSocket.getInputStream());
             objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());

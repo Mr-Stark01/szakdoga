@@ -7,12 +7,13 @@ import java.io.DataOutputStream;
 import java.io.FileOutputStream;
 import java.net.Socket;
 
-public class fileServerHandler {
+public class FileServerHandler {
+    private Socket socket;
     private static DataOutputStream dataOutputStream = null;
     private static DataInputStream dataInputStream = null;
-    public fileServerHandler(int port){
+    public FileServerHandler(Socket socket){
         try{
-            Socket socket = new Socket("localhost",port);
+            this.socket=socket;
             dataInputStream = new DataInputStream(socket.getInputStream());
             dataOutputStream = new DataOutputStream(socket.getOutputStream());
             receiveFile(Gdx.files.internal("maps/Base.tmx").path());
