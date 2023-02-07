@@ -102,7 +102,6 @@ public class MainMenu extends ScreenAdapter {
         game.batch.end();
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
-
         if(((TextButton)((Table)stage.getActors().get(0)).getCells().get(1).getActor()).getClickListener().inTapSquare()){
             TextButton.TextButtonStyle styleHover = new TextButton.TextButtonStyle();
             styleHover.font = game.fontHover;
