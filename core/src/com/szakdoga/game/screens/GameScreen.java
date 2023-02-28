@@ -12,6 +12,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.szakdoga.game.InputHandler;
 import com.szakdoga.game.TowerDefence;
 import com.szakdoga.game.network.DTO.Client;
 import java.util.concurrent.ExecutorService;
@@ -28,11 +29,14 @@ public class GameScreen extends ScreenAdapter {
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
+    private InputHandler inputHandler;
     Texture bg;
     public GameScreen(TowerDefence game){
         this.game = game;
         this.batch = game.batch;
+        inputHandler = new InputHandler();
         client = new Client("123.123.123.123",123,executor);
+        Gdx.input.setInputProcessor(inputHandler);
 
     }
     @Override
@@ -46,6 +50,7 @@ public class GameScreen extends ScreenAdapter {
         renderer = new OrthogonalTiledMapRenderer(map, 1 / scale);
         camera = new OrthographicCamera();
         renderer.setView(camera);
+        inputHandler.setView(camera,scale);
         ScreenUtils.clear(1, 0, 0, 1);
     }
     @Override
