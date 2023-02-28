@@ -25,7 +25,6 @@ public class GameServerHandler implements Callable<Integer> {
         }catch (IOException e){
             e.printStackTrace();
         }
-
     }
     @Override
     public Integer call() throws Exception {
@@ -35,7 +34,7 @@ public class GameServerHandler implements Callable<Integer> {
         }
     }
     public void receiveData() throws IOException, ClassNotFoundException {
-        this.dtoIn = (DTO) objectInputStream.readObject();
+        this.dtoIn = (DTO) objectInputStream.readObject(); // csinálni egy küllön jar file hogy ne legyen duplikálva szerver kliens oldalt
     }
     public void sendData() throws IOException{
         objectOutputStream.writeObject(dtoOut);
