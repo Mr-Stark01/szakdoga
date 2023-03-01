@@ -16,7 +16,7 @@ import com.szakdoga.game.TowerDefence;
 
 public class MainMenu extends ScreenAdapter {
     final TowerDefence game;
-    protected OrthographicCamera camera;
+
     protected ClickListener startButtonListener;
     protected TextButton.TextButtonStyle style;
     protected Stage stage;
@@ -26,9 +26,6 @@ public class MainMenu extends ScreenAdapter {
     public MainMenu(final TowerDefence game){
         this.game=game;
         //Camera Setup
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false,game.screenWidth, game.screenHeight);
-        game.batch.setProjectionMatrix(camera.combined);
         //Setup the backend for the clickable menu options
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
@@ -96,7 +93,6 @@ public class MainMenu extends ScreenAdapter {
     @Override
     public void render(float delta){
         ScreenUtils.clear(1, 0, 0, 1);
-        camera.update();
         game.batch.begin();
         game.batch.draw(bg,0,0,game.screenWidth,game.screenHeight);
         game.batch.end();

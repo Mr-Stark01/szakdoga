@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
+import java.util.Arrays;
+
 public class InputHandler implements InputProcessor {
     private OrthographicCamera camera;
     private float scale;
@@ -43,7 +45,6 @@ public class InputHandler implements InputProcessor {
         x = x * camera.zoom;
         y = y * camera.zoom;
         camera.translate(-x, y);
-        System.out.println("asd");
         return true;
     }
 
@@ -54,6 +55,14 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean scrolled(float amountX, float amountY) {
-        return false;
+        amountY = amountY / 10;
+
+        if (amountY > 0 && camera.zoom + amountY < 3) {
+            camera.zoom = camera.zoom + amountY;
+        }
+        if (amountY < 0 && camera.zoom + amountY > 0.1) {
+            camera.zoom = camera.zoom + amountY;
+        }
+        return true;
     }
 }

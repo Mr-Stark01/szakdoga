@@ -49,9 +49,13 @@ public class GameScreen extends ScreenAdapter {
         scale = (float) tileyLayer.getTileWidth();
         renderer = new OrthogonalTiledMapRenderer(map, 1 / scale);
         camera = new OrthographicCamera();
+        camera.viewportHeight = 1080 / scale;
+        camera.viewportWidth = 1920 / scale;
         renderer.setView(camera);
         inputHandler.setView(camera,scale);
         ScreenUtils.clear(1, 0, 0, 1);
+        game.batch.setProjectionMatrix(camera.combined);
+
     }
     @Override
     public void render(float delta){
@@ -59,6 +63,8 @@ public class GameScreen extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         renderer.setView(camera);
         renderer.render();
-        game.batch.setProjectionMatrix(camera.combined);
+        camera.update();
+
+
     }
 }
