@@ -15,12 +15,15 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.szakdoga.game.InputHandler;
 import com.szakdoga.game.TowerDefence;
 import com.szakdoga.game.network.DTO.Client;
+import com.szakdoga.game.ui.Hud;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class GameScreen extends ScreenAdapter {
     final TowerDefence game;
     private Client client;
+    public static float UIscale=1;
     private SpriteBatch batch;
     static float scale;
     private ExecutorService executor = Executors.newFixedThreadPool(20);
@@ -30,13 +33,14 @@ public class GameScreen extends ScreenAdapter {
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
     private InputHandler inputHandler;
+    private Hud hud;
     Texture bg;
     public GameScreen(TowerDefence game){
         this.game = game;
         this.batch = game.batch;
         inputHandler = new InputHandler();
         client = new Client("123.123.123.123",123,executor);
-        Gdx.input.setInputProcessor(inputHandler);
+
 
     }
     @Override
@@ -49,12 +53,15 @@ public class GameScreen extends ScreenAdapter {
         scale = (float) tileyLayer.getTileWidth();
         renderer = new OrthogonalTiledMapRenderer(map, 1 / scale);
         camera = new OrthographicCamera();
-        camera.viewportHeight = 1080 / scale;
-        camera.viewportWidth = 1920 / scale;
+        camera.viewportHeight = Gdx.graphics.getHeight() / scale;
+        camera.viewportWidth = Gdx.graphics.getWidth() / scale;
         renderer.setView(camera);
-        inputHandler.setView(camera,scale);
+        inputHandler.setView(camera,scale,renderer);
         ScreenUtils.clear(1, 0, 0, 1);
         game.batch.setProjectionMatrix(camera.combined);
+        hud = new Hud();
+
+        Gdx.input.setInputProcessor(inputHandler);
 
     }
     @Override
@@ -64,7 +71,8 @@ public class GameScreen extends ScreenAdapter {
         renderer.setView(camera);
         renderer.render();
         camera.update();
-
-
+        batch.begin();
+        hud.render();
+        batch.end();
     }
 }

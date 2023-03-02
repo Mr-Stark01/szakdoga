@@ -14,6 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.szakdoga.game.TowerDefence;
 
+import static com.szakdoga.game.screens.GameScreen.UIscale;
+
 public class MainMenu extends ScreenAdapter {
     final TowerDefence game;
 
@@ -33,11 +35,11 @@ public class MainMenu extends ScreenAdapter {
         table.setFillParent(true);
         style = new TextButton.TextButtonStyle();
         style.font = game.font;
-        style.font.getData().setScale(0.7f,0.7f);
+        style.font.getData().setScale(0.7f*UIscale,0.7f*UIscale);
         style.font.setColor(Color.BLUE);
-        table.row().minHeight((float) (game.screenHeight*0.25)).minWidth(game.screenWidth);//gets inherited
+        table.row().minHeight((float) (game.screenHeight*0.25*UIscale)).minWidth(game.screenWidth);//gets inherited
         table.add(new TextButton("Szakdoga", style));
-        style.font.getData().setScale(0.4f,0.4f);
+        style.font.getData().setScale(0.4f*UIscale,0.4f*UIscale);
         TextButton startButton = new TextButton("Start", style);
         TextButton options = new TextButton("Options", style);
         TextButton misc = new TextButton("Misc", style);
@@ -71,13 +73,13 @@ public class MainMenu extends ScreenAdapter {
             }
         });
 
-        table.row().minHeight((float) (game.screenHeight*0.15));
+        table.row().minHeight((float) (game.screenHeight*0.15*UIscale));
         table.add(startButton).fill();
-        table.row().minHeight((float) (game.screenHeight*0.15));
+        table.row().minHeight((float) (game.screenHeight*0.15*UIscale));
         table.add(options).fill();
-        table.row().minHeight((float) (game.screenHeight*0.15));
+        table.row().minHeight((float) (game.screenHeight*0.15*UIscale));
         table.add(misc).fill();
-        table.row().minHeight((float) (game.screenHeight*0.15));
+        table.row().minHeight((float) (game.screenHeight*0.15*UIscale));
         table.add(exit).fill();
         stage.addActor(table);
         stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);

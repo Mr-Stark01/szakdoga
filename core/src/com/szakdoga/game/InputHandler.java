@@ -3,15 +3,22 @@ package com.szakdoga.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 import java.util.Arrays;
+
+import static com.szakdoga.game.screens.GameScreen.UIscale;
 
 public class InputHandler implements InputProcessor {
     private OrthographicCamera camera;
     private float scale;
-    public void setView(OrthographicCamera camera, float scale){
+    private float limit=10f*UIscale;
+    private OrthogonalTiledMapRenderer renderer;
+    public void setView(OrthographicCamera camera, float scale, OrthogonalTiledMapRenderer renderer){
         this.camera=camera;//Maybe throw already has camera excpetion?
         this.scale=scale;
+        this.renderer=renderer;
     }
     @Override
     public boolean keyDown(int keycode) {
@@ -42,9 +49,13 @@ public class InputHandler implements InputProcessor {
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         float x = Gdx.input.getDeltaX() / scale;
         float y = Gdx.input.getDeltaY() / scale;
+        System.out.println(camera.position.x+x);
         x = x * camera.zoom;
         y = y * camera.zoom;
-        camera.translate(-x, y);
+        if((camera.position.x-x>-limit && camera.position.y+y>-limit) && (camera.position.x-x<((TiledMapTileLayer) renderer.getMap().getLayers().get(0)).getWidth()+limit && camera.position.y+y<((TiledMapTileLayer) renderer.getMap().getLayers().get(0)).getHeight()+limit)){
+            camera.translate(-x, y);
+        }
+
         return true;
     }
 
@@ -57,7 +68,7 @@ public class InputHandler implements InputProcessor {
     public boolean scrolled(float amountX, float amountY) {
         amountY = amountY / 10;
 
-        if (amountY > 0 && camera.zoom + amountY < 3) {
+        if (amountY > 0 && camera.zoom + amountY < 10) {
             camera.zoom = camera.zoom + amountY;
         }
         if (amountY < 0 && camera.zoom + amountY > 0.1) {
