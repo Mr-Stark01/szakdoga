@@ -2,6 +2,7 @@ package com.szakdoga.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -34,6 +35,7 @@ public class GameScreen extends ScreenAdapter {
     private OrthographicCamera camera;
     private InputHandler inputHandler;
     private Hud hud;
+    private InputMultiplexer multiplexer;
     Texture bg;
     public GameScreen(TowerDefence game){
         this.game = game;
@@ -59,9 +61,10 @@ public class GameScreen extends ScreenAdapter {
         inputHandler.setView(camera,scale,renderer);
         ScreenUtils.clear(1, 0, 0, 1);
         game.batch.setProjectionMatrix(camera.combined);
-        hud = new Hud();
-
-        Gdx.input.setInputProcessor(inputHandler);
+        multiplexer = new InputMultiplexer();
+        hud = new Hud(multiplexer);
+        multiplexer.addProcessor(inputHandler);
+        Gdx.input.setInputProcessor(multiplexer);
 
     }
     @Override

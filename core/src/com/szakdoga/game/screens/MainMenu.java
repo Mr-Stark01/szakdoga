@@ -55,6 +55,7 @@ public class MainMenu extends ScreenAdapter {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 dispose();
+                Gdx.app.exit();//TODO IMPLEMENTÁLNI OPTION SCREENT
                 game.setScreen( new OptionScreen(game) );
             }
         });
@@ -62,6 +63,7 @@ public class MainMenu extends ScreenAdapter {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 dispose();
+                Gdx.app.exit();//TODO IMPLEMENTÁLNI OPTION SCREENT
                 game.setScreen( new MiscScreen(game) );
             }
         });

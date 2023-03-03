@@ -5,6 +5,10 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.szakdoga.game.towers.Tower;
 
 import java.util.Arrays;
 
@@ -75,5 +79,20 @@ public class InputHandler implements InputProcessor {
             camera.zoom = camera.zoom + amountY;
         }
         return true;
+    }
+
+    /**
+     *
+     * @param tower The object that should be bought
+     * @param actor The actor which listens to the player input button,text,img,etc..
+     */
+    public static void createListener(Object tower, Actor actor) {
+        actor.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                //player.add(new tower());
+                System.out.println("gdfs");
+            }
+        });
     }
 }
