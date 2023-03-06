@@ -14,6 +14,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.szakdoga.game.InputHandler;
+import com.szakdoga.game.Player;
 import com.szakdoga.game.TowerDefence;
 import com.szakdoga.game.network.DTO.Client;
 import com.szakdoga.game.ui.Hud;
@@ -37,35 +38,37 @@ public class GameScreen extends ScreenAdapter {
     private Hud hud;
     private InputMultiplexer multiplexer;
     Texture bg;
+    public static Player player =new Player();
     public GameScreen(TowerDefence game){
         this.game = game;
-        this.batch = game.batch;
+        this.batch = new SpriteBatch();
         inputHandler = new InputHandler();
         client = new Client("123.123.123.123",123,executor);
-
-
+        Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
     }
     @Override
     public void show(){
-        bg = new Texture("menu/start_menu.png");
+        bg = new Texture("textures/tower.png");
         //Importing and creating map
         TmxMapLoader loader = new TmxMapLoader();
         map = loader.load("maps/map.tmx");
         tileyLayer = (TiledMapTileLayer) map.getLayers().get(0);
         scale = (float) tileyLayer.getTileWidth();
         renderer = new OrthogonalTiledMapRenderer(map, 1 / scale);
+
         camera = new OrthographicCamera();
         camera.viewportHeight = Gdx.graphics.getHeight() / scale;
         camera.viewportWidth = Gdx.graphics.getWidth() / scale;
-        renderer.setView(camera);
+
         inputHandler.setView(camera,scale,renderer);
         ScreenUtils.clear(1, 0, 0, 1);
-        game.batch.setProjectionMatrix(camera.combined);
+
+
         multiplexer = new InputMultiplexer();
-        hud = new Hud(multiplexer);
+        hud = new Hud(multiplexer,batch,inputHandler);
         multiplexer.addProcessor(inputHandler);
         Gdx.input.setInputProcessor(multiplexer);
-
+        batch.setProjectionMatrix(camera.combined);
     }
     @Override
     public void render(float delta){
@@ -73,9 +76,13 @@ public class GameScreen extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         renderer.setView(camera);
         renderer.render();
+        batch.setProjectionMatrix(camera.combined);
         camera.update();
         batch.begin();
-        hud.render();
+        inputHandler.render(batch);
+        player.render(batch);
         batch.end();
+        hud.render();
+
     }
 }

@@ -3,44 +3,86 @@ package com.szakdoga.game.ui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Disableable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
+import com.szakdoga.game.InputHandler;
+import com.szakdoga.game.towers.ArcherTower;
+import com.szakdoga.game.towers.Tower;
 
 
-import static com.szakdoga.game.InputHandler.createListener;
-import static com.szakdoga.game.TowerDefence.font; //TODO is this better then wranling it trough everywhere?
+import static com.szakdoga.game.TowerDefence.*;
+import static com.szakdoga.game.screens.GameScreen.UIscale;
+import static com.szakdoga.game.screens.GameScreen.player;
 
-public class Hud {
+public class Hud implements Disposable {
+    private int money=0;
     private Stage stage;
     private Table table;
     private TextButton.TextButtonStyle style;
-    private InputMultiplexer multiplexer;
-    public Hud(InputMultiplexer multiplexer) {
-        this.multiplexer=multiplexer;
-        stage = new Stage();
+    private Label.LabelStyle labelStyle;
+    private Label moneyLabel;
+    private Viewport viewport;
+
+    public Hud(final InputMultiplexer multiplexer, SpriteBatch batch, final InputHandler inputHandler) {
+        viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), new OrthographicCamera());
+        stage = new Stage(viewport, batch);
         multiplexer.addProcessor(stage);
         table = new Table();
         table.setFillParent(true);
-        stage.addActor(table);
         table.setDebug(true);
         style = new TextButton.TextButtonStyle();
+        labelStyle = new Label.LabelStyle();
+        labelStyle.font=font;
+        labelStyle.font.getData().setScale(UIscale);
         style.font = font;
         style.font.getData().setScale(0.7f,0.7f);
         style.font.setColor(Color.BLUE);
-        ImageButton tower =new ImageButton(new TextureRegionDrawable(new Texture("textures/tower.png")));
-        createListener("asd",tower);
-        table.bottom().add(tower).minHeight(0).maxHeight(Gdx.graphics.getHeight()/6);
-        table.row().expand();
-        table.add(new Actor()).minHeight(Gdx.graphics.getHeight()/1.5f);
+        ImageButton tower = new ImageButton(new TextureRegionDrawable(new Texture("textures/tower.png")));
+        tower.addListener(new ClickListener(){ //TODO I hate it! I hate it! I hate it! I hate it! I hate it! I hate it! I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                inputHandler.draggingArcher();
+                player.create(new ArcherTower(0,0));
+            }
+        });
+        table.top().add(tower).height(Gdx.graphics.getHeight()/6f);
         table.row();
-        table.add(new TextButton("teteje",style)).minHeight(0).maxHeight(Gdx.graphics.getHeight()/6);
+        table.add(new Actor()).height(Gdx.graphics.getHeight()*(4/6f));
+        table.row();
+        HorizontalGroup horizontalGroup = new HorizontalGroup();
+        moneyLabel=new Label(Integer.toString(money),labelStyle);
+        horizontalGroup.addActor(moneyLabel);
+        horizontalGroup.addActor(new Label("asd",labelStyle));
+        horizontalGroup.addActor(new Label("asd",labelStyle));
+        horizontalGroup.addActor(new Label("asd",labelStyle));
+        table.add(horizontalGroup).height(Gdx.graphics.getHeight()/6f);
+        stage.addActor(table);
         style.font.getData().setScale(0.4f,0.4f);
     }
+
     public void render(){
-        stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
+    }
+    public void setMoney(int money){
+        this.money=money;
+        moneyLabel.setText(Integer.toString(money));
+    }
+    public int getMoney(){
+        return money;
+    }
+    public void dispose() {
+
     }
 }

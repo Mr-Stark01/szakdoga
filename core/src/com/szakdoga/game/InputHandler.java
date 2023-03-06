@@ -1,24 +1,32 @@
 package com.szakdoga.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.szakdoga.game.towers.ArcherTower;
 import com.szakdoga.game.towers.Tower;
 
 import java.util.Arrays;
 
 import static com.szakdoga.game.screens.GameScreen.UIscale;
+import static com.szakdoga.game.screens.GameScreen.player;
 
 public class InputHandler implements InputProcessor {
     private OrthographicCamera camera;
     private float scale;
     private float limit=10f*UIscale;
     private OrthogonalTiledMapRenderer renderer;
+    private static Sprite currentlyDragging;
     public void setView(OrthographicCamera camera, float scale, OrthogonalTiledMapRenderer renderer){
         this.camera=camera;//Maybe throw already has camera excpetion?
         this.scale=scale;
@@ -26,7 +34,10 @@ public class InputHandler implements InputProcessor {
     }
     @Override
     public boolean keyDown(int keycode) {
-        return false;
+        if(keycode == Input.Keys.ESCAPE){
+            Gdx.app.exit();
+        }
+        return true;
     }
 
     @Override
@@ -41,7 +52,12 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return false;
+        if(currentlyDragging != null && button == Input.Buttons.LEFT){
+            Vector3 mouse = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+            player.addTower(mouse.x,mouse.y);
+            currentlyDragging=null;
+        }
+        return true;
     }
 
     @Override
@@ -53,10 +69,11 @@ public class InputHandler implements InputProcessor {
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         float x = Gdx.input.getDeltaX() / scale;
         float y = Gdx.input.getDeltaY() / scale;
-        System.out.println(camera.position.x+x);
         x = x * camera.zoom;
         y = y * camera.zoom;
-        if((camera.position.x-x>-limit && camera.position.y+y>-limit) && (camera.position.x-x<((TiledMapTileLayer) renderer.getMap().getLayers().get(0)).getWidth()+limit && camera.position.y+y<((TiledMapTileLayer) renderer.getMap().getLayers().get(0)).getHeight()+limit)){
+        if((camera.position.x-x>-limit && camera.position.y+y>-limit) &&
+                (camera.position.x-x<((TiledMapTileLayer) renderer.getMap().getLayers().get(0)).getWidth()+limit &&
+                camera.position.y+y<((TiledMapTileLayer) renderer.getMap().getLayers().get(0)).getHeight()+limit)){
             camera.translate(-x, y);
         }
 
@@ -65,7 +82,13 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        return false;
+
+        if(currentlyDragging != null){
+            Vector3 mouse = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+            currentlyDragging.setX(mouse.x);
+            currentlyDragging.setY(mouse.y);
+        }
+        return true;
     }
 
     @Override
@@ -80,19 +103,17 @@ public class InputHandler implements InputProcessor {
         }
         return true;
     }
+    public void render(SpriteBatch batch){
+        if(currentlyDragging != null) {
+            currentlyDragging.draw(batch);
+        }
+    }
 
-    /**
-     *
-     * @param tower The object that should be bought
-     * @param actor The actor which listens to the player input button,text,img,etc..
-     */
-    public static void createListener(Object tower, Actor actor) {
-        actor.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                //player.add(new tower());
-                System.out.println("gdfs");
-            }
-        });
+    public void setcurrentlyDragging(Sprite sprite) {
+        currentlyDragging=sprite;
+    }
+
+    public void draggingArcher() {
+        currentlyDragging=new Sprite(new Texture("textures/tower.png"));
     }
 }
