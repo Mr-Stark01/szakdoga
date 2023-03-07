@@ -27,7 +27,6 @@ import static com.szakdoga.game.screens.GameScreen.UIscale;
 import static com.szakdoga.game.screens.GameScreen.player;
 
 public class Hud implements Disposable {
-    private int money=0;
     private Stage stage;
     private Table table;
     private TextButton.TextButtonStyle style;
@@ -62,7 +61,7 @@ public class Hud implements Disposable {
         table.add(new Actor()).height(Gdx.graphics.getHeight()*(4/6f));
         table.row();
         HorizontalGroup horizontalGroup = new HorizontalGroup();
-        moneyLabel=new Label(Integer.toString(money),labelStyle);
+        moneyLabel=new Label(Integer.toString(0),labelStyle);
         horizontalGroup.addActor(moneyLabel);
         horizontalGroup.addActor(new Label("asd",labelStyle));
         horizontalGroup.addActor(new Label("asd",labelStyle));
@@ -76,11 +75,7 @@ public class Hud implements Disposable {
         stage.draw();
     }
     public void setMoney(int money){
-        this.money=money;
         moneyLabel.setText(Integer.toString(money));
-    }
-    public int getMoney(){
-        return money;
     }
     public void dispose() {
 

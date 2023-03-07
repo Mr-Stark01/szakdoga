@@ -83,6 +83,5 @@ public class GameScreen extends ScreenAdapter {
         player.render(batch);
         batch.end();
         hud.render();
-
     }
 }
