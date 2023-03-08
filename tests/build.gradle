@@ -1,0 +1,21 @@
+
+tasks {
+    test {
+        workingDir = file("../assets")
+    }
+
+    compileJava {
+        options.encoding = "UTF-8"
+    }
+    compileTestJava {
+        options.encoding = "UTF-8"
+    }
+}
+
+sourceSets {
+    test {
+        java.srcDir("src")
+    }
+}
+
+eclipse.project.name = appName + "-desktop"
