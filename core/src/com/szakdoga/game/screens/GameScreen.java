@@ -19,6 +19,7 @@ import com.szakdoga.game.TowerDefence;
 import com.szakdoga.game.network.DTO.Client;
 import com.szakdoga.game.ui.Hud;
 
+import java.util.Iterator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -38,7 +39,8 @@ public class GameScreen extends ScreenAdapter {
     private Hud hud;
     private InputMultiplexer multiplexer;
     Texture bg;
-    public static Player player =new Player();
+    public static Player player = new Player();
+    public static Player enemyPlayer = new Player();
     public GameScreen(TowerDefence game){
         this.game = game;
         this.batch = new SpriteBatch();

@@ -49,6 +49,10 @@ public class Hud implements Disposable {
         style.font.getData().setScale(0.7f,0.7f);
         style.font.setColor(Color.BLUE);
         ImageButton tower = new ImageButton(new TextureRegionDrawable(new Texture("textures/tower.png")));
+        /**
+         * add different eventListeners here for all the clickable elements of the hud
+         */
+        //TODO how to create a tower buyyer thingi maggie
         tower.addListener(new ClickListener(){ //TODO I hate it! I hate it! I hate it! I hate it! I hate it! I hate it! I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!
             @Override
             public void clicked(InputEvent event, float x, float y) {

@@ -13,6 +13,7 @@ public class Player {
     private ArrayList<Tower> towers = new ArrayList<>();
     private ArrayList<Unit> units= new ArrayList<>();
     private int money=10000;
+    private int positionX=10,positionY=10;
     private float health;
     private Tower towerInDraggingState;
     public boolean addTower(float x,float y){

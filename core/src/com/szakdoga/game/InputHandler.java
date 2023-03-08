@@ -110,5 +110,6 @@ public class InputHandler implements InputProcessor {
     }
     public void draggingArcher() {
         currentlyDragging=new Sprite(new Texture("textures/tower.png"));
+        currentlyDragging.setSize(1,1);
     }
 }
