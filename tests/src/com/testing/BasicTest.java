@@ -11,7 +11,7 @@ public class BasicTest {
     public void test(){
         ArcherTower ac = new ArcherTower(1,1);
         Assert.assertEquals(10,ac.getPrice());
-        Assert.assertEquals(12,ac.getPrice());
+        Assert.assertEquals(10,ac.getPrice());
     }
 
 

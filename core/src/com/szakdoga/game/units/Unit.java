@@ -9,7 +9,11 @@ public abstract class Unit extends Sprite{
     protected float damage;
     protected int price;
 
-    public Unit(){
+    public Unit(float speed,float health,float damage,int price){
         super(new Sprite(new Texture("assets/placeholder.jpg")));// TODO fix assets
+        this.speed=speed;
+        this.health=health;
+        this.damage=damage;
+        this.price=price;
     }
 }

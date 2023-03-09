@@ -48,19 +48,19 @@ public class Hud implements Disposable {
         style.font = font;
         style.font.getData().setScale(0.7f,0.7f);
         style.font.setColor(Color.BLUE);
-        ImageButton tower = new ImageButton(new TextureRegionDrawable(new Texture("textures/tower.png")));
+        ImageButton towerHudElement = new ImageButton(new TextureRegionDrawable(new Texture("textures/tower.png")));
         /**
          * add different eventListeners here for all the clickable elements of the hud
          */
         //TODO how to create a tower buyyer thingi maggie
-        tower.addListener(new ClickListener(){ //TODO I hate it! I hate it! I hate it! I hate it! I hate it! I hate it! I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!I hate it!
+        towerHudElement.addListener(new ClickListener(){ //TODO esetleg refractor
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 inputHandler.draggingArcher();
                 player.create(new ArcherTower(0,0));
             }
         });
-        table.top().add(tower).height(Gdx.graphics.getHeight()/6f);
+        table.top().add(towerHudElement).height(Gdx.graphics.getHeight()/6f);
         table.row();
         table.add(new Actor()).height(Gdx.graphics.getHeight()*(4/6f));
         table.row();

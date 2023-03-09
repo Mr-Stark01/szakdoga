@@ -1,7 +1,6 @@
 package com.szakdoga.game.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
@@ -17,9 +16,9 @@ import com.szakdoga.game.InputHandler;
 import com.szakdoga.game.Player;
 import com.szakdoga.game.TowerDefence;
 import com.szakdoga.game.network.DTO.Client;
+import com.szakdoga.game.pathFinder.nope.Pathfinder;
 import com.szakdoga.game.ui.Hud;
 
-import java.util.Iterator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -41,6 +40,7 @@ public class GameScreen extends ScreenAdapter {
     Texture bg;
     public static Player player = new Player();
     public static Player enemyPlayer = new Player();
+    private Thread t;
     public GameScreen(TowerDefence game){
         this.game = game;
         this.batch = new SpriteBatch();
@@ -71,6 +71,7 @@ public class GameScreen extends ScreenAdapter {
         multiplexer.addProcessor(inputHandler);
         Gdx.input.setInputProcessor(multiplexer);
         batch.setProjectionMatrix(camera.combined);
+        //new Pathfinder(map).showPath();
     }
     @Override
     public void render(float delta){
