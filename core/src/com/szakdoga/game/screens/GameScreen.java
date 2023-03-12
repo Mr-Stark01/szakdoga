@@ -16,7 +16,7 @@ import com.szakdoga.game.InputHandler;
 import com.szakdoga.game.Player;
 import com.szakdoga.game.TowerDefence;
 import com.szakdoga.game.network.DTO.Client;
-import com.szakdoga.game.pathFinder.nope.Pathfinder;
+import com.szakdoga.game.pathFinder.PathFinder;
 import com.szakdoga.game.ui.Hud;
 
 import java.util.concurrent.ExecutorService;
@@ -38,8 +38,8 @@ public class GameScreen extends ScreenAdapter {
     private Hud hud;
     private InputMultiplexer multiplexer;
     Texture bg;
-    public static Player player = new Player();
-    public static Player enemyPlayer = new Player();
+    public static Player player;
+    public static Player enemyPlayer;
     private Thread t;
     public GameScreen(TowerDefence game){
         this.game = game;
@@ -57,6 +57,11 @@ public class GameScreen extends ScreenAdapter {
         tileyLayer = (TiledMapTileLayer) map.getLayers().get(0);
         scale = (float) tileyLayer.getTileWidth();
         renderer = new OrthogonalTiledMapRenderer(map, 1 / scale);
+
+        //Player and pathfinder
+        PathFinder pathfinder= new PathFinder(tileyLayer);
+        player = new Player(pathfinder);
+        enemyPlayer = new Player(pathfinder);
 
         camera = new OrthographicCamera();
         camera.viewportHeight = Gdx.graphics.getHeight() / scale;
