@@ -83,4 +83,8 @@ public abstract class Unit extends Sprite{
     public float getDistance() {
         return distance;
     }
+
+    public void attacked(float damage) {
+        health-=damage;
+    }
 }

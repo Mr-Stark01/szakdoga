@@ -18,4 +18,4 @@ sourceSets {
     }
 }
 
-eclipse.project.name = appName + "-desktop"
+eclipse.project.name = appName + "-test"

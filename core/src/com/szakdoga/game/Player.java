@@ -40,10 +40,10 @@ public class Player {
     }
     public void render(SpriteBatch batch){
         for(Tower tower:towers){
-            tower.render(batch);
+            tower.render(batch,units);
         }
         for(Unit unit:units){
-            if(Math.abs(unit.getPreviousX()-unit.getX())+Math.abs(unit.getPreviousY()-unit.getY())<unit.getDistance()){
+            if(Math.sqrt((Math.pow(unit.getPreviousX()-unit.getX(),2))+(Math.pow(unit.getPreviousY()-unit.getY(),2))) <unit.getDistance()){
                 pathFinder.checkNextStep(unit);
                 unit.calculateAngle();
             }
