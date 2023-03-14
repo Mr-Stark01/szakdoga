@@ -14,7 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.szakdoga.game.towers.ArcherTower;
-import com.szakdoga.game.towers.Tower;
+import com.szakdoga.game.towers.Tower;import com.szakdoga.game.units.Unit;
 
 import java.util.Arrays;
 
@@ -37,6 +37,9 @@ public class InputHandler implements InputProcessor {
         if(keycode == Input.Keys.ESCAPE){
             Gdx.app.exit();
         }
+        if(keycode == Input.Keys.P){
+            player.buyUnit(Unit.createPikeUnit(6,43));
+        }
         return true;
     }
 
@@ -52,6 +55,8 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        Vector3 mouse2 = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0)); //For getting coordinates
+        System.out.println(mouse2.x+"\t"+mouse2.y);
         if(currentlyDragging != null && button == Input.Buttons.LEFT){
             Vector3 mouse = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
             player.addTower(mouse.x,mouse.y);

@@ -2,7 +2,7 @@ package com.szakdoga.game.units;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;import com.badlogic.gdx.math.MathUtils;
 
 public abstract class Unit extends Sprite{
     protected float speed;
@@ -16,16 +16,27 @@ public abstract class Unit extends Sprite{
     protected int NextY;
     private float deltaX;
     private float deltaY;
-    private float distance;
+    private float distance=0.1f;
 
 
-    public Unit(float speed, float health, float damage, int price){
+    public Unit(float speed, float health, float damage, int price,float X,float Y){
         this.speed=speed;
         this.health=health;
         this.damage=damage;
         this.price=price;
-        this.PreviousX=(int)getX();
-        this.PreviousY=(int)getY();
+        this.PreviousX=(int)X;
+        this.PreviousY=(int)Y;
+        setX(X);//TODO WHY does this not work?
+        setY(Y);
+    }
+
+    public void render(SpriteBatch batch){
+        //System.out.println(getX()+"\t"+getY());
+        super.draw(batch);
+    }
+
+    public static PikeUnit createPikeUnit(float X,float Y){
+        return new PikeUnit(X,Y);
     }
 
     public int getPreviousX() {
@@ -75,9 +86,9 @@ public abstract class Unit extends Sprite{
     public void calculateAngle() {
         float angle =
                 MathUtils.atan2(
-                        NextY - PreviousY, NextX - PreviousX);
-        deltaX = MathUtils.cos(angle) * speed;
-        deltaY = MathUtils.sin(angle) * speed;
+                        NextY - getY(), NextX - getX());
+        deltaX = MathUtils.cos(angle);
+        deltaY = MathUtils.sin(angle);
     }
 
     public float getDistance() {

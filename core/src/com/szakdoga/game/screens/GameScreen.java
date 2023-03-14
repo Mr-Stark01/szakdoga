@@ -46,14 +46,14 @@ public class GameScreen extends ScreenAdapter {
         this.batch = new SpriteBatch();
         inputHandler = new InputHandler();
         client = new Client("123.123.123.123",123,executor);
-        Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+        //Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
     }
     @Override
     public void show(){
         bg = new Texture("textures/tower.png");
         //Importing and creating map
         TmxMapLoader loader = new TmxMapLoader();
-        map = loader.load("maps/map.tmx");
+        map = loader.load("maps/defmap.tmx");
         tileyLayer = (TiledMapTileLayer) map.getLayers().get(0);
         scale = (float) tileyLayer.getTileWidth();
         renderer = new OrthogonalTiledMapRenderer(map, 1 / scale);
@@ -76,7 +76,7 @@ public class GameScreen extends ScreenAdapter {
         multiplexer.addProcessor(inputHandler);
         Gdx.input.setInputProcessor(multiplexer);
         batch.setProjectionMatrix(camera.combined);
-        //new Pathfinder(map).showPath();
+
     }
     @Override
     public void render(float delta){
