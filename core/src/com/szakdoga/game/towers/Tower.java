@@ -67,7 +67,6 @@ public abstract class Tower extends Sprite { //TODO teszt osztály
         if(deltaSum > attackTime){
             target.attacked(damage);
         }
-
     }
     public void render(SpriteBatch batch,ArrayList<Unit> units){
         attack(units);
