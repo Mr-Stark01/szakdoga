@@ -1,11 +1,9 @@
 package com.szakdoga.game.towers;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.szakdoga.game.units.Unit;
-
 import java.util.ArrayList;
 
 public abstract class Tower extends Sprite { //TODO teszt osztály
@@ -52,24 +50,34 @@ public abstract class Tower extends Sprite { //TODO teszt osztály
     }
 
     public void checkIfEnemyStillInRangeAndAllive(ArrayList<Unit> units){//What a beauty
-        if(target == null){
+        if(target==null){
+            findTarget(units);
+        }
+        else if(target.isDead()){
+            units.remove(target);
+            target = null;
             findTarget(units);
         }
         else if(
-                    Math.sqrt((Math.pow(target.getX() - getX(), 2)) +
-                            (Math.pow(target.getY() - getY(), 2))) > range){
+                Math.sqrt((Math.pow(target.getX() - getX(), 2)) +
+                        (Math.pow(target.getY() - getY(), 2))) > range){
                 findTarget(units);
             }
     }
     public void attack(ArrayList<Unit> units){
         deltaSum += Gdx.graphics.getDeltaTime(); //TODO deltaTime might not be the best course here java time might work
-        checkIfEnemyStillInRangeAndAllive(units);
         if(deltaSum > attackTime){
+            checkIfEnemyStillInRangeAndAllive(units);
+            if(target!=null){
             target.attacked(damage);
+            }
+            deltaSum = 0;
         }
     }
     public void render(SpriteBatch batch,ArrayList<Unit> units){
-        attack(units);
+        if(units.size()>0){
+            attack(units);
+        }
         super.draw(batch);
     }
     //TODO factory method ami csinál egy archerTower instancet

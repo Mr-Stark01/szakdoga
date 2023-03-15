@@ -1,5 +1,8 @@
 package com.szakdoga.game;
 
+import static com.szakdoga.game.screens.GameScreen.UIscale;
+import static com.szakdoga.game.screens.GameScreen.player;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
@@ -10,23 +13,15 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.szakdoga.game.towers.ArcherTower;
-import com.szakdoga.game.towers.Tower;import com.szakdoga.game.units.Unit;
-
-import java.util.Arrays;
-
-import static com.szakdoga.game.screens.GameScreen.UIscale;
-import static com.szakdoga.game.screens.GameScreen.player;
+import com.szakdoga.game.units.Unit;
 
 public class InputHandler implements InputProcessor {
+    private static Sprite currentlyDragging;
     private OrthographicCamera camera;
     private float scale;
     private float limit=10f*UIscale;
     private OrthogonalTiledMapRenderer renderer;
-    private static Sprite currentlyDragging;
+
     public void setView(OrthographicCamera camera, float scale, OrthogonalTiledMapRenderer renderer){
         this.camera=camera;//Maybe throw already has camera excpetion?
         this.scale=scale;

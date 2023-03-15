@@ -18,16 +18,18 @@ import com.szakdoga.game.TowerDefence;
 import com.szakdoga.game.network.DTO.Client;
 import com.szakdoga.game.pathFinder.PathFinder;
 import com.szakdoga.game.ui.Hud;
-
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class GameScreen extends ScreenAdapter {
-    final TowerDefence game;
-    private Client client;
     public static float UIscale=1;
-    private SpriteBatch batch;
+    public static Player player;
+    public static Player enemyPlayer;
     static float scale;
+    final TowerDefence game;
+    Texture bg;
+    private Client client;
+    private SpriteBatch batch;
     private ExecutorService executor = Executors.newFixedThreadPool(20);
     //Map make own class???
     private TiledMapTileLayer tileyLayer;
@@ -37,9 +39,6 @@ public class GameScreen extends ScreenAdapter {
     private InputHandler inputHandler;
     private Hud hud;
     private InputMultiplexer multiplexer;
-    Texture bg;
-    public static Player player;
-    public static Player enemyPlayer;
     private Thread t;
     public GameScreen(TowerDefence game){
         this.game = game;

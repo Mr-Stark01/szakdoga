@@ -1,6 +1,5 @@
 package com.szakdoga.game.pathFinder.nope;
 
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -9,26 +8,23 @@ import java.util.Map;
 
 public class Node {
 
+    Map<Node, Integer> adjacentNodes = new HashMap<>();
     private String name;
     private int X,Y;
-
     private List<Node> shortestPath = new LinkedList<>();
-
     private Integer distance = Integer.MAX_VALUE;
 
-    Map<Node, Integer> adjacentNodes = new HashMap<>();
 
 
+    public Node(int X, int Y) {
+        this.X=X;
+        this.Y=Y;
+    }
 
     public void addDestination(Node destination, int distance) {
         if(destination!=null) {
             adjacentNodes.put(destination, distance);
         }
-    }
-
-    public Node(int X, int Y) {
-        this.X=X;
-        this.Y=Y;
     }
 
     public Integer getDistance() {

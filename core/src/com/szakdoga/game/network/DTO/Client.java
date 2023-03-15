@@ -2,7 +2,6 @@ package com.szakdoga.game.network.DTO;
 
 import com.szakdoga.game.network.FileServerHandler;
 import com.szakdoga.game.network.GameServerHandler;
-
 import java.io.IOException;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;

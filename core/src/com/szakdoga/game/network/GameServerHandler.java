@@ -1,7 +1,6 @@
 package com.szakdoga.game.network;
 
 import com.szakdoga.game.network.DTO.DTO;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -10,9 +9,9 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 
 public class GameServerHandler implements Callable<Integer> {
-    private final Socket clientSocket;
     private static ObjectOutputStream objectOutputStream = null;
     private static ObjectInputStream objectInputStream = null;
+    private final Socket clientSocket;
     private DTO dtoIn;
     private DTO dtoOut;
     private ExecutorService ex;
@@ -43,14 +42,17 @@ public class GameServerHandler implements Callable<Integer> {
     public DTO getDtoIn() {
         return dtoIn;
     }
+
+    public void setDtoIn(DTO dtoIn) {
+        this.dtoIn = dtoIn;
+    }
+
     public DTO getDtoOut() {
         return dtoOut;
     }
+
     public void setDtoOut(DTO dtoOut) {
         this.dtoOut = dtoOut;
-    }
-    public void setDtoIn(DTO dtoIn) {
-        this.dtoIn = dtoIn;
     }
 }
 

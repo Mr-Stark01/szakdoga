@@ -1,16 +1,15 @@
 package com.szakdoga.game.network;
 
 import com.badlogic.gdx.Gdx;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.FileOutputStream;
 import java.net.Socket;
 
 public class FileServerHandler {
-    private Socket socket;
     private static DataOutputStream dataOutputStream = null;
     private static DataInputStream dataInputStream = null;
+    private Socket socket;
     public FileServerHandler(Socket socket){
         try{
             this.socket=socket;

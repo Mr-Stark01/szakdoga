@@ -4,8 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.szakdoga.game.pathFinder.PathFinder;
 import com.szakdoga.game.towers.Tower;
-import com.szakdoga.game.units.PikeUnit;import com.szakdoga.game.units.Unit;
-
+import com.szakdoga.game.units.Unit;
 import java.util.ArrayList;
 
 public class Player {
@@ -48,17 +47,9 @@ public class Player {
                 unit.calculateAngle();
             }
             else{
-                if(Gdx.graphics.getDeltaTime() > 0.1f){
-                    float deltaTime = Gdx.graphics.getDeltaTime();
-                    while(deltaTime > 0.1f){
-                        unit.setX(unit.getX()+(unit.getSpeed() * unit.getDeltaX() * 0.08f));
-                        unit.setY(unit.getY()+(unit.getSpeed() * unit.getDeltaY() * 0.08f));
-                        deltaTime -= 0.1f;
-                        if(Math.sqrt((Math.pow(unit.getX()-unit.getNextX(),2))+(Math.pow(unit.getY()-unit.getNextY(),2))) < 0.1f){ //TODO ha túll gyors vagy lassan fút a játék átugorhat pontot
-                            pathFinder.checkNextStep(unit);
-                            unit.calculateAngle();
-                        }
-                    }
+                if(Math.sqrt((Math.pow(unit.getX()-unit.getNextX(),2))+(Math.pow(unit.getY()-unit.getNextY(),2))) > 1.51f){
+                    unit.setX(unit.getNextX());
+                    unit.setY(unit.getNextY());
                 }
                 else{
                     unit.setX(unit.getX()+(unit.getSpeed() * unit.getDeltaX() * Gdx.graphics.getDeltaTime()));

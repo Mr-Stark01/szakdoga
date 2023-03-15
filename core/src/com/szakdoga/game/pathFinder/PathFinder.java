@@ -34,7 +34,6 @@ public class PathFinder {
                 !(unit.getPreviousX() == X + 1 && Y - 1 == unit.getPreviousY())){
             unit.setNextX(X+1);
             unit.setNextY(Y-1);
-            System.out.println("asd");
         }
         if(tiledMapTileLayer.getCell(X + 1,Y).getTile().getProperties().containsKey("road") &&
                 !(unit.getPreviousX() == X + 1 && Y == unit.getPreviousY())){

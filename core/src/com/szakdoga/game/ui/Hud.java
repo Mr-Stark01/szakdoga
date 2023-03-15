@@ -1,30 +1,26 @@
 package com.szakdoga.game.ui;
 
+import static com.szakdoga.game.TowerDefence.*;
+import static com.szakdoga.game.screens.GameScreen.UIscale;
+import static com.szakdoga.game.screens.GameScreen.player;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Disableable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.szakdoga.game.InputHandler;
 import com.szakdoga.game.towers.ArcherTower;
-import com.szakdoga.game.towers.Tower;
-
-
-import static com.szakdoga.game.TowerDefence.*;
-import static com.szakdoga.game.screens.GameScreen.UIscale;
-import static com.szakdoga.game.screens.GameScreen.player;
 
 public class Hud implements Disposable {
     private Stage stage;

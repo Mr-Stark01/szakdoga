@@ -7,8 +7,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.szakdoga.game.screens.MainMenu;
 
 public class TowerDefence extends Game {
-	public SpriteBatch batch;
 	public static BitmapFont font;
+	public SpriteBatch batch;
 	public BitmapFont fontHover;
 	public int screenHeight;
 	public int screenWidth;

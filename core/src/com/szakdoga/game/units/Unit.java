@@ -1,8 +1,8 @@
 package com.szakdoga.game.units;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 
 public abstract class Unit extends Sprite{
     protected float speed;
@@ -30,13 +30,13 @@ public abstract class Unit extends Sprite{
         setY(Y);
     }
 
+    public static PikeUnit createPikeUnit(float X,float Y){
+        return new PikeUnit(X,Y);
+    }
+
     public void render(SpriteBatch batch){
         //System.out.println(getX()+"\t"+getY());
         super.draw(batch);
-    }
-
-    public static PikeUnit createPikeUnit(float X,float Y){
-        return new PikeUnit(X,Y);
     }
 
     public int getPreviousX() {
@@ -67,16 +67,16 @@ public abstract class Unit extends Sprite{
         return NextY;
     }
 
+    public void setNextY(int nextY) {
+        NextY = nextY;
+    }
+
     public float getDeltaX() {
         return deltaX;
     }
 
     public float getDeltaY() {
         return deltaY;
-    }
-
-    public void setNextY(int nextY) {
-        NextY = nextY;
     }
 
     public float getSpeed() {
@@ -98,4 +98,8 @@ public abstract class Unit extends Sprite{
     public void attacked(float damage) {
         health-=damage;
     }
+    public boolean isDead() {
+        return health < 0;
+    }
+
 }
