@@ -50,8 +50,8 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        Vector3 mouse2 = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0)); //For getting coordinates
-        System.out.println(mouse2.x+"\t"+mouse2.y);
+        //Vector3 mouse2 = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0)); //For getting coordinates
+        //System.out.println(mouse2.x+"\t"+mouse2.y);
         if(currentlyDragging != null && button == Input.Buttons.LEFT){
             Vector3 mouse = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
             player.addTower(mouse.x,mouse.y);

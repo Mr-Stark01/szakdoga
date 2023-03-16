@@ -1,4 +1,4 @@
-
+sourceCompatibility = 1.16
 tasks {
     test {
         workingDir = file("../assets")

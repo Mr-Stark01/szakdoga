@@ -15,7 +15,7 @@ public class GameServerHandler implements Callable<Integer> {
     private DTO dtoIn;
     private DTO dtoOut;
     private ExecutorService ex;
-    public GameServerHandler(Socket socket, ExecutorService ex) throws InterruptedException{
+    public GameServerHandler(Socket socket, ExecutorService ex) {
         this.clientSocket=socket;
         this.ex=ex;
         try {

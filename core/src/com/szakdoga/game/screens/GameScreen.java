@@ -16,7 +16,7 @@ import com.szakdoga.game.InputHandler;
 import com.szakdoga.game.Player;
 import com.szakdoga.game.TowerDefence;
 import com.szakdoga.game.network.DTO.Client;
-import com.szakdoga.game.pathFinder.PathFinder;
+import com.szakdoga.game.network.DTO.UnitDTO;import com.szakdoga.game.pathFinder.PathFinder;
 import com.szakdoga.game.ui.Hud;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -75,7 +75,6 @@ public class GameScreen extends ScreenAdapter {
         multiplexer.addProcessor(inputHandler);
         Gdx.input.setInputProcessor(multiplexer);
         batch.setProjectionMatrix(camera.combined);
-
     }
     @Override
     public void render(float delta){
