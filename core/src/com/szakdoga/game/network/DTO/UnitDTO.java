@@ -2,7 +2,7 @@ package com.szakdoga.game.network.DTO;
 
 import com.szakdoga.game.units.Unit;
 
-public record UnitDTO(
+/*public record UnitDTO(
     float speed,
     float health,
     float damage,
@@ -27,4 +27,4 @@ public record UnitDTO(
               unit.getDeltaY(),
               unit.getDistance());
   }
-}
+}*/
