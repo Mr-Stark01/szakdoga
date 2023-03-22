@@ -5,18 +5,19 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.Date;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 
-public class GameServerHandler implements Callable<Integer> {
+public class GameServerHandler implements Runnable{
     private static ObjectOutputStream objectOutputStream = null;
     private static ObjectInputStream objectInputStream = null;
     private final Socket clientSocket;
     private DTO dtoIn;
     private DTO dtoOut;
     private ExecutorService ex;
-    public GameServerHandler(Socket socket, ExecutorService ex) {
-        this.clientSocket=socket;
+    public GameServerHandler(String ip,int port, ExecutorService ex) throws IOException {
+        this.clientSocket=new Socket(ip,port);
         this.ex=ex;
         try {
             objectInputStream = new ObjectInputStream(clientSocket.getInputStream());
@@ -26,17 +27,28 @@ public class GameServerHandler implements Callable<Integer> {
         }
     }
     @Override
-    public Integer call() throws Exception {
+    public void run() {
         while(true){
-            receiveData();
-            sendData();
+            try {
+                receiveData();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+            try {
+                sendData();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
     public void receiveData() throws IOException, ClassNotFoundException {
-        this.dtoIn = (DTO) objectInputStream.readObject(); // csinálni egy küllön jar file hogy ne legyen duplikálva szerver kliens oldalt
+       Date date = (Date) objectInputStream.readObject(); // csinálni egy küllön jar file hogy ne legyen duplikálva szerver kliens oldalt
+        System.out.println("Received data:\t"+date.getTime());
     }
     public void sendData() throws IOException{
-        objectOutputStream.writeObject(dtoOut);
+        objectOutputStream.writeObject(new Date());
         objectOutputStream.flush();
     }
     public DTO getDtoIn() {

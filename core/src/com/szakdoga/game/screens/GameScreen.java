@@ -16,11 +16,14 @@ import com.szakdoga.game.InputHandler;
 import com.szakdoga.game.Player;
 import com.szakdoga.game.TowerDefence;
 import com.szakdoga.game.network.DTO.Client;
+
+import java.io.IOException;
 import java.time.Instant;
 import com.szakdoga.game.pathFinder.PathFinder;
 import com.szakdoga.game.ui.Hud;
 
 import java.security.Timestamp;
+import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -47,7 +50,7 @@ public class GameScreen extends ScreenAdapter {
         this.game = game;
         this.batch = new SpriteBatch();
         inputHandler = new InputHandler();
-        client = new Client("123.123.123.123",123,executor);
+        client = new Client("0.0.0.0",56227,executor);
         //Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
     }
     @Override
@@ -59,6 +62,7 @@ public class GameScreen extends ScreenAdapter {
         tileyLayer = (TiledMapTileLayer) map.getLayers().get(0);
         scale = (float) tileyLayer.getTileWidth();
         renderer = new OrthogonalTiledMapRenderer(map, 1 / scale);
+        executor.submit(new Client("0.0.0.0",56227,executor));
 
         //Instant.now();
 
