@@ -1,4 +1,4 @@
-package com.szakdoga.game.network.DTO;
+package com.szakdoga.game.network;
 
 import com.szakdoga.game.network.FileServerHandler;
 import com.szakdoga.game.network.GameServerHandler;
@@ -15,14 +15,17 @@ public class Client implements Runnable{
     public Client(String ip, int port, ExecutorService ex) {
         this.ip = ip;
         this.port = port;
-        this.ex= Executors.newScheduledThreadPool(10);
     }
     public void run() {
-        try {
-            ex.scheduleAtFixedRate(new GameServerHandler(ip,port,ex),0,100, TimeUnit.MILLISECONDS);
+        /*try {
+
+            while (true){
+                //gameServerHandler.setDtoOut();
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
-        }
+        }*/
+
     }
 
 }

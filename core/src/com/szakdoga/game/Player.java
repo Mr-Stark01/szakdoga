@@ -6,10 +6,14 @@ import com.szakdoga.game.pathFinder.PathFinder;
 import com.szakdoga.game.towers.Tower;
 import com.szakdoga.game.units.Unit;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Player {
-    private ArrayList<Tower> towers = new ArrayList<>();
-    private ArrayList<Unit> units= new ArrayList<>();
+    private List<Tower> towers = Collections.synchronizedList(new ArrayList<Tower>());
+    private List<Unit> units= Collections.synchronizedList(new ArrayList<Unit>());
     private int money=10000;
     private int positionX=10,positionY=10;
     private float health;
@@ -19,7 +23,7 @@ public class Player {
         this.pathFinder=pathfinder;
 
     }
-    public boolean addTower(float x,float y){
+    public synchronized boolean addTower(float x,float y){
         if(money-towerInDraggingState.getPrice()>0){
             money-= towerInDraggingState.getPrice();
             x=(float)Math.floor(x);
@@ -39,30 +43,40 @@ public class Player {
     }
     public void render(SpriteBatch batch){
         for(Tower tower:towers){
-            tower.render(batch,units);
+            tower.render(batch, units);
         }
         for(Unit unit:units){
-            if(Math.sqrt((Math.pow(unit.getX()-unit.getNextX(),2))+(Math.pow(unit.getY()-unit.getNextY(),2))) < 0.1f){ //TODO ha túll gyors vagy lassan fút a játék átugorhat pontot
-                pathFinder.checkNextStep(unit);
-                unit.calculateAngle();
-            }
-            else{
-                if(Math.sqrt((Math.pow(unit.getX()-unit.getNextX(),2))+(Math.pow(unit.getY()-unit.getNextY(),2))) > 1.51f){
-                    unit.setX(unit.getNextX());
-                    unit.setY(unit.getNextY());
-                }
-                else{
-                    unit.setX(unit.getX()+(unit.getSpeed() * unit.getDeltaX() * Gdx.graphics.getDeltaTime()));
-                    unit.setY(unit.getY()+(unit.getSpeed() * unit.getDeltaY() * Gdx.graphics.getDeltaTime()));
-                }
-            }
             unit.render(batch);
         }
     }
 
-    public void buyUnit(Unit unit) {
+    public synchronized void buyUnit(Unit unit) {
             units.add(unit);
-            pathFinder.checkNextStep(unit);
+            //pathFinder.checkNextStep(unit);
             unit.calculateAngle();
+    }
+
+    public List<Tower> getTowers() {
+        return  towers;
+    }
+
+    public List<Unit> getUnits() {
+        return  units;
+    }
+
+    public int getMoney() {
+        return money;
+    }
+
+    public int getPositionX() {
+        return positionX;
+    }
+
+    public int getPositionY() {
+        return positionY;
+    }
+
+    public float getHealth() {
+        return health;
     }
 }

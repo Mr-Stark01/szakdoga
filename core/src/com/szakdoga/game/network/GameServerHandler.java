@@ -1,13 +1,14 @@
 package com.szakdoga.game.network;
 
-import com.szakdoga.game.network.DTO.DTO;
+import com.szakdoga.game.Player;
+import com.szakdoga.game.network.DTO.Preparator;
+import org.datatransferobject.DTO;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.Date;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
+
 
 public class GameServerHandler implements Runnable{
     private static ObjectOutputStream objectOutputStream = null;
@@ -15,10 +16,10 @@ public class GameServerHandler implements Runnable{
     private final Socket clientSocket;
     private DTO dtoIn;
     private DTO dtoOut;
-    private ExecutorService ex;
-    public GameServerHandler(String ip,int port, ExecutorService ex) throws IOException {
+    private Player player;
+    public GameServerHandler(String ip, int port, Player player) throws IOException {
         this.clientSocket=new Socket(ip,port);
-        this.ex=ex;
+        this.player=player;
         try {
             objectInputStream = new ObjectInputStream(clientSocket.getInputStream());
             objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
@@ -28,27 +29,28 @@ public class GameServerHandler implements Runnable{
     }
     @Override
     public void run() {
-        while(true){
-            try {
-                receiveData();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException(e);
-            }
+        refreshDtoOut();//TODO alapból kapjon csak egy checket és csak azzután néze meg ehmaybe
             try {
                 sendData();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        }
+            try {
+                receiveData();
+            } catch (IOException | ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
     }
-    public void receiveData() throws IOException, ClassNotFoundException {
-       Date date = (Date) objectInputStream.readObject(); // csinálni egy küllön jar file hogy ne legyen duplikálva szerver kliens oldalt
-        System.out.println("Received data:\t"+date.getTime());
+
+    protected void refreshDtoOut(){
+        dtoOut=new DTO(Preparator.createUnitDTOListFromUnitList(player.getUnits()),Preparator.createTowerDTOListFromTowertList(player.getTowers()),Preparator.createPlayerDTOFromPlayer(player));
     }
-    public void sendData() throws IOException{
-        objectOutputStream.writeObject(new Date());
+    protected void receiveData() throws IOException, ClassNotFoundException {
+        dtoIn = (DTO) objectInputStream.readObject();
+        dtoIn = (DTO) objectInputStream.readObject();
+    }
+    protected void sendData() throws IOException{
+        objectOutputStream.writeObject(dtoOut);
         objectOutputStream.flush();
     }
     public DTO getDtoIn() {
@@ -63,8 +65,5 @@ public class GameServerHandler implements Runnable{
         return dtoOut;
     }
 
-    public void setDtoOut(DTO dtoOut) {
-        this.dtoOut = dtoOut;
-    }
 }
 

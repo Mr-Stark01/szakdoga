@@ -1,8 +1,10 @@
 package com.szakdoga.game.units;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.szakdoga.game.pathFinder.PathFinder;
 
 public abstract class Unit extends Sprite {
   protected float speed;
@@ -11,7 +13,6 @@ public abstract class Unit extends Sprite {
   protected int price;
   protected int PreviousX;
   protected int PreviousY;
-
   protected int NextX;
   protected int NextY;
   private float deltaX;
@@ -46,9 +47,14 @@ public abstract class Unit extends Sprite {
     deltaX = MathUtils.cos(angle);
     deltaY = MathUtils.sin(angle);
   }
+  public void step(){
+    setX(getX()+(getSpeed() * getDeltaX() * Gdx.graphics.getDeltaTime()));
+    setY(getY()+(getSpeed() * getDeltaY() * Gdx.graphics.getDeltaTime()));
+  }
 
   public void render(SpriteBatch batch) {
     // System.out.println(getX()+"\t"+getY());
+    step();
     super.draw(batch);
   }
 

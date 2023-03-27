@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.szakdoga.game.units.Unit;
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Tower extends Sprite { //TODO teszt osztály
     //TODO factory method és construcktorba csinálni egy new texturet
@@ -30,11 +31,7 @@ public abstract class Tower extends Sprite { //TODO teszt osztály
         return new ArcherTower(spawnX, spawnY);
     }
 
-    public int getPrice(){
-        System.out.println("asd");
-        return price;
-    }
-    public void findTarget(ArrayList<Unit> units){
+    public void findTarget(List<Unit> units){
         if(target != null){
             return;
         }
@@ -49,7 +46,7 @@ public abstract class Tower extends Sprite { //TODO teszt osztály
         }
     }
 
-    public void checkIfEnemyStillInRangeAndAllive(ArrayList<Unit> units){//What a beauty
+    public void checkIfEnemyStillInRangeAndAllive(List<Unit> units){//What a beauty
         if(target==null){
             findTarget(units);
         }
@@ -64,21 +61,45 @@ public abstract class Tower extends Sprite { //TODO teszt osztály
                 findTarget(units);
             }
     }
-    public void attack(ArrayList<Unit> units){
+    public void attack(List<Unit> units){
         deltaSum += Gdx.graphics.getDeltaTime(); //TODO deltaTime might not be the best course here java time might work
         if(deltaSum > attackTime){
             checkIfEnemyStillInRangeAndAllive(units);
             if(target!=null){
-            target.attacked(damage);
+            target.attacked(damage);// TODO
             }
             deltaSum = 0;
         }
     }
-    public void render(SpriteBatch batch,ArrayList<Unit> units){
+    public void render(SpriteBatch batch, List<Unit> units){
         if(units.size()>0){
             attack(units);
         }
         super.draw(batch);
+    }
+
+    public int getPrice(){
+        return price;
+    }
+
+    public float getDamage() {
+        return damage;
+    }
+
+    public int getRange() {
+        return range;
+    }
+
+    public Unit getTarget() {
+        return target;
+    }
+
+    public float getDeltaSum() {
+        return deltaSum;
+    }
+
+    public float getAttackTime() {
+        return attackTime;
     }
     //TODO factory method ami csinál egy archerTower instancet
     //TODO teszttower ami
