@@ -4,7 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.szakdoga.game.CompareReturn;
 import com.szakdoga.game.pathFinder.PathFinder;
+import org.datatransferobject.UnitDTO;
+
+import java.util.Objects;
 
 public abstract class Unit extends Sprite {
   protected float speed;
@@ -34,6 +38,14 @@ public abstract class Unit extends Sprite {
     return new PikeUnit(X, Y);
   }
 
+  public static Unit createUnitFromDTO(UnitDTO unitDTO) {
+    switch (unitDTO.getUnitClass()){
+      case "Pike":
+        return createPikeUnit(unitDTO.getX(),unitDTO.getY());
+    }
+    return null;
+  }
+
   public void attacked(float damage) {
     health -= damage;
   }
@@ -56,6 +68,47 @@ public abstract class Unit extends Sprite {
     // System.out.println(getX()+"\t"+getY());
     step();
     super.draw(batch);
+  }
+
+  public CompareReturn compareToDTO(UnitDTO unitDTO){
+    if(unitDTO.getId()==this.getId()){
+      if(equalsToDTO(unitDTO)){
+        return CompareReturn.SameIdSameValue;
+      }
+      else{
+        return CompareReturn.SameIdDifferentValue;
+      }
+    }
+    return CompareReturn.DifferentId;
+  }
+
+  public void setValuesFromDTO(UnitDTO unitDTO) {
+    speed = unitDTO.getSpeed();
+    health = unitDTO.getHealth();
+    damage = unitDTO.getDamage();
+    price = unitDTO.getPrice();
+    PreviousX = unitDTO.getPreviousX();
+    PreviousY = unitDTO.getPreviousY();
+    NextX = unitDTO.getNextX();
+    NextY = unitDTO.getNextY();
+    deltaX = unitDTO.getDeltaX();
+    deltaY = unitDTO.getDeltaY();
+  }
+
+  public boolean equalsToDTO(UnitDTO unit){
+    return Float.compare(unit.getSpeed(), getSpeed()) == 0 && Float.compare(unit.getHealth(), getHealth()) == 0 && Float.compare(unit.getDamage(), getDamage()) == 0 && getPrice() == unit.getPrice() && getPreviousX() == unit.getPreviousX() && getPreviousY() == unit.getPreviousY() && getNextX() == unit.getNextX() && getNextY() == unit.getNextY() && Float.compare(unit.getDeltaX(), getDeltaX()) == 0 && Float.compare(unit.getDeltaY(), getDeltaY()) == 0 && Float.compare(unit.getDistance(), getDistance()) == 0;
+  }
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Unit unit = (Unit) o;
+    return Float.compare(unit.getSpeed(), getSpeed()) == 0 && Float.compare(unit.getHealth(), getHealth()) == 0 && Float.compare(unit.getDamage(), getDamage()) == 0 && getPrice() == unit.getPrice() && getPreviousX() == unit.getPreviousX() && getPreviousY() == unit.getPreviousY() && getNextX() == unit.getNextX() && getNextY() == unit.getNextY() && Float.compare(unit.getDeltaX(), getDeltaX()) == 0 && Float.compare(unit.getDeltaY(), getDeltaY()) == 0 && Float.compare(unit.getDistance(), getDistance()) == 0;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(getSpeed(), getHealth(), getDamage(), getPrice(), getPreviousX(), getPreviousY(), getNextX(), getNextY(), getDeltaX(), getDeltaY(), getDistance());
   }
 
   public int getPreviousX() {
@@ -117,4 +170,6 @@ public abstract class Unit extends Sprite {
   public int getPrice() {
     return price;
   }
+
+
 }

@@ -2,14 +2,19 @@ package com.szakdoga.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.sun.source.tree.CaseTree;
+import com.szakdoga.game.network.GameServerHandler;
 import com.szakdoga.game.pathFinder.PathFinder;
 import com.szakdoga.game.towers.Tower;
 import com.szakdoga.game.units.Unit;
+import org.datatransferobject.DTO;
+import org.datatransferobject.PlayerDTO;
+import org.datatransferobject.UnitDTO;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Player {
     private List<Tower> towers = Collections.synchronizedList(new ArrayList<Tower>());
@@ -19,6 +24,7 @@ public class Player {
     private float health;
     private Tower towerInDraggingState;
     private PathFinder pathFinder;
+    private boolean newData=false;
     public Player(PathFinder pathfinder){
         this.pathFinder=pathfinder;
 
@@ -48,6 +54,29 @@ public class Player {
         for(Unit unit:units){
             unit.render(batch);
         }
+
+    }
+
+    public void exchangeData(DTO dto){
+        if(newData){
+            PlayerDTO playerDTO =dto.getPlayerDTO();
+            money = playerDTO.getMoney();
+            health = playerDTO.getHealth();
+            for(int i = 0; i<dto.getUnitDTOs().size(); i++){
+                CompareReturn compareReturn=units.get(i).compareToDTO(dto.getUnitDTOs().get(i));
+                switch (compareReturn){
+                    case SameIdSameValue:
+                        break;
+                    case SameIdDifferentValue:
+                        units.get(i).setValuesFromDTO(dto.getUnitDTOs().get(i));
+                        break;
+                    case DifferentId:
+                        units.add(Unit.createUnitFromDTO(dto.getUnitDTOs().get(i)));
+                        break;
+                }
+            }
+        }
+        return;
     }
 
     public synchronized void buyUnit(Unit unit) {
@@ -78,5 +107,8 @@ public class Player {
 
     public float getHealth() {
         return health;
+    }
+
+    public void newDataReceived() {
     }
 }
