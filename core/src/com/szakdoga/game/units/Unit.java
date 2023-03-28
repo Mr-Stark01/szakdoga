@@ -22,8 +22,10 @@ public abstract class Unit extends Sprite {
   private float deltaX;
   private float deltaY;
   private float distance = 0.1f;
+  private int id=0;
+  private String unitClass;
 
-  public Unit(float speed, float health, float damage, int price, float X, float Y) {
+  public Unit(float speed, float health, float damage, int price, float X, float Y,String unitClass) {
     this.speed = speed;
     this.health = health;
     this.damage = damage;
@@ -32,6 +34,7 @@ public abstract class Unit extends Sprite {
     this.PreviousY = (int) Y;
     setX(X); // TODO WHY does this not work?
     setY(Y);
+    this.unitClass=unitClass;
   }
 
   public static PikeUnit createPikeUnit(float X, float Y) {

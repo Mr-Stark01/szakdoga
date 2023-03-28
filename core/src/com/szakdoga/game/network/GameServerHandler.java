@@ -12,6 +12,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 
 public class GameServerHandler implements Runnable{
@@ -22,6 +23,7 @@ public class GameServerHandler implements Runnable{
     private DTO dtoIn;
     private DTO dtoOut;
     private Player player;
+    private int id = 0; // Ez nem egy jó megoldás
 
     public GameServerHandler(String ip, int port, Player player) throws IOException {
         this.clientSocket=new Socket(ip,port);
@@ -49,7 +51,7 @@ public class GameServerHandler implements Runnable{
     }
 
     protected void refreshDtoOut(){
-        dtoOut=new DTO(Preparator.createUnitDTOListFromUnitList(player.getUnits()),Preparator.createTowerDTOListFromTowertList(player.getTowers()),Preparator.createPlayerDTOFromPlayer(player));
+        dtoOut=new DTO(Preparator.createUnitDTOListFromUnitList(player.getUnits()),Preparator.createTowerDTOListFromTowertList(player.getTowers()),Preparator.createPlayerDTOFromPlayer(player),id);
     }
     protected void receiveData() throws IOException, ClassNotFoundException {
         DTOList.clear();
