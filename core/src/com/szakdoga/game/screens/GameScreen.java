@@ -46,7 +46,6 @@ public class GameScreen extends ScreenAdapter {
     private InputHandler inputHandler;
     private Hud hud;
     private InputMultiplexer multiplexer;
-    private Thread t;
     public GameScreen(TowerDefence game){
         this.game = game;
         this.batch = new SpriteBatch();
@@ -66,7 +65,7 @@ public class GameScreen extends ScreenAdapter {
         //executor.submit(new Client(,,executor));
         GameServerHandler gameServerHandler;
         try {
-            gameServerHandler = new GameServerHandler("0.0.0.0",56227,player);
+            gameServerHandler = new GameServerHandler("0.0.0.0",56227);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -104,6 +103,7 @@ public class GameScreen extends ScreenAdapter {
         batch.begin();
         inputHandler.render(batch);
         player.render(batch);
+        enemyPlayer.render(batch);
         batch.end();
         hud.render();
     }

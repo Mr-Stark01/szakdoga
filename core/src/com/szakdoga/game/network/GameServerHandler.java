@@ -2,6 +2,7 @@ package com.szakdoga.game.network;
 
 import com.szakdoga.game.Player;
 import com.szakdoga.game.network.DTO.Preparator;
+import com.szakdoga.game.screens.GameScreen;
 import com.szakdoga.game.towers.Tower;
 import org.datatransferobject.DTO;
 
@@ -14,6 +15,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import static com.szakdoga.game.screens.GameScreen.enemyPlayer;
+
 
 public class GameServerHandler implements Runnable{
     private static ObjectOutputStream objectOutputStream = null;
@@ -25,9 +28,9 @@ public class GameServerHandler implements Runnable{
     private Player player;
     private int id = 0; // Ez nem egy jó megoldás
 
-    public GameServerHandler(String ip, int port, Player player) throws IOException {
+    public GameServerHandler(String ip, int port) throws IOException {
         this.clientSocket=new Socket(ip,port);
-        this.player=player;
+        this.player= GameScreen.player;
         try {
             objectInputStream = new ObjectInputStream(clientSocket.getInputStream());
             objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
@@ -51,14 +54,16 @@ public class GameServerHandler implements Runnable{
     }
 
     protected void refreshDtoOut(){
-        dtoOut=new DTO(Preparator.createUnitDTOListFromUnitList(player.getUnits()),Preparator.createTowerDTOListFromTowertList(player.getTowers()),Preparator.createPlayerDTOFromPlayer(player),id);
+        dtoOut=new DTO(Preparator.createUnitDTOListFromUnitList(player.getUnits()),
+                Preparator.createTowerDTOListFromTowertList(player.getTowers()),
+                Preparator.createPlayerDTOFromPlayer(player),id);
     }
     protected void receiveData() throws IOException, ClassNotFoundException {
         DTOList.clear();
         DTOList.add((DTO) objectInputStream.readObject());
         DTOList.add((DTO) objectInputStream.readObject());
         player.exchangeData(DTOList.get(0));
-        //enemyPlayer.exchangeData(DTOList.get(1));
+        enemyPlayer.exchangeData(DTOList.get(1));
     }
     protected void sendData() throws IOException{
         objectOutputStream.writeObject(dtoOut);

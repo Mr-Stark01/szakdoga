@@ -72,9 +72,9 @@ public abstract class Tower extends Sprite { //TODO teszt osztály
         }
     }
     public void render(SpriteBatch batch, List<Unit> units){
-        if(units.size()>0){
-            attack(units);
-        }
+        /*if(units.size()>0){
+            attack(units);//TODO turned off attack
+        }*/
         super.draw(batch);
     }
 
