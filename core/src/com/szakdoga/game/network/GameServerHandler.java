@@ -13,7 +13,6 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 import static com.szakdoga.game.screens.GameScreen.enemyPlayer;
 
@@ -21,7 +20,7 @@ import static com.szakdoga.game.screens.GameScreen.enemyPlayer;
 public class GameServerHandler implements Runnable{
     private static ObjectOutputStream objectOutputStream = null;
     private static ObjectInputStream objectInputStream = null;
-    private List<DTO> DTOList= Collections.synchronizedList(new ArrayList<DTO>());
+    private List<DTO> DTOList= new ArrayList<DTO>();
     private final Socket clientSocket;
     private DTO dtoIn;
     private DTO dtoOut;
@@ -59,15 +58,21 @@ public class GameServerHandler implements Runnable{
                 Preparator.createPlayerDTOFromPlayer(player),id);
     }
     protected void receiveData() throws IOException, ClassNotFoundException {
+        System.out.println("received data begin");
         DTOList.clear();
         DTOList.add((DTO) objectInputStream.readObject());
+        System.out.println("received data object read");
         DTOList.add((DTO) objectInputStream.readObject());
         player.exchangeData(DTOList.get(0));
         enemyPlayer.exchangeData(DTOList.get(1));
+        System.out.println("received data end");
     }
     protected void sendData() throws IOException{
+        System.out.println("before");
         objectOutputStream.writeObject(dtoOut);
+        System.out.println("after");
         objectOutputStream.flush();
+        System.out.println("return");
     }
     public DTO getDtoIn() {
         return dtoIn;

@@ -22,8 +22,8 @@ public abstract class Unit extends Sprite {
   private float deltaX;
   private float deltaY;
   private float distance = 0.1f;
-  private int id=0;
   private String unitClass;
+  private int id=0;
 
   public Unit(float speed, float health, float damage, int price, float X, float Y,String unitClass) {
     this.speed = speed;
@@ -55,6 +55,14 @@ public abstract class Unit extends Sprite {
 
   public boolean isDead() {
     return health < 0;
+  }
+
+  public String getUnitClass() {
+    return unitClass;
+  }
+
+  public void setUnitClass(String unitClass) {
+    this.unitClass = unitClass;
   }
 
   public void calculateAngle() {
@@ -112,6 +120,10 @@ public abstract class Unit extends Sprite {
   @Override
   public int hashCode() {
     return Objects.hash(getSpeed(), getHealth(), getDamage(), getPrice(), getPreviousX(), getPreviousY(), getNextX(), getNextY(), getDeltaX(), getDeltaY(), getDistance());
+  }
+
+  public int getId() {
+    return id;
   }
 
   public int getPreviousX() {

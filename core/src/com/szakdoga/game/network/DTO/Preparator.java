@@ -12,6 +12,7 @@ import java.util.List;
 
 public class Preparator {
     public static UnitDTO createUnitDTOFromUnit(Unit unit){
+        System.out.println("preparator");
         return new UnitDTO(unit.getSpeed(),
                             unit.getHealth(),
                             unit.getDamage(),
@@ -25,7 +26,8 @@ public class Preparator {
                             unit.getDeltaX(),
                             unit.getDeltaY(),
                             unit.getDistance(),
-                            unit.getClass().getSimpleName());
+                            unit.getUnitClass(),
+                            unit.getId());
     }
     public static TowerDTO createTowerDTOfromTower(Tower tower){
         return new TowerDTO(tower.getDamage(),

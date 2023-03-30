@@ -51,6 +51,7 @@ public class GameScreen extends ScreenAdapter {
         this.batch = new SpriteBatch();
         inputHandler = new InputHandler();
         client = new Client("0.0.0.0",56227,executor);
+        System.out.println("asd");
         //Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
     }
     @Override
@@ -62,7 +63,11 @@ public class GameScreen extends ScreenAdapter {
         tileyLayer = (TiledMapTileLayer) map.getLayers().get(0);
         scale = (float) tileyLayer.getTileWidth();
         renderer = new OrthogonalTiledMapRenderer(map, 1 / scale);
-        //executor.submit(new Client(,,executor));
+
+        PathFinder pathfinder= new PathFinder(tileyLayer);
+        player = new Player(pathfinder);
+        enemyPlayer = new Player(pathfinder);
+
         GameServerHandler gameServerHandler;
         try {
             gameServerHandler = new GameServerHandler("0.0.0.0",56227);
@@ -74,9 +79,8 @@ public class GameScreen extends ScreenAdapter {
         //Instant.now();
 
         //Player and pathfinder
-        PathFinder pathfinder= new PathFinder(tileyLayer);
-        player = new Player(pathfinder);
-        enemyPlayer = new Player(pathfinder);
+
+
 
         camera = new OrthographicCamera();
         camera.viewportHeight = Gdx.graphics.getHeight() / scale;

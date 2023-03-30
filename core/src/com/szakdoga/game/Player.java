@@ -1,18 +1,13 @@
 package com.szakdoga.game;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.sun.source.tree.CaseTree;
-import com.szakdoga.game.network.GameServerHandler;
+
 import com.szakdoga.game.pathFinder.PathFinder;
 import com.szakdoga.game.towers.Tower;
 import com.szakdoga.game.units.Unit;
 import org.datatransferobject.DTO;
 import org.datatransferobject.PlayerDTO;
-import org.datatransferobject.UnitDTO;
-
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -27,6 +22,10 @@ public class Player {
     private boolean newData=false;
     public Player(PathFinder pathfinder){
         this.pathFinder=pathfinder;
+
+    }
+    public Player(){
+
 
     }
     public synchronized boolean addTower(float x,float y){
