@@ -31,11 +31,14 @@ public class GameServerHandler implements Runnable{
         this.clientSocket=new Socket(ip,port);
         this.player= GameScreen.player;
         try {
-            objectInputStream = new ObjectInputStream(clientSocket.getInputStream());
             objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
+            objectInputStream = new ObjectInputStream(clientSocket.getInputStream());
         }catch (IOException e){
             e.printStackTrace();
         }
+        System.out.println(this);
+        System.out.println(objectInputStream);
+        System.out.println(objectOutputStream);
     }
     @Override
     public void run() {
@@ -65,6 +68,7 @@ public class GameServerHandler implements Runnable{
             throw new RuntimeException(e);
         }
         System.out.println(objectInputStream.readObject());
+
         /*System.out.println("received data 1");
         DTOList.clear();
         DTOList.add((DTO) objectInputStream.readObject());
