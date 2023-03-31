@@ -59,6 +59,11 @@ public class GameServerHandler implements Runnable{
     }
     protected void receiveData() throws IOException, ClassNotFoundException {
         System.out.println(objectInputStream.readObject());
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         System.out.println(objectInputStream.readObject());
         /*System.out.println("received data 1");
         DTOList.clear();
@@ -69,7 +74,7 @@ public class GameServerHandler implements Runnable{
         enemyPlayer.exchangeData(DTOList.get(1));
         System.out.println("received data 3");*/
     }
-    protected void sendData() throws IOException{
+        protected void sendData() throws IOException{
         System.out.println("send data 1");
         //if(dtoOut.getUnitDTOs().size()>0) {
         //    System.out.println(dtoOut.getUnitDTOs().get(0).getX());
