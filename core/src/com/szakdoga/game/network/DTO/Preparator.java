@@ -12,7 +12,6 @@ import java.util.List;
 
 public class Preparator {
     public static UnitDTO createUnitDTOFromUnit(Unit unit){
-        System.out.println("preparator");
         return new UnitDTO(unit.getSpeed(),
                             unit.getHealth(),
                             unit.getDamage(),
@@ -21,11 +20,11 @@ public class Preparator {
                             unit.getPreviousY(),
                             unit.getNextX(),
                             unit.getNextY(),
-                            unit.getX(),
-                            unit.getY(),
                             unit.getDeltaX(),
                             unit.getDeltaY(),
                             unit.getDistance(),
+                            unit.getX(),
+                            unit.getY(),
                             unit.getUnitClass(),
                             unit.getId());
     }
@@ -48,6 +47,9 @@ public class Preparator {
             for (Unit unit : units) {
                 unitDTOs.add(Preparator.createUnitDTOFromUnit(unit));
             }
+        }
+        if(unitDTOs.size()>0) {
+            System.out.println("inside list create:" + unitDTOs.get(0).getX());
         }
         return unitDTOs;
     }

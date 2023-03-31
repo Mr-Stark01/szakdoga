@@ -30,6 +30,8 @@ public abstract class Unit extends Sprite {
     this.health = health;
     this.damage = damage;
     this.price = price;
+    this.NextX = (int) X;
+    this.NextY = (int) Y;
     this.PreviousX = (int) X;
     this.PreviousY = (int) Y;
     setX(X); // TODO WHY does this not work?

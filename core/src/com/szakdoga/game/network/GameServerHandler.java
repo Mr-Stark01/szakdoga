@@ -43,12 +43,12 @@ public class GameServerHandler implements Runnable{
             try {
                 sendData();
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                e.printStackTrace();
             }
             try {
                 receiveData();
             } catch (IOException | ClassNotFoundException e) {
-                throw new RuntimeException(e);
+                e.printStackTrace();
             }
     }
 
@@ -58,21 +58,26 @@ public class GameServerHandler implements Runnable{
                 Preparator.createPlayerDTOFromPlayer(player),id);
     }
     protected void receiveData() throws IOException, ClassNotFoundException {
-        System.out.println("received data begin");
+        System.out.println(objectInputStream.readObject());
+        System.out.println(objectInputStream.readObject());
+        /*System.out.println("received data 1");
         DTOList.clear();
         DTOList.add((DTO) objectInputStream.readObject());
-        System.out.println("received data object read");
+        System.out.println("received data 2");
         DTOList.add((DTO) objectInputStream.readObject());
         player.exchangeData(DTOList.get(0));
         enemyPlayer.exchangeData(DTOList.get(1));
-        System.out.println("received data end");
+        System.out.println("received data 3");*/
     }
     protected void sendData() throws IOException{
-        System.out.println("before");
-        objectOutputStream.writeObject(dtoOut);
-        System.out.println("after");
+        System.out.println("send data 1");
+        //if(dtoOut.getUnitDTOs().size()>0) {
+        //    System.out.println(dtoOut.getUnitDTOs().get(0).getX());
+        //}
+        objectOutputStream.writeObject("client");
+        System.out.println("send data 2");
         objectOutputStream.flush();
-        System.out.println("return");
+        System.out.println("send data 3");
     }
     public DTO getDtoIn() {
         return dtoIn;
