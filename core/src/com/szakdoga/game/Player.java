@@ -19,7 +19,6 @@ public class Player {
     private float health;
     private Tower towerInDraggingState;
     private PathFinder pathFinder;
-    private boolean newData=false;
     public Player(PathFinder pathfinder){
         this.pathFinder=pathfinder;
 
@@ -57,7 +56,6 @@ public class Player {
     }
 
     public void exchangeData(DTO dto){
-        if(newData){
             PlayerDTO playerDTO =dto.getPlayerDTO();
             money = playerDTO.getMoney();
             health = playerDTO.getHealth();
@@ -74,8 +72,6 @@ public class Player {
                         break;
                 }
             }
-        }
-        return;
     }
 
     public synchronized void buyUnit(Unit unit) {
@@ -106,6 +102,4 @@ public class Player {
         return health;
     }
 
-    public void newDataReceived() {
-    }
 }
