@@ -12,21 +12,22 @@ import java.util.List;
 
 public class Preparator {
     public static UnitDTO createUnitDTOFromUnit(Unit unit){
-        return new UnitDTO(unit.getSpeed(),
-                            unit.getHealth(),
-                            unit.getDamage(),
-                            unit.getPrice(),
-                            unit.getPreviousX(),
-                            unit.getPreviousY(),
-                            unit.getNextX(),
-                            unit.getNextY(),
-                            unit.getDeltaX(),
-                            unit.getDeltaY(),
-                            unit.getDistance(),
-                            unit.getX(),
-                            unit.getY(),
-                            unit.getUnitClass(),
-                            unit.getId());
+        return new UnitDTO(
+                unit.getSpeed(),
+                unit.getHealth(),
+                unit.getDamage(),
+                unit.getPrice(),
+                unit.getPreviousX(),
+                unit.getPreviousY(),
+                unit.getDeltaX(),
+                unit.getDeltaY(),
+                unit.getDistance(),
+                unit.getX(),
+                unit.getY(),
+                unit.getUnitClass(),
+                unit.getId(),
+                unit.getNextX(),
+                unit.getNextY());
     }
     public static TowerDTO createTowerDTOfromTower(Tower tower){
         return new TowerDTO(tower.getDamage(),

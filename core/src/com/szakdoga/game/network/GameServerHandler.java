@@ -18,8 +18,8 @@ import static com.szakdoga.game.screens.GameScreen.enemyPlayer;
 
 
 public class GameServerHandler implements Runnable{
-    private static ObjectOutputStream objectOutputStream = null;
-    private static ObjectInputStream objectInputStream = null;
+    private static ObjectOutputStream objectOutputStream ;
+    private static ObjectInputStream objectInputStream ;
     private List<DTO> DTOList= new ArrayList<DTO>();
     private final Socket clientSocket;
     private DTO dtoIn;
@@ -36,9 +36,6 @@ public class GameServerHandler implements Runnable{
         }catch (IOException e){
             e.printStackTrace();
         }
-        System.out.println(this);
-        System.out.println(objectInputStream);
-        System.out.println(objectOutputStream);
     }
     @Override
     public void run() {
@@ -61,32 +58,18 @@ public class GameServerHandler implements Runnable{
                 Preparator.createPlayerDTOFromPlayer(player),id);
     }
     protected void receiveData() throws IOException, ClassNotFoundException {
-        System.out.println(objectInputStream.readObject());
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        System.out.println(objectInputStream.readObject());
-
-        /*System.out.println("received data 1");
         DTOList.clear();
         DTOList.add((DTO) objectInputStream.readObject());
-        System.out.println("received data 2");
         DTOList.add((DTO) objectInputStream.readObject());
         player.exchangeData(DTOList.get(0));
         enemyPlayer.exchangeData(DTOList.get(1));
-        System.out.println("received data 3");*/
     }
         protected void sendData() throws IOException{
-        System.out.println("send data 1");
-        //if(dtoOut.getUnitDTOs().size()>0) {
-        //    System.out.println(dtoOut.getUnitDTOs().get(0).getX());
-        //}
-        objectOutputStream.writeObject("client");
-        System.out.println("send data 2");
+        if(dtoOut.getUnitDTOs().size()>0) {
+            System.out.println(dtoOut.getUnitDTOs().get(0).getX());
+        }
+        objectOutputStream.writeObject(dtoOut);
         objectOutputStream.flush();
-        System.out.println("send data 3");
     }
     public DTO getDtoIn() {
         return dtoIn;

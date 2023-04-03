@@ -80,8 +80,6 @@ public class Player {
 
     public synchronized void buyUnit(Unit unit) {
             units.add(unit);
-            //pathFinder.checkNextStep(unit);
-            unit.calculateAngle();
     }
 
     public List<Tower> getTowers() {

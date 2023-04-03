@@ -50,7 +50,6 @@ public class GameScreen extends ScreenAdapter {
         this.game = game;
         this.batch = new SpriteBatch();
         inputHandler = new InputHandler();
-        client = new Client("0.0.0.0",56227,executor);
         System.out.println("asd");
         //Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
     }
@@ -74,7 +73,7 @@ public class GameScreen extends ScreenAdapter {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        schedueldExecutor.scheduleAtFixedRate(gameServerHandler,0,10, TimeUnit.MILLISECONDS);//TODO probálgatni
+        schedueldExecutor.scheduleAtFixedRate(gameServerHandler,0,50, TimeUnit.MILLISECONDS);//TODO probálgatni
 
         //Instant.now();
 

@@ -8,6 +8,7 @@ import com.szakdoga.game.CompareReturn;
 import com.szakdoga.game.pathFinder.PathFinder;
 import org.datatransferobject.UnitDTO;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public abstract class Unit extends Sprite {
@@ -17,26 +18,27 @@ public abstract class Unit extends Sprite {
   protected int price;
   protected int PreviousX;
   protected int PreviousY;
-  protected int NextX;
-  protected int NextY;
   private float deltaX;
   private float deltaY;
   private float distance = 0.1f;
   private String unitClass;
   private int id=0;
+  private long lastStep;
+  private ArrayList<Integer> nextXCoordinates;
+  private ArrayList<Integer> nextYCoordinates;
 
   public Unit(float speed, float health, float damage, int price, float X, float Y,String unitClass) {
     this.speed = speed;
     this.health = health;
     this.damage = damage;
     this.price = price;
-    this.NextX = (int) X;
-    this.NextY = (int) Y;
     this.PreviousX = (int) X;
     this.PreviousY = (int) Y;
     setX(X); // TODO WHY does this not work?
     setY(Y);
     this.unitClass=unitClass;
+    nextXCoordinates = new ArrayList<>();
+    nextYCoordinates = new ArrayList<>();
   }
 
   public static PikeUnit createPikeUnit(float X, float Y) {
@@ -68,19 +70,22 @@ public abstract class Unit extends Sprite {
   }
 
   public void calculateAngle() {
-    float angle = MathUtils.atan2(NextY - getY(), NextX - getX());
+    float angle = MathUtils.atan2(nextYCoordinates.get(0) - getY(), nextXCoordinates.get(0) - getX());
     deltaX = MathUtils.cos(angle);
     deltaY = MathUtils.sin(angle);
   }
   public void step(){
+    calculateAngle();
     setX(getX()+(getSpeed() * getDeltaX() * Gdx.graphics.getDeltaTime()));
     setY(getY()+(getSpeed() * getDeltaY() * Gdx.graphics.getDeltaTime()));
   }
 
   public void render(SpriteBatch batch) {
     // System.out.println(getX()+"\t"+getY());
-    step();
-    super.draw(batch);
+    if(id!=0) {
+      step();
+      super.draw(batch);
+    }
   }
 
   public CompareReturn compareToDTO(UnitDTO unitDTO){
@@ -102,10 +107,11 @@ public abstract class Unit extends Sprite {
     price = unitDTO.getPrice();
     PreviousX = unitDTO.getPreviousX();
     PreviousY = unitDTO.getPreviousY();
-    NextX = unitDTO.getNextX();
-    NextY = unitDTO.getNextY();
+    nextXCoordinates = unitDTO.getNextX();
+    nextYCoordinates = unitDTO.getNextY();
     deltaX = unitDTO.getDeltaX();
     deltaY = unitDTO.getDeltaY();
+    lastStep = unitDTO.getLastStep();
   }
 
   public boolean equalsToDTO(UnitDTO unit){
@@ -117,6 +123,30 @@ public abstract class Unit extends Sprite {
     if (o == null || getClass() != o.getClass()) return false;
     Unit unit = (Unit) o;
     return Float.compare(unit.getSpeed(), getSpeed()) == 0 && Float.compare(unit.getHealth(), getHealth()) == 0 && Float.compare(unit.getDamage(), getDamage()) == 0 && getPrice() == unit.getPrice() && getPreviousX() == unit.getPreviousX() && getPreviousY() == unit.getPreviousY() && getNextX() == unit.getNextX() && getNextY() == unit.getNextY() && Float.compare(unit.getDeltaX(), getDeltaX()) == 0 && Float.compare(unit.getDeltaY(), getDeltaY()) == 0 && Float.compare(unit.getDistance(), getDistance()) == 0;
+  }
+
+  public void setDeltaX(float deltaX) {
+    this.deltaX = deltaX;
+  }
+
+  public void setDeltaY(float deltaY) {
+    this.deltaY = deltaY;
+  }
+
+  public ArrayList<Integer> getNextX() {
+    return nextXCoordinates;
+  }
+
+  public void setNextXCoordinates(ArrayList<Integer> nextXCoordinates) {
+    this.nextXCoordinates = nextXCoordinates;
+  }
+
+  public ArrayList<Integer> getNextY() {
+    return nextYCoordinates;
+  }
+
+  public void setNextYCoordinates(ArrayList<Integer> nextYCoordinates) {
+    this.nextYCoordinates = nextYCoordinates;
   }
 
   @Override
@@ -142,22 +172,6 @@ public abstract class Unit extends Sprite {
 
   public void setPreviousY(int previousY) {
     PreviousY = previousY;
-  }
-
-  public int getNextX() {
-    return NextX;
-  }
-
-  public void setNextX(int nextX) {
-    NextX = nextX;
-  }
-
-  public int getNextY() {
-    return NextY;
-  }
-
-  public void setNextY(int nextY) {
-    NextY = nextY;
   }
 
   public float getDeltaX() {
