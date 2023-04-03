@@ -9,6 +9,7 @@ import com.szakdoga.game.pathFinder.PathFinder;
 import org.datatransferobject.UnitDTO;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Objects;
 
 public abstract class Unit extends Sprite {
@@ -68,11 +69,15 @@ public abstract class Unit extends Sprite {
   public void setUnitClass(String unitClass) {
     this.unitClass = unitClass;
   }
-
   public void calculateAngle() {
-    float angle = MathUtils.atan2(nextYCoordinates.get(0) - getY(), nextXCoordinates.get(0) - getX());
-    deltaX = MathUtils.cos(angle);
-    deltaY = MathUtils.sin(angle);
+    if(new Date().getTime() - lastStep > 1000/speed) {
+      nextXCoordinates.remove(0);
+      nextYCoordinates.remove(0);
+      lastStep = new Date().getTime();
+    }
+      float angle = MathUtils.atan2(nextYCoordinates.get(0) - getY(), nextXCoordinates.get(0) - getX());
+      deltaX = MathUtils.cos(angle);
+      deltaY = MathUtils.sin(angle);
   }
   public void step(){
     calculateAngle();
