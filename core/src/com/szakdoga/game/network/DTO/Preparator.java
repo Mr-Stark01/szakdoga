@@ -26,9 +26,18 @@ public class Preparator {
                 unit.getY(),
                 unit.getUnitClass(),
                 unit.getId(),
-                unit.getNextX(),
-                unit.getNextY());
+                deepcopy(unit.getNextX()),
+                deepcopy(unit.getNextY()));
     }
+
+    private static ArrayList<Integer> deepcopy(ArrayList<Integer> nextList) {
+        ArrayList<Integer> copy=new ArrayList<Integer>();
+        for(int elem:nextList){
+            copy.add(elem);
+        }
+        return copy;
+    }
+
     public static TowerDTO createTowerDTOfromTower(Tower tower){
         return new TowerDTO(tower.getDamage(),
                 tower.getPrice(),
@@ -48,9 +57,6 @@ public class Preparator {
             for (Unit unit : units) {
                 unitDTOs.add(Preparator.createUnitDTOFromUnit(unit));
             }
-        }
-        if(unitDTOs.size()>0) {
-            System.out.println("inside list create:" + unitDTOs.get(0).getX());
         }
         return unitDTOs;
     }

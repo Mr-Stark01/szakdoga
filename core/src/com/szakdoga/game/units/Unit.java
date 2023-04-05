@@ -9,6 +9,7 @@ import com.szakdoga.game.pathFinder.PathFinder;
 import org.datatransferobject.UnitDTO;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public abstract class Unit extends Sprite {
@@ -18,14 +19,14 @@ public abstract class Unit extends Sprite {
   protected int price;
   protected int PreviousX;
   protected int PreviousY;
-  private float deltaX;
-  private float deltaY;
-  private float distance = 0.1f;
-  private String unitClass;
-  private int id=0;
-  private long lastStep;
-  private ArrayList<Integer> nextXCoordinates;
-  private ArrayList<Integer> nextYCoordinates;
+  protected float deltaX;
+  protected float deltaY;
+  protected float distance = 0.1f;
+  protected String unitClass;
+  protected int id=0;
+  protected long lastStep;
+  protected List<Integer> nextXCoordinates;
+  protected List<Integer> nextYCoordinates;
 
   public Unit(float speed, float health, float damage, int price, float X, float Y,String unitClass) {
     this.speed = speed;
@@ -41,14 +42,19 @@ public abstract class Unit extends Sprite {
     nextYCoordinates = new ArrayList<>();
   }
 
-  public static PikeUnit createPikeUnit(float X, float Y) {
-    return new PikeUnit(X, Y);
+  public static PikeUnit createPikeUnitFromDTO(UnitDTO unitDto) {
+    return new PikeUnit(unitDto);
+  }
+  public static Unit createPlaceHolder(float X, float Y,String unitType){
+    return new PlaceHolderUnit(X, Y,unitType);
   }
 
   public static Unit createUnitFromDTO(UnitDTO unitDTO) {
     switch (unitDTO.getUnitClass()){
       case "Pike":
-        return createPikeUnit(unitDTO.getX(),unitDTO.getY());
+        return createPikeUnitFromDTO(unitDTO);
+      case "PikeUnitPlaceHolder":
+        return createPikeUnitFromDTO(unitDTO);
     }
     return null;
   }
@@ -134,7 +140,7 @@ public abstract class Unit extends Sprite {
   }
 
   public ArrayList<Integer> getNextX() {
-    return nextXCoordinates;
+    return (ArrayList<Integer>)  nextXCoordinates;
   }
 
   public void setNextXCoordinates(ArrayList<Integer> nextXCoordinates) {
@@ -142,7 +148,7 @@ public abstract class Unit extends Sprite {
   }
 
   public ArrayList<Integer> getNextY() {
-    return nextYCoordinates;
+    return (ArrayList<Integer>) nextYCoordinates;
   }
 
   public void setNextYCoordinates(ArrayList<Integer> nextYCoordinates) {

@@ -63,10 +63,16 @@ public class GameServerHandler implements Runnable{
         DTOList.add((DTO) objectInputStream.readObject());
         player.exchangeData(DTOList.get(0));
         enemyPlayer.exchangeData(DTOList.get(1));
+        if(player.getUnits().size()>0){
+            System.out.println(
+            player.getUnits().get(0).getId()
+                    +"\t"+
+            DTOList.get(0).getUnitDTOs().get(0).getId());
+        }
     }
         protected void sendData() throws IOException{
         if(dtoOut.getUnitDTOs().size()>0) {
-            System.out.println(dtoOut.getUnitDTOs().get(0).getX());
+            System.out.println("inside list create:" + dtoOut.getUnitDTOs().get(0).getNextX()==null);
         }
         objectOutputStream.writeObject(dtoOut);
         objectOutputStream.flush();

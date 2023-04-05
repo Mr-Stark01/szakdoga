@@ -58,10 +58,10 @@ public class Player {
 
     public void exchangeData(DTO dto){
         if(newData){
-            PlayerDTO playerDTO =dto.getPlayerDTO();
+            PlayerDTO playerDTO = dto.getPlayerDTO();
             money = playerDTO.getMoney();
             health = playerDTO.getHealth();
-            for(int i = 0; i<dto.getUnitDTOs().size(); i++){
+            for(int i = 0; i<dto.getUnitDTOs().size(); i++){ //TODO this is garbage
                 CompareReturn compareReturn=units.get(i).compareToDTO(dto.getUnitDTOs().get(i));
                 switch (compareReturn){
                     case SameIdSameValue:
@@ -70,7 +70,11 @@ public class Player {
                         units.get(i).setValuesFromDTO(dto.getUnitDTOs().get(i));
                         break;
                     case DifferentId:
-                        units.add(Unit.createUnitFromDTO(dto.getUnitDTOs().get(i)));
+                        if(dto.getUnitDTOs().get(i).getId() == -1){
+                            units.remove(i);
+                            dto.getUnitDTOs().remove(i);
+                        }
+                        units.set(i,Unit.createUnitFromDTO(dto.getUnitDTOs().get(i)));
                         break;
                 }
             }
