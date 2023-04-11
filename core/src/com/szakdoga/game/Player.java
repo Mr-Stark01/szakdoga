@@ -7,6 +7,8 @@ import com.szakdoga.game.towers.Tower;
 import com.szakdoga.game.units.Unit;
 import org.datatransferobject.DTO;
 import org.datatransferobject.PlayerDTO;
+import org.datatransferobject.UnitDTO;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -24,7 +26,6 @@ public class Player {
 
     }
     public Player(){
-
 
     }
     public synchronized boolean addTower(float x,float y){
@@ -56,26 +57,94 @@ public class Player {
     }
 
     public void exchangeData(DTO dto){
-            PlayerDTO playerDTO =dto.getPlayerDTO();
-            money = playerDTO.getMoney();
-            health = playerDTO.getHealth();
-            for(int i = 0; i<dto.getUnitDTOs().size(); i++){ //TODO this is garbage
-                CompareReturn compareReturn=units.get(i).compareToDTO(dto.getUnitDTOs().get(i));
-                switch (compareReturn){
-                    case SameIdSameValue:
-                        break;
-                    case SameIdDifferentValue:
+        System.out.println("echange data1");
+        PlayerDTO playerDTO =dto.getPlayerDTO();
+        money = playerDTO.getMoney();
+        health = playerDTO.getHealth();
+        System.out.println("echange data1");
+        System.out.println("dtosize:"+dto.getUnitDTOs().size()+"\t"+"units size:"+units.size());
+        for(int i = dto.getUnitDTOs().size()-units.size()-1; dto.getUnitDTOs().size()>units.size(); i++) { //TODO this is garbage
+            units.add(Unit.createUnitFromDTO(dto.getUnitDTOs().get(i)));
+            System.out.println("stuck??");
+        }
+        System.out.println("echange data1");
+        for(int i = 0; i<dto.getUnitDTOs().size(); i++){ //TODO this is garbage
+            CompareReturn compareReturn=units.get(i).compareToDTO(dto.getUnitDTOs().get(i));
+            switch (compareReturn){
+                case SameIdSameValue:
+                    break;
+                case SameIdDifferentValue:
+                    units.get(i).setValuesFromDTO(dto.getUnitDTOs().get(i));
+                    break;
+                case DifferentId:
+                    if(dto.getUnitDTOs().get(i).getId() == -1){
+                        units.remove(i);
+                        dto.getUnitDTOs().remove(i);
+                    }
+                    else {
+                        System.out.println("exchanger");
                         units.get(i).setValuesFromDTO(dto.getUnitDTOs().get(i));
-                        break;
-                    case DifferentId:
-                        if(dto.getUnitDTOs().get(i).getId() == -1){
-                            units.remove(i);
-                            dto.getUnitDTOs().remove(i);
-                        }
-                        units.set(i,Unit.createUnitFromDTO(dto.getUnitDTOs().get(i)));
-                        break;
-                }
+                        System.out.println(units.get(i).getId());
+                    }
+                    break;
             }
+        }
+        for(int i = dto.getTowerDTOs().size()-towers.size()-1; dto.getTowerDTOs().size()>towers.size(); i++) { //TODO this is garbage
+            towers.add(Tower.createTowerFromDTO(dto.getTowerDTOs().get(i)));
+            System.out.println("stuck??");
+        }
+        for(int i = 0; i<dto.getTowerDTOs().size();i++){
+            CompareReturn compareReturn=towers.get(i).compareToDTO(dto.getTowerDTOs().get(i));
+            switch (compareReturn){
+                case SameIdSameValue:
+                    break;
+                case SameIdDifferentValue:
+                    towers.get(i).setValuesFromDTO(dto.getTowerDTOs().get(i));
+                    break;
+                case DifferentId:
+                    if(dto.getTowerDTOs().get(i).getId() == -1){
+                        towers.remove(i);
+                        dto.getTowerDTOs().remove(i);
+                    }
+                    else {
+                        System.out.println("exchanger");
+                        towers.get(i).setValuesFromDTO(dto.getTowerDTOs().get(i));
+                        System.out.println(towers.get(i).getId());
+                    }
+                    break;
+            }
+        }
+    }
+
+    public void exchangeDataEnemy(DTO dto){
+        PlayerDTO playerDTO = dto.getPlayerDTO();
+        money = playerDTO.getMoney();
+        health = playerDTO.getHealth();
+        System.out.println("exchangerEnemy");
+
+        System.out.println(dto.getUnitDTOs().size()+"\t"+units.size()+"exchangerEnemy2");
+        for(int i = 0; i<dto.getUnitDTOs().size(); i++){ //TODO this is garbage
+            CompareReturn compareReturn=units.get(i).compareToDTO(dto.getUnitDTOs().get(i));
+            switch (compareReturn){
+                case SameIdSameValue:
+                    break;
+                case SameIdDifferentValue:
+                    units.get(i).setValuesFromDTO(dto.getUnitDTOs().get(i));
+                    break;
+                case DifferentId:
+                    if(dto.getUnitDTOs().get(i).getId() == -1){
+                        units.remove(i);
+                        dto.getUnitDTOs().remove(i);
+                    }
+                    else {
+
+                        units.get(i).setValuesFromDTO(dto.getUnitDTOs().get(i));
+                        System.out.println(units.get(i).getId());
+                    }
+                    break;
+            }
+        }
+        System.out.println(dto.getUnitDTOs().size()+"\t"+units.size()+"exchangerEnemy3");
     }
 
     public synchronized void buyUnit(Unit unit) {
@@ -106,4 +175,12 @@ public class Player {
         return health;
     }
 
+    public Unit getUnitWithId(int id) {
+        for(Unit unit:units){
+            if(unit.getId()==id){
+                return unit;
+            }
+        }
+        return null;
+    }
 }

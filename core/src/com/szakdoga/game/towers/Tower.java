@@ -3,20 +3,30 @@ package com.szakdoga.game.towers;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.szakdoga.game.CompareReturn;
 import com.szakdoga.game.units.Unit;
+import org.datatransferobject.TowerDTO;
+import org.datatransferobject.UnitDTO;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import static com.szakdoga.game.screens.GameScreen.player;
 
 public abstract class Tower extends Sprite { //TODO teszt osztály
     //TODO factory method és construcktorba csinálni egy new texturet
     protected float damage;
     protected int price;
     protected int range;
-    protected Unit target;
+    protected Unit target=null;
     protected float deltaSum = 0;
     protected float attackTime;
+    protected int id;
+    protected String towerClass;
     public Tower(
-            int damage, int price, int range, float attackTime, float spawnX, float spawnY) {
+            int damage, int price, int range, float attackTime, float spawnX, float spawnY,String towerClass) {
+        this.towerClass=towerClass;
         this.damage = damage;
         this.price = price;
         this.range = range;
@@ -28,7 +38,10 @@ public abstract class Tower extends Sprite { //TODO teszt osztály
     }
     //TODO factory val csinálni ezt és madj a aunitot is
     public static ArcherTower createArcherTower(float spawnX,float spawnY){
-        return new ArcherTower(spawnX, spawnY);
+        return new ArcherTower(spawnX, spawnY,"Archer");
+    }
+    public static ArcherTower createArcherTowerFromDTO(TowerDTO towerDTO){
+        return new ArcherTower(towerDTO);
     }
 
     public void findTarget(List<Unit> units){
@@ -71,11 +84,57 @@ public abstract class Tower extends Sprite { //TODO teszt osztály
             deltaSum = 0;
         }
     }
+
+    public static Tower createTowerFromDTO(TowerDTO towerDTO) {
+        switch (towerDTO.getTowerClass()){
+            case "Archer":
+                return createArcherTowerFromDTO(towerDTO);
+        }
+        return null;
+    }
+
+    public CompareReturn compareToDTO(TowerDTO towerDTO){
+        if(towerDTO.getId()==this.getId()){
+            if(equalsToDTO(towerDTO)){
+                return CompareReturn.SameIdSameValue;
+            }
+            else{
+                return CompareReturn.SameIdDifferentValue;
+            }
+        }
+        return null;
+    }
+
+
+    public boolean equalsToDTO(TowerDTO tower) {
+        return Float.compare(tower.getDamage(), getDamage()) == 0 && getPrice() == tower.getPrice() && getRange() == tower.getRange() && Float.compare(tower.getDeltaSum(), getDeltaSum()) == 0 && Float.compare(tower.getAttackTime(), getAttackTime()) == 0 && Objects.equals(getTarget(), tower.getTarget());
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Tower tower = (Tower) o;
+        return Float.compare(tower.getDamage(), getDamage()) == 0 && getPrice() == tower.getPrice() && getRange() == tower.getRange() && Float.compare(tower.getDeltaSum(), getDeltaSum()) == 0 && Float.compare(tower.getAttackTime(), getAttackTime()) == 0 && Objects.equals(getTarget(), tower.getTarget());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getDamage(), getPrice(), getRange(), getTarget(), getDeltaSum(), getAttackTime());
+    }
+
     public void render(SpriteBatch batch, List<Unit> units){
         /*if(units.size()>0){
             attack(units);//TODO turned off attack
         }*/
         super.draw(batch);
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getPrice(){
@@ -100,6 +159,16 @@ public abstract class Tower extends Sprite { //TODO teszt osztály
 
     public float getAttackTime() {
         return attackTime;
+    }
+
+    public void setValuesFromDTO(TowerDTO towerDTO) {
+        this.id=towerDTO.getId();
+        this.target=player.getUnitWithId(towerDTO.getTarget().getId());
+        this.deltaSum=towerDTO.getDeltaSum();
+        this.attackTime=towerDTO.getAttackTime();
+        this.damage=towerDTO.getDamage();
+        this.price=towerDTO.getPrice();
+        this.range=towerDTO.getRange();
     }
     //TODO factory method ami csinál egy archerTower instancet
     //TODO teszttower ami

@@ -22,7 +22,6 @@ public class MainMenu extends ScreenAdapter {
     protected TextButton.TextButtonStyle style;
     protected Stage stage;
     protected Table table;
-    int i=0;
     Texture bg;
     public MainMenu(final TowerDefence game){
         this.game=game;

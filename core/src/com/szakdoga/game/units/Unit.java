@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Date;
 import java.util.Objects;
 
+import static com.szakdoga.game.network.DTO.Preparator.deepcopy;
+
 public abstract class Unit extends Sprite {
   protected float speed;
   protected float health;
@@ -46,18 +48,18 @@ public abstract class Unit extends Sprite {
   public static PikeUnit createPikeUnitFromDTO(UnitDTO unitDto) {
     return new PikeUnit(unitDto);
   }
-  public static Unit createPlaceHolder(float X, float Y,String unitType){
-    return new PlaceHolderUnit(X, Y,unitType);
-  }
 
   public static Unit createUnitFromDTO(UnitDTO unitDTO) {
     switch (unitDTO.getUnitClass()){
       case "Pike":
-        return createPikeUnitFromDTO(unitDTO);
       case "PikeUnitPlaceHolder":
         return createPikeUnitFromDTO(unitDTO);
     }
     return null;
+  }
+
+  public static Unit createPikeUnit(int X, int Y, String unitName) {
+    return new PikeUnit(X,Y);
   }
 
   public void attacked(float damage) {
@@ -76,14 +78,16 @@ public abstract class Unit extends Sprite {
     this.unitClass = unitClass;
   }
   public void calculateAngle() {
-    if(new Date().getTime() - lastStep > 1000/speed) {
+    if(/*new Date().getTime() - lastStep > 1000/speed*/Math.sqrt((Math.pow(this.getX()-this.getNextX().get(0),2))+(Math.pow(this.getY()-this.getNextY().get(0),2))) < 0.1f ) {
+      System.out.println("delete first from list");
       nextXCoordinates.remove(0);
       nextYCoordinates.remove(0);
       lastStep = new Date().getTime();
-    }
+
       float angle = MathUtils.atan2(nextYCoordinates.get(0) - getY(), nextXCoordinates.get(0) - getX());
       deltaX = MathUtils.cos(angle);
       deltaY = MathUtils.sin(angle);
+    }
   }
   public void step(){
     calculateAngle();
@@ -112,21 +116,25 @@ public abstract class Unit extends Sprite {
   }
 
   public void setValuesFromDTO(UnitDTO unitDTO) {
-    speed = unitDTO.getSpeed();
-    health = unitDTO.getHealth();
-    damage = unitDTO.getDamage();
-    price = unitDTO.getPrice();
-    PreviousX = unitDTO.getPreviousX();
-    PreviousY = unitDTO.getPreviousY();
-    nextXCoordinates = unitDTO.getNextX();
-    nextYCoordinates = unitDTO.getNextY();
-    deltaX = unitDTO.getDeltaX();
-    deltaY = unitDTO.getDeltaY();
-    lastStep = unitDTO.getLastStep();
+    this.speed = unitDTO.getSpeed();
+    this.health = unitDTO.getHealth();
+    this.damage = unitDTO.getDamage();
+    this.price = unitDTO.getPrice();
+    this.PreviousX = unitDTO.getPreviousX();
+    this.PreviousY = unitDTO.getPreviousY();
+    this.nextXCoordinates = deepcopy((ArrayList<Integer>) unitDTO.getNextX());
+    this.nextYCoordinates = deepcopy((ArrayList<Integer>) unitDTO.getNextY());
+    this.deltaX = unitDTO.getDeltaX();
+    this.deltaY = unitDTO.getDeltaY();
+    this.lastStep = unitDTO.getLastStep();
+    this.id=unitDTO.getId();
+
+    System.out.println("setdatafromdtoX"+nextXCoordinates.size()+"\t"+unitDTO.getNextX().size());
+    System.out.println("setdatafromdtoY"+nextYCoordinates.size()+"\t"+unitDTO.getNextY().size());
   }
 
   public boolean equalsToDTO(UnitDTO unit){
-    return Float.compare(unit.getSpeed(), getSpeed()) == 0 && Float.compare(unit.getHealth(), getHealth()) == 0 && Float.compare(unit.getDamage(), getDamage()) == 0 && getPrice() == unit.getPrice() && getPreviousX() == unit.getPreviousX() && getPreviousY() == unit.getPreviousY() && getNextX() == unit.getNextX() && getNextY() == unit.getNextY() && Float.compare(unit.getDeltaX(), getDeltaX()) == 0 && Float.compare(unit.getDeltaY(), getDeltaY()) == 0 && Float.compare(unit.getDistance(), getDistance()) == 0;
+    return Float.compare(unit.getSpeed(), getSpeed()) == 0 && Float.compare(unit.getHealth(), getHealth()) == 0 && Float.compare(unit.getDamage(), getDamage()) == 0 && getPrice() == unit.getPrice() && getPreviousX() == unit.getPreviousX() && getPreviousY() == unit.getPreviousY() && getNextX().equals(unit.getNextX()) && getNextY().equals(unit.getNextY()) && Float.compare(unit.getDeltaX(), getDeltaX()) == 0 && Float.compare(unit.getDeltaY(), getDeltaY()) == 0 && Float.compare(unit.getDistance(), getDistance()) == 0;
   }
   @Override
   public boolean equals(Object o) {

@@ -12,6 +12,9 @@ import java.util.List;
 
 public class Preparator {
     public static UnitDTO createUnitDTOFromUnit(Unit unit){
+        if(unit==null){
+            return null;
+        }
         return new UnitDTO(
                 unit.getSpeed(),
                 unit.getHealth(),
@@ -24,13 +27,13 @@ public class Preparator {
                 unit.getDistance(),
                 unit.getX(),
                 unit.getY(),
-                unit.getUnitClass(),
+                new String(unit.getUnitClass()),
                 unit.getId(),
                 deepcopy(unit.getNextX()),
                 deepcopy(unit.getNextY()));
     }
 
-    private static ArrayList<Integer> deepcopy(ArrayList<Integer> nextList) {
+    public static ArrayList<Integer> deepcopy(ArrayList<Integer> nextList) {
         ArrayList<Integer> copy=new ArrayList<Integer>();
         for(int elem:nextList){
             copy.add(elem);
@@ -43,7 +46,9 @@ public class Preparator {
                 tower.getPrice(),
                 tower.getRange(),
                 createUnitDTOFromUnit(tower.getTarget()),
-                tower.getAttackTime());
+                tower.getAttackTime(),
+                tower.getDeltaSum(),
+                tower.getId());
     }
     public static PlayerDTO createPlayerDTOFromPlayer(Player player){
         return new PlayerDTO(player.getMoney(),
@@ -52,16 +57,21 @@ public class Preparator {
                                 player.getHealth());
     }
     public static ArrayList<UnitDTO> createUnitDTOListFromUnitList(List<Unit> units){
-        ArrayList<UnitDTO> unitDTOs= new ArrayList<UnitDTO>();
+        ArrayList<UnitDTO> unitDTOs= new ArrayList<>();
         synchronized (units) {
             for (Unit unit : units) {
-                unitDTOs.add(Preparator.createUnitDTOFromUnit(unit));
+                try {
+                    unitDTOs.add(Preparator.createUnitDTOFromUnit(unit));
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         }
         return unitDTOs;
     }
     public static ArrayList<TowerDTO> createTowerDTOListFromTowertList(List<Tower> towers){
-        ArrayList<TowerDTO> towerDTOS= new ArrayList<TowerDTO>();
+        ArrayList<TowerDTO> towerDTOS= new ArrayList<>();
         synchronized (towers) {
             for (Tower tower : towers) {
                 towerDTOS.add(Preparator.createTowerDTOfromTower(tower));

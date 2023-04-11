@@ -73,7 +73,7 @@ public class GameScreen extends ScreenAdapter {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        schedueldExecutor.scheduleAtFixedRate(gameServerHandler,0,500, TimeUnit.MILLISECONDS);//TODO probálgatni
+        schedueldExecutor.scheduleAtFixedRate(gameServerHandler,0,50, TimeUnit.MILLISECONDS);//TODO probálgatni
 
         //Instant.now();
 

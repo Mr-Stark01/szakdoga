@@ -33,7 +33,7 @@ public class InputHandler implements InputProcessor {
             Gdx.app.exit();
         }
         if(keycode == Input.Keys.P){
-            player.buyUnit(Unit.createPlaceHolder(6,43,"PikeUnitPlaceHolder"));
+            player.buyUnit(Unit.createPikeUnit(6,43,"PikeUnitPlaceHolder"));
         }
         return true;
     }

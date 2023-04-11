@@ -53,7 +53,7 @@ public class Hud implements Disposable {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 inputHandler.draggingArcher();
-                player.create(new ArcherTower(0,0));
+                player.create(new ArcherTower(0,0,"Archer"));
             }
         });
         table.top().add(towerHudElement).height(Gdx.graphics.getHeight()/6f);

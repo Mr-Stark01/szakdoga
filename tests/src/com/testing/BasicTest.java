@@ -9,7 +9,7 @@ import org.junit.runner.RunWith;
 public class BasicTest {
     @Test
     public void test(){
-        ArcherTower ac = new ArcherTower(1,1);
+        ArcherTower ac = new ArcherTower(1,1,"Archer");
         Assert.assertEquals(10,ac.getPrice());
         Assert.assertEquals(10,ac.getPrice());
     }
