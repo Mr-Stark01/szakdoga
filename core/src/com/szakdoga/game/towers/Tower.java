@@ -86,7 +86,7 @@ public abstract class Tower extends Sprite { //TODO teszt osztály
     }
 
     public static Tower createTowerFromDTO(TowerDTO towerDTO) {
-        switch (towerDTO.getTowerClass()){
+        switch (towerDTO.getTowerClass()){ //TODO itt a hiba null pointer mert alhadjom a towerclass de már dto ba update elve
             case "Archer":
                 return createArcherTowerFromDTO(towerDTO);
         }
