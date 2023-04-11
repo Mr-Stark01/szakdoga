@@ -61,13 +61,13 @@ public class Player {
         PlayerDTO playerDTO =dto.getPlayerDTO();
         money = playerDTO.getMoney();
         health = playerDTO.getHealth();
-        System.out.println("echange data1");
+        System.out.println("echange data2");
         System.out.println("dtosize:"+dto.getUnitDTOs().size()+"\t"+"units size:"+units.size());
         for(int i = dto.getUnitDTOs().size()-units.size()-1; dto.getUnitDTOs().size()>units.size(); i++) { //TODO this is garbage
             units.add(Unit.createUnitFromDTO(dto.getUnitDTOs().get(i)));
             System.out.println("stuck??");
         }
-        System.out.println("echange data1");
+        System.out.println("echange data3");
         for(int i = 0; i<dto.getUnitDTOs().size(); i++){ //TODO this is garbage
             CompareReturn compareReturn=units.get(i).compareToDTO(dto.getUnitDTOs().get(i));
             switch (compareReturn){
@@ -89,12 +89,27 @@ public class Player {
                     break;
             }
         }
-        for(int i = dto.getTowerDTOs().size()-towers.size()-1; dto.getTowerDTOs().size()>towers.size(); i++) { //TODO this is garbage
-            towers.add(Tower.createTowerFromDTO(dto.getTowerDTOs().get(i)));
+        System.out.println("echange data4");
+        for(int i = dto.getTowerDTOs().size()-towers.size()-1; dto.getTowerDTOs().size()>towers.size() && i>=0; i++) { //TODO this is garbage
+            try {
+                towers.add(Tower.createTowerFromDTO(dto.getTowerDTOs().get(i)));
+            }
+            catch (Exception e){
+                e.printStackTrace();
+                try {
+                    Thread.sleep(100000);
+                }
+                catch (InterruptedException a){
+                    a.printStackTrace();
+                }
+            }
             System.out.println("stuck??");
         }
+        System.out.println("echange data5");
         for(int i = 0; i<dto.getTowerDTOs().size();i++){
+            System.out.println("tower data");
             CompareReturn compareReturn=towers.get(i).compareToDTO(dto.getTowerDTOs().get(i));
+            System.out.println("tower data 2");
             switch (compareReturn){
                 case SameIdSameValue:
                     break;

@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -34,12 +35,13 @@ public class GameServerHandler implements Runnable{
     }
     @Override
     public void run() {
-       //TODO alapból kapjon csak egy checket és csak azzután néze meg ehmaybe
-        sendData();
+        //TODO alapból kapjon csak egy checket és csak azzután néze meg ehmaybe
         try {
+            sendData();
             receiveData();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
+
         }
     }
 
@@ -51,6 +53,7 @@ public class GameServerHandler implements Runnable{
             id = DTOList.get(0).getId();
         }
         player.exchangeData(DTOList.get(0));
+        System.out.println("enemy");
         enemyPlayer.exchangeData(DTOList.get(1));
         System.out.println("asd");
         System.out.println("Time"+new Date().getTime());
@@ -72,20 +75,15 @@ public class GameServerHandler implements Runnable{
         }
         System.out.println("receive 2");
     }
-        protected void sendData() {
-        try {
-            System.out.println("send data1");
-            System.out.println(id);
-            objectOutputStream.writeObject(new DTO(Preparator.createUnitDTOListFromUnitList(player.getUnits()),
-                                                    Preparator.createTowerDTOListFromTowertList(player.getTowers()),
-                                                    Preparator.createPlayerDTOFromPlayer(player),id));
-            objectOutputStream.flush();
-            System.out.println("send data2");
+        protected void sendData() throws IOException {
+        System.out.println("send data1");
+        System.out.println(id);
+        objectOutputStream.writeObject(new DTO(Preparator.createUnitDTOListFromUnitList(player.getUnits()),
+                                                Preparator.createTowerDTOListFromTowertList(player.getTowers()),
+                                                Preparator.createPlayerDTOFromPlayer(player),id));
+        objectOutputStream.flush();
+        System.out.println("send data2");
         }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-    }
     public DTO getDtoIn() {
         return dtoIn;
     }

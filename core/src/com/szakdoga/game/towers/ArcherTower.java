@@ -19,7 +19,7 @@ public class ArcherTower extends Tower{
         setY(towerDTO.getY());
         this.towerClass=towerDTO.getTowerClass();
         this.id=towerDTO.getId();
-        this.target=player.getUnitWithId(towerDTO.getTarget().getId());
+        this.target=towerDTO.getTarget()==null?null:player.getUnitWithId(towerDTO.getTarget().getId());
         this.deltaSum=towerDTO.getDeltaSum();
         this.attackTime=towerDTO.getAttackTime();
         this.damage=towerDTO.getDamage();

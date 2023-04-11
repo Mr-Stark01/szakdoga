@@ -102,7 +102,7 @@ public abstract class Tower extends Sprite { //TODO teszt osztály
                 return CompareReturn.SameIdDifferentValue;
             }
         }
-        return null;
+        return CompareReturn.DifferentId;
     }
 
 
@@ -163,7 +163,7 @@ public abstract class Tower extends Sprite { //TODO teszt osztály
 
     public void setValuesFromDTO(TowerDTO towerDTO) {
         this.id=towerDTO.getId();
-        this.target=player.getUnitWithId(towerDTO.getTarget().getId());
+        this.target=towerDTO.getTarget()==null?null:player.getUnitWithId(towerDTO.getTarget().getId());
         this.deltaSum=towerDTO.getDeltaSum();
         this.attackTime=towerDTO.getAttackTime();
         this.damage=towerDTO.getDamage();
