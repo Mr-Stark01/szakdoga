@@ -1,8 +1,5 @@
 package com.szakdoga.game;
 
-import static com.szakdoga.game.screens.GameScreen.UIscale;
-import static com.szakdoga.game.screens.GameScreen.player;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
@@ -14,6 +11,9 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.szakdoga.game.units.Unit;
+
+import static com.szakdoga.game.screens.GameScreen.UIscale;
+import static com.szakdoga.game.screens.GameScreen.player;
 
 public class InputHandler implements InputProcessor {
     private static Sprite currentlyDragging;

@@ -3,7 +3,6 @@ package com.szakdoga.game.pathFinder;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.MathUtils;
 import com.szakdoga.game.units.Unit;
-import org.datatransferobject.UnitDTO;
 
 public class PathFinder {
     TiledMapTileLayer tiledMapTileLayer ;

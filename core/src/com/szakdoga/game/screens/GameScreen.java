@@ -16,7 +16,6 @@ import com.szakdoga.game.InputHandler;
 import com.szakdoga.game.Player;
 import com.szakdoga.game.TowerDefence;
 import com.szakdoga.game.network.Client;
-
 import com.szakdoga.game.network.GameServerHandler;
 import com.szakdoga.game.pathFinder.PathFinder;
 import com.szakdoga.game.ui.Hud;

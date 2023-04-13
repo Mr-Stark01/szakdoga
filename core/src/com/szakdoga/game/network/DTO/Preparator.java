@@ -42,13 +42,17 @@ public class Preparator {
     }
 
     public static TowerDTO createTowerDTOfromTower(Tower tower){
-        return new TowerDTO(tower.getDamage(),
+        return new TowerDTO(
+                (int) tower.getX(),
+                (int) tower.getY(),
+                tower.getDamage(),
                 tower.getPrice(),
                 tower.getRange(),
                 createUnitDTOFromUnit(tower.getTarget()),
                 tower.getAttackTime(),
                 tower.getDeltaSum(),
-                tower.getId());
+                tower.getId(),
+                tower.getTowerClass());
     }
     public static PlayerDTO createPlayerDTOFromPlayer(Player player){
         return new PlayerDTO(player.getMoney(),

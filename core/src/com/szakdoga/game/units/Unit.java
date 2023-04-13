@@ -5,17 +5,16 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.szakdoga.game.CompareReturn;
-import com.szakdoga.game.pathFinder.PathFinder;
 import org.datatransferobject.UnitDTO;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 import static com.szakdoga.game.network.DTO.Preparator.deepcopy;
 
-public abstract class Unit extends Sprite {
+public abstract class Unit {
   protected float speed;
   protected float health;
   protected float damage;
@@ -30,6 +29,7 @@ public abstract class Unit extends Sprite {
   protected long lastStep;
   protected List<Integer> nextXCoordinates;
   protected List<Integer> nextYCoordinates;
+  protected Sprite sprite;
 
   public Unit(float speed, float health, float damage, int price, float X, float Y,String unitClass) {
     this.speed = speed;
@@ -38,8 +38,9 @@ public abstract class Unit extends Sprite {
     this.price = price;
     this.PreviousX = (int) X;
     this.PreviousY = (int) Y;
-    setX(X); // TODO WHY does this not work?
-    setY(Y);
+    sprite=new Sprite();
+    sprite.setX(X); // TODO WHY does this not work?
+    sprite.setY(Y);
     this.unitClass=unitClass;
     nextXCoordinates = new ArrayList<>();
     nextYCoordinates = new ArrayList<>();
@@ -78,28 +79,33 @@ public abstract class Unit extends Sprite {
     this.unitClass = unitClass;
   }
   public void calculateAngle() {
-    if(/*new Date().getTime() - lastStep > 1000/speed*/Math.sqrt((Math.pow(this.getX()-this.getNextX().get(0),2))+(Math.pow(this.getY()-this.getNextY().get(0),2))) < 0.1f ) {
+    if(/*new Date().getTime() - lastStep > 1000/speed*/Math.sqrt((Math.pow(this.sprite.getX()-this.getNextX().get(0),2))+(Math.pow(this.sprite.getY()-this.getNextY().get(0),2))) < 0.1f ) {
       System.out.println("delete first from list");
       nextXCoordinates.remove(0);
       nextYCoordinates.remove(0);
       lastStep = new Date().getTime();
 
-      float angle = MathUtils.atan2(nextYCoordinates.get(0) - getY(), nextXCoordinates.get(0) - getX());
+      float angle = MathUtils.atan2(nextYCoordinates.get(0) - sprite.getY(), nextXCoordinates.get(0) - sprite.getX());
       deltaX = MathUtils.cos(angle);
       deltaY = MathUtils.sin(angle);
     }
   }
   public void step(){
+    if(nextXCoordinates.get(0)==-1 && nextXCoordinates.get(0)==-1){
+      sprite.setX(Math.round(getX()));
+      sprite.setY(Math.round(getY()));
+      return;
+    }
     calculateAngle();
-    setX(getX()+(getSpeed() * getDeltaX() * Gdx.graphics.getDeltaTime()));
-    setY(getY()+(getSpeed() * getDeltaY() * Gdx.graphics.getDeltaTime()));
+    sprite.setX(sprite.getX()+(getSpeed() * getDeltaX() * Gdx.graphics.getDeltaTime()));
+    sprite.setY(sprite.getY()+(getSpeed() * getDeltaY() * Gdx.graphics.getDeltaTime()));
   }
 
   public void render(SpriteBatch batch) {
     // System.out.println(getX()+"\t"+getY());
     if(id!=0) {
       step();
-      super.draw(batch);
+      sprite.draw(batch);
     }
   }
 
@@ -116,21 +122,21 @@ public abstract class Unit extends Sprite {
   }
 
   public void setValuesFromDTO(UnitDTO unitDTO) {
-    this.speed = unitDTO.getSpeed();
-    this.health = unitDTO.getHealth();
-    this.damage = unitDTO.getDamage();
-    this.price = unitDTO.getPrice();
-    this.PreviousX = unitDTO.getPreviousX();
-    this.PreviousY = unitDTO.getPreviousY();
-    this.nextXCoordinates = deepcopy((ArrayList<Integer>) unitDTO.getNextX());
-    this.nextYCoordinates = deepcopy((ArrayList<Integer>) unitDTO.getNextY());
-    this.deltaX = unitDTO.getDeltaX();
-    this.deltaY = unitDTO.getDeltaY();
-    this.lastStep = unitDTO.getLastStep();
-    this.id=unitDTO.getId();
+      this.speed = unitDTO.getSpeed();
+      this.health = unitDTO.getHealth();
+      this.damage = unitDTO.getDamage();
+      this.price = unitDTO.getPrice();
+      this.PreviousX = unitDTO.getPreviousX();
+      this.PreviousY = unitDTO.getPreviousY();
+      this.nextXCoordinates = deepcopy((ArrayList<Integer>) unitDTO.getNextX());
+      this.nextYCoordinates = deepcopy((ArrayList<Integer>) unitDTO.getNextY());
+      this.deltaX = unitDTO.getDeltaX();
+      this.deltaY = unitDTO.getDeltaY();
+      this.lastStep = unitDTO.getLastStep();
+      this.id = unitDTO.getId();
 
-    System.out.println("setdatafromdtoX"+nextXCoordinates.size()+"\t"+unitDTO.getNextX().size());
-    System.out.println("setdatafromdtoY"+nextYCoordinates.size()+"\t"+unitDTO.getNextY().size());
+      System.out.println("setdatafromdtoX" + nextXCoordinates.size() + "\t" + unitDTO.getNextX().size());
+      System.out.println("setdatafromdtoY" + nextYCoordinates.size() + "\t" + unitDTO.getNextY().size());
   }
 
   public boolean equalsToDTO(UnitDTO unit){
@@ -219,6 +225,13 @@ public abstract class Unit extends Sprite {
 
   public int getPrice() {
     return price;
+  }
+
+  public float getX(){
+    return sprite.getX();
+  }
+  public float getY(){
+    return sprite.getY();
   }
 
 

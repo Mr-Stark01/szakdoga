@@ -2,6 +2,7 @@ package com.szakdoga.game.towers;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.datatransferobject.TowerDTO;
 
 import static com.szakdoga.game.screens.GameScreen.player;
@@ -25,5 +26,17 @@ public class ArcherTower extends Tower{
         this.damage=towerDTO.getDamage();
         this.price=towerDTO.getPrice();
         this.range=towerDTO.getRange();
+    }
+    public void addSkin(){
+        float x=getX(),y=getY();
+        set(new Sprite(new Texture("textures/tower.png")));
+        setSize(1,1);
+        setX(x);
+        setY(y);
+    }
+    @Override
+    public void render(SpriteBatch batch){
+        addSkin();
+        super.draw(batch);
     }
 }

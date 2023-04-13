@@ -6,9 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.szakdoga.game.CompareReturn;
 import com.szakdoga.game.units.Unit;
 import org.datatransferobject.TowerDTO;
-import org.datatransferobject.UnitDTO;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -24,6 +22,7 @@ public abstract class Tower extends Sprite { //TODO teszt osztály
     protected float attackTime;
     protected int id;
     protected String towerClass;
+    protected Sprite sprite;
     public Tower(
             int damage, int price, int range, float attackTime, float spawnX, float spawnY,String towerClass) {
         this.towerClass=towerClass;
@@ -122,7 +121,7 @@ public abstract class Tower extends Sprite { //TODO teszt osztály
         return Objects.hash(getDamage(), getPrice(), getRange(), getTarget(), getDeltaSum(), getAttackTime());
     }
 
-    public void render(SpriteBatch batch, List<Unit> units){
+    public void render(SpriteBatch batch){
         /*if(units.size()>0){
             attack(units);//TODO turned off attack
         }*/
@@ -139,6 +138,14 @@ public abstract class Tower extends Sprite { //TODO teszt osztály
 
     public int getPrice(){
         return price;
+    }
+
+    public String getTowerClass() {
+        return towerClass;
+    }
+
+    public void setTowerClass(String towerClass) {
+        this.towerClass = towerClass;
     }
 
     public float getDamage() {

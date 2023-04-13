@@ -1,9 +1,5 @@
 package com.szakdoga.game.ui;
 
-import static com.szakdoga.game.TowerDefence.*;
-import static com.szakdoga.game.screens.GameScreen.UIscale;
-import static com.szakdoga.game.screens.GameScreen.player;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
@@ -21,6 +17,10 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.szakdoga.game.InputHandler;
 import com.szakdoga.game.towers.ArcherTower;
+
+import static com.szakdoga.game.TowerDefence.font;
+import static com.szakdoga.game.screens.GameScreen.UIscale;
+import static com.szakdoga.game.screens.GameScreen.player;
 
 public class Hud implements Disposable {
     private Stage stage;

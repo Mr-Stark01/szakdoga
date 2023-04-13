@@ -1,13 +1,11 @@
 package com.szakdoga.game;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
 import com.szakdoga.game.pathFinder.PathFinder;
 import com.szakdoga.game.towers.Tower;
 import com.szakdoga.game.units.Unit;
 import org.datatransferobject.DTO;
 import org.datatransferobject.PlayerDTO;
-import org.datatransferobject.UnitDTO;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,7 +46,7 @@ public class Player {
     }
     public void render(SpriteBatch batch){
         for(Tower tower:towers){
-            tower.render(batch, units);
+            tower.render(batch);
         }
         for(Unit unit:units){
             unit.render(batch);
