@@ -53,6 +53,10 @@ public class GameServerHandler implements Runnable{
         }
         player.exchangeData(DTOList.get(0));
         System.out.println("enemy");
+        if(enemyPlayer.getTowers().size()>1){
+            System.out.println(enemyPlayer.getTowers().get(0).getX()+"\t"+enemyPlayer.getTowers().get(0).getY());
+            System.out.println(enemyPlayer.getTowers().get(1).getX()+"\t"+enemyPlayer.getTowers().get(1).getY());
+        }
         enemyPlayer.exchangeData(DTOList.get(1));
         System.out.println("asd");
         System.out.println("Time"+new Date().getTime());

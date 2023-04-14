@@ -12,7 +12,7 @@ import java.util.Objects;
 
 import static com.szakdoga.game.screens.GameScreen.player;
 
-public abstract class Tower extends Sprite { //TODO teszt osztály
+public abstract class Tower{ //TODO teszt osztály
     //TODO factory method és construcktorba csinálni egy new texturet
     protected float damage;
     protected int price;
@@ -23,6 +23,7 @@ public abstract class Tower extends Sprite { //TODO teszt osztály
     protected int id;
     protected String towerClass;
     protected Sprite sprite;
+    protected int X,Y;
     public Tower(
             int damage, int price, int range, float attackTime, float spawnX, float spawnY,String towerClass) {
         this.towerClass=towerClass;
@@ -32,8 +33,11 @@ public abstract class Tower extends Sprite { //TODO teszt osztály
         this.attackTime = attackTime;
         spawnX=(float)Math.floor(spawnX);
         spawnY=(float)Math.floor(spawnY);
-        setX(spawnX);
-        setY(spawnY);
+        sprite=new Sprite();
+        sprite.setX(spawnX);
+        sprite.setY(spawnY);
+        X=(int)spawnX;
+        Y=(int)spawnY;
     }
     //TODO factory val csinálni ezt és madj a aunitot is
     public static ArcherTower createArcherTower(float spawnX,float spawnY){
@@ -49,8 +53,8 @@ public abstract class Tower extends Sprite { //TODO teszt osztály
         }
         for(Unit unit:units) {
             if(
-            Math.sqrt((Math.pow(unit.getX() - getX(), 2)) +
-                      (Math.pow(unit.getY() - getY(), 2)))< range){
+            Math.sqrt((Math.pow(unit.getX() - sprite.getX(), 2)) +
+                      (Math.pow(unit.getY() - sprite.getY(), 2)))< range){
                 target = unit;
                 return;
 
@@ -68,8 +72,8 @@ public abstract class Tower extends Sprite { //TODO teszt osztály
             findTarget(units);
         }
         else if(
-                Math.sqrt((Math.pow(target.getX() - getX(), 2)) +
-                        (Math.pow(target.getY() - getY(), 2))) > range){
+                Math.sqrt((Math.pow(target.getX() - sprite.getX(), 2)) +
+                        (Math.pow(target.getY() - sprite.getY(), 2))) > range){
                 findTarget(units);
             }
     }
@@ -125,7 +129,9 @@ public abstract class Tower extends Sprite { //TODO teszt osztály
         /*if(units.size()>0){
             attack(units);//TODO turned off attack
         }*/
-        super.draw(batch);
+        if (id > 0) {
+            sprite.draw(batch);
+        }
     }
 
     public int getId() {
@@ -168,14 +174,27 @@ public abstract class Tower extends Sprite { //TODO teszt osztály
         return attackTime;
     }
 
+    public void setX(float X){
+        this.X=(int)X;
+    }
+    public void setY(float Y){
+        this.Y=(int)Y;
+    }
+    public float getX(){
+        return X;
+    }
+    public float getY(){
+        return Y;
+    }
+
     public void setValuesFromDTO(TowerDTO towerDTO) {
-        this.id=towerDTO.getId();
-        this.target=towerDTO.getTarget()==null?null:player.getUnitWithId(towerDTO.getTarget().getId());
-        this.deltaSum=towerDTO.getDeltaSum();
-        this.attackTime=towerDTO.getAttackTime();
-        this.damage=towerDTO.getDamage();
-        this.price=towerDTO.getPrice();
-        this.range=towerDTO.getRange();
+        this.id = towerDTO.getId();
+        this.target = towerDTO.getTarget() == null ? null : player.getUnitWithId(towerDTO.getTarget().getId());
+        this.deltaSum = towerDTO.getDeltaSum();
+        this.attackTime = towerDTO.getAttackTime();
+        this.damage = towerDTO.getDamage();
+        this.price = towerDTO.getPrice();
+        this.range = towerDTO.getRange();
     }
     //TODO factory method ami csinál egy archerTower instancet
     //TODO teszttower ami

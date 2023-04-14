@@ -10,6 +10,7 @@ import org.datatransferobject.PlayerDTO;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Player {
     private List<Tower> towers = Collections.synchronizedList(new ArrayList<Tower>());
@@ -28,7 +29,6 @@ public class Player {
     }
     public synchronized boolean addTower(float x,float y){
         if(money-towerInDraggingState.getPrice()>0){
-            money-= towerInDraggingState.getPrice();
             x=(float)Math.floor(x);
             y=(float)Math.floor(y);
             towerInDraggingState.setX(x);
@@ -45,11 +45,11 @@ public class Player {
         this.towerInDraggingState = tower;
     }
     public void render(SpriteBatch batch){
-        for(Tower tower:towers){
-            tower.render(batch);
+        for (int i=0;i<towers.size();i++) {
+            towers.get(i).render(batch);
         }
-        for(Unit unit:units){
-            unit.render(batch);
+        for (int i=0;i<units.size();i++) {
+            units.get(i).render(batch);
         }
 
     }
@@ -88,7 +88,7 @@ public class Player {
             }
         }
         System.out.println("echange data4");
-        for(int i = dto.getTowerDTOs().size()-towers.size()-1; dto.getTowerDTOs().size()>towers.size() && i>=0; i++) { //TODO this is garbage
+        for(int i = towers.size(); dto.getTowerDTOs().size()>towers.size() ; i++) { //TODO this is garbage
             try {
                 towers.add(Tower.createTowerFromDTO(dto.getTowerDTOs().get(i)));
             }

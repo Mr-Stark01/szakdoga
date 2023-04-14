@@ -72,6 +72,7 @@ public class Hud implements Disposable {
     }
 
     public void render(){
+        setMoney(player.getMoney());
         stage.draw();
     }
     public void setMoney(int money){

@@ -101,11 +101,13 @@ public abstract class Unit {
     sprite.setY(sprite.getY()+(getSpeed() * getDeltaY() * Gdx.graphics.getDeltaTime()));
   }
 
-  public void render(SpriteBatch batch) {
+  public  void render(SpriteBatch batch) {
     // System.out.println(getX()+"\t"+getY());
     if(id!=0) {
-      step();
-      sprite.draw(batch);
+      synchronized (this) {
+        step();
+        sprite.draw(batch);
+      }
     }
   }
 
@@ -121,7 +123,7 @@ public abstract class Unit {
     return CompareReturn.DifferentId;
   }
 
-  public void setValuesFromDTO(UnitDTO unitDTO) {
+  public synchronized void setValuesFromDTO(UnitDTO unitDTO) {
       this.speed = unitDTO.getSpeed();
       this.health = unitDTO.getHealth();
       this.damage = unitDTO.getDamage();

@@ -6,6 +6,7 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -26,6 +27,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+
 public class GameScreen extends ScreenAdapter {
     public static float UIscale=1;
     public static Player player;
@@ -45,11 +47,14 @@ public class GameScreen extends ScreenAdapter {
     private InputHandler inputHandler;
     private Hud hud;
     private InputMultiplexer multiplexer;
+    private BitmapFont font;
     public GameScreen(TowerDefence game){
         this.game = game;
         this.batch = new SpriteBatch();
         inputHandler = new InputHandler();
         System.out.println("asd");
+        font = new BitmapFont(Gdx.files.internal("fonts/Kanit-Black.fnt"));
+        font.getData().setScale(0.002f);
         //Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
     }
     @Override
@@ -106,6 +111,7 @@ public class GameScreen extends ScreenAdapter {
         inputHandler.render(batch);
         player.render(batch);
         enemyPlayer.render(batch);
+        font.draw(batch, "Upper left, FPS=" + Gdx.graphics.getFramesPerSecond(), 0, camera.viewportHeight);
         batch.end();
         hud.render();
     }

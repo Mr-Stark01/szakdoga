@@ -8,14 +8,17 @@ import org.datatransferobject.TowerDTO;
 import static com.szakdoga.game.screens.GameScreen.player;
 
 public class ArcherTower extends Tower{
+    private boolean hasTexture=false;
     public ArcherTower( float spawnX, float spawnY,String towerClass) {
         super(10, 10, 4,1f, spawnX, spawnY,towerClass);
-        set(new Sprite(new Texture("textures/tower.png")));
-        setSize(1,1);
+        sprite.set(new Sprite(new Texture("textures/tower.png")));
+        sprite.setSize(1,1);
     }
     public ArcherTower(TowerDTO towerDTO){
         super(10, 10, 4,1f, towerDTO.getX(), towerDTO.getY(),towerDTO.getTowerClass());
-        setSize(1,1);
+        sprite.setSize(1,1);
+        this.X=towerDTO.getX();
+        this.Y=towerDTO.getY();
         setX(towerDTO.getX());
         setY(towerDTO.getY());
         this.towerClass=towerDTO.getTowerClass();
@@ -26,17 +29,19 @@ public class ArcherTower extends Tower{
         this.damage=towerDTO.getDamage();
         this.price=towerDTO.getPrice();
         this.range=towerDTO.getRange();
-    }
-    public void addSkin(){
-        float x=getX(),y=getY();
-        set(new Sprite(new Texture("textures/tower.png")));
-        setSize(1,1);
-        setX(x);
-        setY(y);
+
     }
     @Override
     public void render(SpriteBatch batch){
-        addSkin();
-        super.draw(batch);
+        if(id>0) {
+            if(!hasTexture){
+                sprite.set(new Sprite(new Texture("textures/tower.png")));
+                sprite.setX((float)X);
+                sprite.setY((float)Y);
+                sprite.setSize(1,1);
+                hasTexture=true;
+            }
+            sprite.draw(batch);
+        }
     }
 }
