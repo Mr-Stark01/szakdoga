@@ -13,11 +13,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.szakdoga.game.TowerDefence;
 
-import static com.szakdoga.game.screens.GameScreen.UIscale;
 
 public class MainMenu extends ScreenAdapter {
     final TowerDefence game;
-
+    public static float UIscale=1;
     protected ClickListener startButtonListener;
     protected TextButton.TextButtonStyle style;
     protected Stage stage;
@@ -53,7 +52,6 @@ public class MainMenu extends ScreenAdapter {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 dispose();
-                Gdx.app.exit();//TODO IMPLEMENTÁLNI OPTION SCREENT
                 game.setScreen( new OptionScreen(game) );
             }
         });

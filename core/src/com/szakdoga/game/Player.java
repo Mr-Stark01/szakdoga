@@ -16,7 +16,7 @@ public class Player {
     private List<Tower> towers = Collections.synchronizedList(new ArrayList<Tower>());
     private List<Unit> units= Collections.synchronizedList(new ArrayList<Unit>());
     private int money=10000;
-    private int positionX=10,positionY=10;
+    private int positionX=-1,positionY=-1;
     private float health;
     private Tower towerInDraggingState;
     private PathFinder pathFinder;
@@ -56,9 +56,11 @@ public class Player {
 
     public void exchangeData(DTO dto){
         System.out.println("echange data1");
-        PlayerDTO playerDTO =dto.getPlayerDTO();
+        PlayerDTO playerDTO = dto.getPlayerDTO();
         money = playerDTO.getMoney();
         health = playerDTO.getHealth();
+        positionX = playerDTO.getPositionX();
+        positionY = playerDTO.getPositionY();
         System.out.println("echange data2");
         System.out.println("dtosize:"+dto.getUnitDTOs().size()+"\t"+"units size:"+units.size());
         for(int i = dto.getUnitDTOs().size()-units.size()-1; dto.getUnitDTOs().size()>units.size(); i++) { //TODO this is garbage
@@ -127,37 +129,6 @@ public class Player {
                     break;
             }
         }
-    }
-
-    public void exchangeDataEnemy(DTO dto){
-        PlayerDTO playerDTO = dto.getPlayerDTO();
-        money = playerDTO.getMoney();
-        health = playerDTO.getHealth();
-        System.out.println("exchangerEnemy");
-
-        System.out.println(dto.getUnitDTOs().size()+"\t"+units.size()+"exchangerEnemy2");
-        for(int i = 0; i<dto.getUnitDTOs().size(); i++){ //TODO this is garbage
-            CompareReturn compareReturn=units.get(i).compareToDTO(dto.getUnitDTOs().get(i));
-            switch (compareReturn){
-                case SameIdSameValue:
-                    break;
-                case SameIdDifferentValue:
-                    units.get(i).setValuesFromDTO(dto.getUnitDTOs().get(i));
-                    break;
-                case DifferentId:
-                    if(dto.getUnitDTOs().get(i).getId() == -1){
-                        units.remove(i);
-                        dto.getUnitDTOs().remove(i);
-                    }
-                    else {
-
-                        units.get(i).setValuesFromDTO(dto.getUnitDTOs().get(i));
-                        System.out.println(units.get(i).getId());
-                    }
-                    break;
-            }
-        }
-        System.out.println(dto.getUnitDTOs().size()+"\t"+units.size()+"exchangerEnemy3");
     }
 
     public synchronized void buyUnit(Unit unit) {

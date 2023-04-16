@@ -1,4 +1,4 @@
-package com.szakdoga.game;
+package com.szakdoga.game.screens.inputHandlers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -12,8 +12,8 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.szakdoga.game.units.Unit;
 
-import static com.szakdoga.game.screens.GameScreen.UIscale;
 import static com.szakdoga.game.screens.GameScreen.player;
+import static com.szakdoga.game.screens.MainMenu.UIscale;
 
 public class InputHandler implements InputProcessor {
     private static Sprite currentlyDragging;
@@ -33,7 +33,7 @@ public class InputHandler implements InputProcessor {
             Gdx.app.exit();
         }
         if(keycode == Input.Keys.P){
-            player.buyUnit(Unit.createPikeUnit(6,43,"PikeUnitPlaceHolder"));
+            player.buyUnit(Unit.createPikeUnit(player.getPositionX(), player.getPositionY(), "PikeUnitPlaceHolder"));
         }
         return true;
     }
@@ -51,7 +51,7 @@ public class InputHandler implements InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         //Vector3 mouse2 = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0)); //For getting coordinates
-        //System.out.println(mouse2.x+"\t"+mouse2.y);
+        //System.out.println("MOUSE:"+mouse2.x+"\t"+mouse2.y);
         if(currentlyDragging != null && button == Input.Buttons.LEFT){
             Vector3 mouse = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
             player.addTower(mouse.x,mouse.y);

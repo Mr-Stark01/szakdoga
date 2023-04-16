@@ -13,23 +13,20 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.szakdoga.game.InputHandler;
+import com.szakdoga.game.screens.inputHandlers.InputHandler;
 import com.szakdoga.game.Player;
 import com.szakdoga.game.TowerDefence;
 import com.szakdoga.game.network.Client;
-import com.szakdoga.game.network.GameServerHandler;
 import com.szakdoga.game.pathFinder.PathFinder;
 import com.szakdoga.game.ui.Hud;
 
-import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 
 public class GameScreen extends ScreenAdapter {
-    public static float UIscale=1;
+
     public static Player player;
     public static Player enemyPlayer;
     static float scale;
@@ -71,14 +68,14 @@ public class GameScreen extends ScreenAdapter {
         player = new Player(pathfinder);
         enemyPlayer = new Player(pathfinder);
 
-        GameServerHandler gameServerHandler;
+        /*GameServerHandler gameServerHandler;
         try {
             gameServerHandler = new GameServerHandler("0.0.0.0",56227);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         schedueldExecutor.scheduleAtFixedRate(gameServerHandler,0,50, TimeUnit.MILLISECONDS);//TODO probálgatni
-
+           */
         //Instant.now();
 
         //Player and pathfinder
@@ -111,7 +108,6 @@ public class GameScreen extends ScreenAdapter {
         inputHandler.render(batch);
         player.render(batch);
         enemyPlayer.render(batch);
-        font.draw(batch, "Upper left, FPS=" + Gdx.graphics.getFramesPerSecond(), 0, camera.viewportHeight);
         batch.end();
         hud.render();
     }
