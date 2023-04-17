@@ -1,6 +1,7 @@
 package com.szakdoga.game.towers;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.szakdoga.game.CompareReturn;
@@ -24,6 +25,7 @@ public abstract class Tower{ //TODO teszt osztály
     protected String towerClass;
     protected Sprite sprite;
     protected int X,Y;
+    protected boolean hasTexture=false;
     public Tower(
             int damage, int price, int range, float attackTime, float spawnX, float spawnY,String towerClass) {
         this.towerClass=towerClass;
@@ -130,6 +132,13 @@ public abstract class Tower{ //TODO teszt osztály
             attack(units);//TODO turned off attack
         }*/
         if (id > 0) {
+            if(!hasTexture){
+                sprite.set(new Sprite(new Texture("textures/tower.png")));
+                sprite.setX((float)X);
+                sprite.setY((float)Y);
+                sprite.setSize(1,1);
+                hasTexture=true;
+            }
             sprite.draw(batch);
         }
     }

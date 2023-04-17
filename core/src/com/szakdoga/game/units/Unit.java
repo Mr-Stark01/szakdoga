@@ -1,6 +1,7 @@
 package com.szakdoga.game.units;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
@@ -30,6 +31,7 @@ public abstract class Unit {
   protected List<Integer> nextXCoordinates;
   protected List<Integer> nextYCoordinates;
   protected Sprite sprite;
+  protected Boolean hasTexture=false;
 
   public Unit(float speed, float health, float damage, int price, float X, float Y,String unitClass) {
     this.speed = speed;
@@ -46,10 +48,20 @@ public abstract class Unit {
     nextYCoordinates = new ArrayList<>();
   }
 
+  /**
+   * Factory method
+   * @param unitDto
+   * @return
+   */
   public static PikeUnit createPikeUnitFromDTO(UnitDTO unitDto) {
     return new PikeUnit(unitDto);
   }
 
+  /**
+   * Factory method again just for receiveing data from server converting DTO to proper specialized unit class
+   * @param unitDTO
+   * @return
+   */
   public static Unit createUnitFromDTO(UnitDTO unitDTO) {
     switch (unitDTO.getUnitClass()){
       case "Pike":
@@ -59,25 +71,21 @@ public abstract class Unit {
     return null;
   }
 
+  /**
+   * A factory method esentialy
+   * @param X starting place
+   * @param Y starting place
+   * @param unitName class Name in string form es
+   * @return Unit
+   */
   public static Unit createPikeUnit(int X, int Y, String unitName) {
     return new PikeUnit(X,Y);
   }
 
-  public void attacked(float damage) {
-    health -= damage;
-  }
 
-  public boolean isDead() {
-    return health < 0;
-  }
-
-  public String getUnitClass() {
-    return unitClass;
-  }
-
-  public void setUnitClass(String unitClass) {
-    this.unitClass = unitClass;
-  }
+  /**
+   * caculates the deltas for stepping how much should it move between frames
+   */
   public void calculateAngle() {
     if(/*new Date().getTime() - lastStep > 1000/speed*/Math.sqrt((Math.pow(this.sprite.getX()-this.getNextX().get(0),2))+(Math.pow(this.sprite.getY()-this.getNextY().get(0),2))) < 0.1f ) {
       System.out.println("delete first from list");
@@ -90,6 +98,11 @@ public abstract class Unit {
       deltaY = MathUtils.sin(angle);
     }
   }
+
+  /**
+   * This functions calculates the next step it's purely graphical
+   * game from a logic point only counts rounded coordinates
+   */
   public void step(){
     if(nextXCoordinates.get(0)==-1 && nextXCoordinates.get(0)==-1){
       sprite.setX(Math.round(getX()));
@@ -101,13 +114,21 @@ public abstract class Unit {
     sprite.setY(sprite.getY()+(getSpeed() * getDeltaY() * Gdx.graphics.getDeltaTime()));
   }
 
-  public  void render(SpriteBatch batch) {
-    // System.out.println(getX()+"\t"+getY());
-    if(id!=0) {
-      synchronized (this) {
-        step();
-        sprite.draw(batch);
+  public void render(SpriteBatch batch){
+        /*if(units.size()>0){
+            attack(units);//TODO turned off attack
+        }*/
+    if (id > 0) {
+      if(!hasTexture){
+        float X=getX(),Y=getY();
+        sprite.set(new Sprite(new Texture("textures/tower.png")));
+        sprite.setX(X);
+        sprite.setY(Y);
+        sprite.setSize(1,1);
+        hasTexture=true;
       }
+      step();
+      sprite.draw(batch);
     }
   }
 
@@ -137,10 +158,8 @@ public abstract class Unit {
       this.lastStep = unitDTO.getLastStep();
       this.id = unitDTO.getId();
 
-      System.out.println("setdatafromdtoX" + nextXCoordinates.size() + "\t" + unitDTO.getNextX().size());
-      System.out.println("setdatafromdtoY" + nextYCoordinates.size() + "\t" + unitDTO.getNextY().size());
   }
-
+  // Bellow this are mostly auto generated functions
   public boolean equalsToDTO(UnitDTO unit){
     return Float.compare(unit.getSpeed(), getSpeed()) == 0 && Float.compare(unit.getHealth(), getHealth()) == 0 && Float.compare(unit.getDamage(), getDamage()) == 0 && getPrice() == unit.getPrice() && getPreviousX() == unit.getPreviousX() && getPreviousY() == unit.getPreviousY() && getNextX().equals(unit.getNextX()) && getNextY().equals(unit.getNextY()) && Float.compare(unit.getDeltaX(), getDeltaX()) == 0 && Float.compare(unit.getDeltaY(), getDeltaY()) == 0 && Float.compare(unit.getDistance(), getDistance()) == 0;
   }
@@ -234,6 +253,22 @@ public abstract class Unit {
   }
   public float getY(){
     return sprite.getY();
+  }
+
+  public void attacked(float damage) {
+    health -= damage;
+  }
+
+  public boolean isDead() {
+    return health < 0;
+  }
+
+  public String getUnitClass() {
+    return unitClass;
+  }
+
+  public void setUnitClass(String unitClass) {
+    this.unitClass = unitClass;
   }
 
 

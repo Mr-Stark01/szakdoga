@@ -31,20 +31,4 @@ public class PikeUnit extends Unit{
         this.PreviousX=unitDTO.getPreviousX();
         this.PreviousY=unitDTO.getPreviousY();
     }
-    public void addSkin(){
-        float x=getX(),y=getY();
-        sprite.set(new Sprite(new Texture("placeholder.jpg")));
-        sprite.setSize(1,1);
-        sprite.setX(x);
-        sprite.setY(y);
-    }
-    @Override
-    public void render(SpriteBatch batch) {
-        // System.out.println(getX()+"\t"+getY());
-        addSkin();
-        if(id!=0) {
-            step();
-            sprite.draw(batch);
-        }
-    }
 }
