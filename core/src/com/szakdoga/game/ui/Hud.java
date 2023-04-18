@@ -16,12 +16,18 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.szakdoga.game.FontCreator;
 import com.szakdoga.game.screens.inputHandlers.InputHandler;
 import com.szakdoga.game.towers.ArcherTower;
+import com.szakdoga.game.units.Unit;
 
 import static com.szakdoga.game.screens.GameScreen.player;
 import static com.szakdoga.game.screens.MainMenu.UIscale;
+import static com.szakdoga.game.towers.Tower.*;
 
+/**
+ * Displays HUD and handles HUD interactions
+ */
 public class Hud implements Disposable {
     private Stage stage;
     private Table tableTop;
@@ -34,12 +40,8 @@ public class Hud implements Disposable {
     private Viewport viewport;
 
     public Hud(final InputMultiplexer multiplexer, SpriteBatch batch, final InputHandler inputHandler) {
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Kanit-Black.ttf"));
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = (int) (75*UIscale);
-        BitmapFont font = generator.generateFont(parameter);
-        generator.dispose();
 
+        BitmapFont font = FontCreator.createFont(75);
         viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), new OrthographicCamera());
         stage = new Stage(viewport, batch);
         multiplexer.addProcessor(stage);
@@ -56,20 +58,63 @@ public class Hud implements Disposable {
         labelStyle.font=font;
         style.font = font;
         style.font.setColor(Color.BLUE);
-        ImageButton towerHudElement = new ImageButton(new TextureRegionDrawable(new Texture("textures/tower.png")));
+        ImageButton archerTowerHudElement = new ImageButton(new TextureRegionDrawable(new Texture("textures/archertower.png")));
+        ImageButton crossBowTowerHudElement = new ImageButton(new TextureRegionDrawable(new Texture("textures/crossbowtower.png")));
+        ImageButton wizzardTowerHudElement = new ImageButton(new TextureRegionDrawable(new Texture("textures/wizardtower.png")));
         /**
          * add different eventListeners here for all the clickable elements of the hud
          */
-        //TODO how to create a tower buyyer thingi maggie
-        towerHudElement.addListener(new ClickListener(){ //TODO esetleg refractor
+        tableTop.top();
+        archerTowerHudElement.addListener(new ClickListener(){ //TODO esetleg refractor
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                inputHandler.draggingArcher();
-                player.create(new ArcherTower(0,0,"Archer"));
+                inputHandler.draggingArcher("textures/archertower.png");
+                player.create(createArcherTower(0,0));
             }
         });
-        tableTop.top();
-        tableTop.add(towerHudElement).height(Gdx.graphics.getHeight()/6f);
+        tableTop.add(archerTowerHudElement).height(Gdx.graphics.getHeight()/6f).width(Gdx.graphics.getHeight()/6f);
+        crossBowTowerHudElement.addListener(new ClickListener(){ //TODO esetleg refractor
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                inputHandler.draggingArcher("textures/crossbowtower.png");
+                player.create(createCrossBowTower(0,0));
+            }
+        });
+        tableTop.add(crossBowTowerHudElement).height(Gdx.graphics.getHeight()/6f).width(Gdx.graphics.getHeight()/6f);
+        wizzardTowerHudElement.addListener(new ClickListener(){ //TODO esetleg refractor
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                inputHandler.draggingArcher("textures/wizardtower.png");
+                player.create(createWizardTower(0,0));
+            }
+        });
+        tableTop.add(wizzardTowerHudElement).height(Gdx.graphics.getHeight()/6f).width(Gdx.graphics.getHeight()/6f);
+
+        ImageButton knightUnitHudElement = new ImageButton(new TextureRegionDrawable(new Texture("textures/knightunit.png")));
+        ImageButton wizardUnitHudElement = new ImageButton(new TextureRegionDrawable(new Texture("textures/wizardunit.png")));
+        ImageButton pikeUnitHudElement = new ImageButton(new TextureRegionDrawable(new Texture("textures/pikeunit.png")));
+        knightUnitHudElement.addListener(new ClickListener(){ //TODO esetleg refractor
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                player.buyUnit(Unit.createKnightUnit(player.getPositionX(), player.getPositionY(), "Knight"));
+            }
+        });
+        tableTop.add(knightUnitHudElement).height(Gdx.graphics.getHeight()/6f).width(Gdx.graphics.getHeight()/6f);
+        wizardUnitHudElement.addListener(new ClickListener(){ //TODO esetleg refractor
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                player.buyUnit(Unit.createWizardUnit(player.getPositionX(), player.getPositionY(), "Wizard"));
+            }
+        });
+        tableTop.add(wizardUnitHudElement).height(Gdx.graphics.getHeight()/6f).width(Gdx.graphics.getHeight()/6f);
+        pikeUnitHudElement.addListener(new ClickListener(){ //TODO esetleg refractor
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                player.buyUnit(Unit.createPikeUnit(player.getPositionX(), player.getPositionY(), "Pike"));
+            }
+        });
+        tableTop.add(pikeUnitHudElement).height(Gdx.graphics.getHeight()/6f).width(Gdx.graphics.getHeight()/6f);
+
 
 
         tableBottom.bottom();

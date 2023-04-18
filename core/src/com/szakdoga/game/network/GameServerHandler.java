@@ -10,6 +10,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.szakdoga.game.screens.GameScreen.enemyPlayer;
 import static com.szakdoga.game.screens.GameScreen.player;
@@ -21,7 +22,7 @@ public class GameServerHandler implements Runnable{
     private List<DTO> DTOList= new ArrayList<>();
     private final Socket clientSocket;
     private DTO dtoIn;
-    private int id = 0; // Ez nem egy jó megoldás
+    private static AtomicInteger id=new AtomicInteger(0);
 
     public GameServerHandler(String ip, int port) throws IOException {
         this.clientSocket=new Socket(ip,port);
@@ -38,6 +39,9 @@ public class GameServerHandler implements Runnable{
         try {
             sendData();
             receiveData();
+            if(id.get()<0){
+                clientSocket.close();
+            }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
 
@@ -48,9 +52,9 @@ public class GameServerHandler implements Runnable{
         System.out.println("receive 1");
 
         DTOList=((ArrayList<DTO>) objectInputStream.readObject());
-        if(id==0) {
-            id = DTOList.get(0).getId();
-        }
+
+        id.set(DTOList.get(0).getId());
+
         player.exchangeData(DTOList.get(0));
         System.out.println("enemy");
         if(enemyPlayer.getTowers().size()>1){
@@ -80,10 +84,10 @@ public class GameServerHandler implements Runnable{
     }
         protected void sendData() throws IOException {
         System.out.println("send data1");
-        System.out.println(id);
+        System.out.println(id.get());
         objectOutputStream.writeObject(new DTO(Preparator.createUnitDTOListFromUnitList(player.getUnits()),
                                                 Preparator.createTowerDTOListFromTowertList(player.getTowers()),
-                                                Preparator.createPlayerDTOFromPlayer(player),id));
+                                                Preparator.createPlayerDTOFromPlayer(player),id.get()));
         objectOutputStream.flush();
         System.out.println("send data2");
         }
@@ -97,6 +101,9 @@ public class GameServerHandler implements Runnable{
 
     public List<DTO> getDtoOut() {
         return DTOList;
+    }
+    public static int getId(){
+        return id.get();
     }
 }
 

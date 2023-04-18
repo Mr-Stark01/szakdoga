@@ -17,7 +17,7 @@ public class Player {
     private List<Unit> units= Collections.synchronizedList(new ArrayList<Unit>());
     private int money=10000;
     private int positionX=-1,positionY=-1;
-    private float health;
+    private float health=100;
     private Tower towerInDraggingState;
     private PathFinder pathFinder;
     public Player(PathFinder pathfinder){

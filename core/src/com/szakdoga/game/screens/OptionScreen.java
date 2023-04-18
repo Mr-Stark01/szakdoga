@@ -21,13 +21,11 @@ import static com.szakdoga.game.screens.MainMenu.UIscale;
 public class OptionScreen extends ScreenAdapter {
     SpriteBatch spriteBatch = new SpriteBatch();
     TextField UIscaleField;
-
-
-    protected ClickListener startButtonListener;
     protected TextButton.TextButtonStyle style;
     protected Stage stage;
     protected Table table;
     public OptionScreen(TowerDefence game)  {
+
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Kanit-Black.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = (int) (75*UIscale);
@@ -49,13 +47,11 @@ public class OptionScreen extends ScreenAdapter {
 
 
         TextButton UIScale = new TextButton("UI Scale write a number here 1-10 can be float", style);
-        //TextButton options = new TextButton("Options", style);
-        //TextButton misc = new TextButton("Misc", style);
         TextButton exit = new TextButton("Back to menu", style);
         UIScale.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //Gdx.input.getTextInput(this, "Set IP address", "", "192.168.0.210");
+
             }
         });
         exit.addListener(new ClickListener(){

@@ -108,8 +108,8 @@ public class InputHandler implements InputProcessor {
             currentlyDragging.draw(batch);
         }
     }
-    public void draggingArcher() {
-        currentlyDragging=new Sprite(new Texture("textures/tower.png"));
+    public void draggingArcher(String fileHandle) {
+        currentlyDragging=new Sprite(new Texture(fileHandle));
         currentlyDragging.setSize(1,1);
     }
 }

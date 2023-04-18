@@ -2,22 +2,20 @@ package com.szakdoga.game.towers;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.datatransferobject.TowerDTO;
 
 import static com.szakdoga.game.screens.GameScreen.player;
 
-public class ArcherTower extends Tower{
-
-    public ArcherTower( float spawnX, float spawnY,String towerClass) {
-        super(10, 10, 4,1f, spawnX, spawnY,towerClass);
-        textureURL="textures/archertower.png";
+public class CrossBowTower extends Tower{
+    public CrossBowTower( float spawnX, float spawnY,String towerClass) {
+        super(20, 40, 8,2f, spawnX, spawnY,towerClass);
+        textureURL="textures/crossbowtower.png";
         sprite.set(new Sprite(new Texture(textureURL)));
         sprite.setSize(1,1);
     }
-    public ArcherTower(TowerDTO towerDTO){
+    public CrossBowTower(TowerDTO towerDTO){
         super(towerDTO.getDamage(), towerDTO.getPrice(), towerDTO.getRange(),towerDTO.getAttackTime(), towerDTO.getX(), towerDTO.getY(),towerDTO.getTowerClass());
-        textureURL="textures/archertower.png";
+        textureURL="textures/crossbowtower.png";
         sprite.setSize(1,1);
         this.X=towerDTO.getX();
         this.Y=towerDTO.getY();

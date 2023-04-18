@@ -31,6 +31,7 @@ public abstract class Unit {
   protected List<Integer> nextXCoordinates;
   protected List<Integer> nextYCoordinates;
   protected Sprite sprite;
+  protected String textureURL;
   protected Boolean hasTexture=false;
 
   public Unit(float speed, float health, float damage, int price, float X, float Y,String unitClass) {
@@ -40,8 +41,8 @@ public abstract class Unit {
     this.price = price;
     this.PreviousX = (int) X;
     this.PreviousY = (int) Y;
-    sprite=new Sprite();
-    sprite.setX(X); // TODO WHY does this not work?
+    sprite=new Sprite(); //Creates a sprite
+    sprite.setX(X);
     sprite.setY(Y);
     this.unitClass=unitClass;
     nextXCoordinates = new ArrayList<>();
@@ -56,23 +57,32 @@ public abstract class Unit {
   public static PikeUnit createPikeUnitFromDTO(UnitDTO unitDto) {
     return new PikeUnit(unitDto);
   }
+  public static WizardUnit createKnightUnitFromDTO(UnitDTO unitDto) {
+    return new WizardUnit(unitDto);
+  }
+  public static KnightUnit createWizardUnitFromDTO(UnitDTO unitDto) {
+    return new KnightUnit(unitDto);
+  }
 
   /**
-   * Factory method again just for receiveing data from server converting DTO to proper specialized unit class
+   * Factory method again just for receiving data from server converting DTO to proper specialized unit class
    * @param unitDTO
    * @return
    */
   public static Unit createUnitFromDTO(UnitDTO unitDTO) {
     switch (unitDTO.getUnitClass()){
       case "Pike":
-      case "PikeUnitPlaceHolder":
         return createPikeUnitFromDTO(unitDTO);
+      case "Wizard":
+        return createKnightUnitFromDTO(unitDTO);
+      case "Knight":
+        return createWizardUnitFromDTO(unitDTO);
     }
     return null;
   }
 
   /**
-   * A factory method esentialy
+   * A factory method essentially
    * @param X starting place
    * @param Y starting place
    * @param unitName class Name in string form es
@@ -81,13 +91,19 @@ public abstract class Unit {
   public static Unit createPikeUnit(int X, int Y, String unitName) {
     return new PikeUnit(X,Y);
   }
+  public static Unit createWizardUnit(int X, int Y, String unitName) {
+    return new WizardUnit(X,Y);
+  }
+  public static Unit createKnightUnit(int X, int Y, String unitName) {
+    return new KnightUnit(X,Y);
+  }
 
 
   /**
-   * caculates the deltas for stepping how much should it move between frames
+   * Calculates the deltas for stepping how much should it move between frames
    */
   public void calculateAngle() {
-    if(/*new Date().getTime() - lastStep > 1000/speed*/Math.sqrt((Math.pow(this.sprite.getX()-this.getNextX().get(0),2))+(Math.pow(this.sprite.getY()-this.getNextY().get(0),2))) < 0.1f ) {
+    if(Math.sqrt((Math.pow(this.sprite.getX()-this.getNextX().get(0),2))+(Math.pow(this.sprite.getY()-this.getNextY().get(0),2))) < 0.1f ) {
       System.out.println("delete first from list");
       nextXCoordinates.remove(0);
       nextYCoordinates.remove(0);
@@ -104,7 +120,8 @@ public abstract class Unit {
    * game from a logic point only counts rounded coordinates
    */
   public void step(){
-    if(nextXCoordinates.get(0)==-1 && nextXCoordinates.get(0)==-1){
+    //If reached destination it stops and waits for destruction
+    if(nextXCoordinates.get(0)==-1 && nextYCoordinates.get(0)==-1){
       sprite.setX(Math.round(getX()));
       sprite.setY(Math.round(getY()));
       return;
@@ -114,19 +131,24 @@ public abstract class Unit {
     sprite.setY(sprite.getY()+(getSpeed() * getDeltaY() * Gdx.graphics.getDeltaTime()));
   }
 
+  /**
+   * This exists because textures can only be initialized on the main thread otherwise there is a problem with native method calls.
+   * Only needed for the enemy since unit creation otherwise happens on the main thread.
+   */
+  public void addTexture(){
+    if(!hasTexture){
+      float X=getX(),Y=getY();
+      sprite.set(new Sprite(new Texture("textures/tower.png")));
+      sprite.setX(X);
+      sprite.setY(Y);
+      sprite.setSize(1,1);
+      hasTexture=true;
+    }
+  }
+
   public void render(SpriteBatch batch){
-        /*if(units.size()>0){
-            attack(units);//TODO turned off attack
-        }*/
     if (id > 0) {
-      if(!hasTexture){
-        float X=getX(),Y=getY();
-        sprite.set(new Sprite(new Texture("textures/tower.png")));
-        sprite.setX(X);
-        sprite.setY(Y);
-        sprite.setSize(1,1);
-        hasTexture=true;
-      }
+      addTexture();
       step();
       sprite.draw(batch);
     }
@@ -144,6 +166,10 @@ public abstract class Unit {
     return CompareReturn.DifferentId;
   }
 
+  /**
+   * Update values from network
+   * @param unitDTO
+   */
   public synchronized void setValuesFromDTO(UnitDTO unitDTO) {
       this.speed = unitDTO.getSpeed();
       this.health = unitDTO.getHealth();

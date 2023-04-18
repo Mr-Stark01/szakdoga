@@ -13,6 +13,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.szakdoga.game.FontCreator;
 import com.szakdoga.game.network.GameServerHandler;
 import com.szakdoga.game.screens.inputHandlers.InputHandler;
 import com.szakdoga.game.Player;
@@ -35,11 +36,9 @@ public class GameScreen extends ScreenAdapter {
     static float scale;
     final TowerDefence game;
     Texture bg;
-    private Client client;
     private SpriteBatch batch;
     private ExecutorService executor = Executors.newFixedThreadPool(20);
     private ScheduledExecutorService schedueldExecutor = Executors.newScheduledThreadPool(10);
-    //Map make own class???
     private TiledMapTileLayer tileyLayer;
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
@@ -47,14 +46,11 @@ public class GameScreen extends ScreenAdapter {
     private InputHandler inputHandler;
     private Hud hud;
     private InputMultiplexer multiplexer;
-    private BitmapFont font;
     public GameScreen(TowerDefence game){
         this.game = game;
         this.batch = new SpriteBatch();
         inputHandler = new InputHandler();
         System.out.println("asd");
-        font = new BitmapFont(Gdx.files.internal("fonts/Kanit-Black.fnt"));
-        font.getData().setScale(0.002f);
         //Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
     }
     @Override
@@ -79,11 +75,7 @@ public class GameScreen extends ScreenAdapter {
         }
         schedueldExecutor.scheduleAtFixedRate(gameServerHandler,0,50, TimeUnit.MILLISECONDS);//TODO probálgatni
 
-        //Instant.now();
-
         //Player and pathfinder
-
-
 
         camera = new OrthographicCamera();
         camera.viewportHeight = Gdx.graphics.getHeight() / scale;
@@ -113,5 +105,23 @@ public class GameScreen extends ScreenAdapter {
         enemyPlayer.render(batch);
         batch.end();
         hud.render();
+        finished();
+    }
+    @Override
+    public void dispose(){
+        batch.dispose();
+        renderer.dispose();
+        schedueldExecutor.shutdown();
+    }
+    public void finished(){
+        if(GameServerHandler.getId()==-3) {
+            dispose();
+            game.setScreen(new EndScreen("Loss"));
+        }
+        if(GameServerHandler.getId()==-4) {
+            dispose();
+            game.setScreen(new EndScreen("Win"));
+        }
+
     }
 }
