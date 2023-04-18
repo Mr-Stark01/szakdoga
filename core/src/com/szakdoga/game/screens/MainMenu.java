@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -11,13 +12,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.FillViewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.szakdoga.game.FontCreator;
 import com.szakdoga.game.TowerDefence;
 
 
 public class MainMenu extends ScreenAdapter {
     final TowerDefence game;
     public static float UIscale=1;
-    protected ClickListener startButtonListener;
     protected TextButton.TextButtonStyle style;
     protected Stage stage;
     protected Table table;
@@ -30,7 +33,7 @@ public class MainMenu extends ScreenAdapter {
         table = new Table();
         table.setFillParent(true);
         style = new TextButton.TextButtonStyle();
-        style.font = game.font;
+        style.font = FontCreator.createFont(100);
         table.row().minHeight((float) (game.screenHeight*0.25*UIscale)).minWidth(game.screenWidth);//gets inherited
         table.add(new TextButton("Szakdoga", style));
         TextButton startButton = new TextButton("Start", style);
@@ -73,9 +76,6 @@ public class MainMenu extends ScreenAdapter {
         bg = new Texture("menu/start_menu.png");
         styleHover = new TextButton.TextButtonStyle();
         styleHover.font = game.fontHover;
-
-
-
     }
     @Override
     public void render(float delta){
@@ -111,6 +111,10 @@ public class MainMenu extends ScreenAdapter {
     public void dispose(){
         hide();
         stage.dispose();
+    }
+    @Override
+    public void resize (int width, int height) {
+        stage.getViewport().update(width,height);
     }
     @Override
     public void hide(){

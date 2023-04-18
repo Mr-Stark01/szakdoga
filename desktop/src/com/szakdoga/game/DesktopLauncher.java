@@ -9,6 +9,7 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setForegroundFPS(60);
+		config.setResizable(true);
 		config.setWindowedMode(1000,540);
 		config.setTitle("szakdoga");
 		//config.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode());

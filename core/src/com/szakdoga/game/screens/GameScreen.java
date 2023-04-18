@@ -91,6 +91,13 @@ public class GameScreen extends ScreenAdapter {
         Gdx.input.setInputProcessor(multiplexer);
         batch.setProjectionMatrix(camera.combined);
     }
+
+    @Override
+    public void resize (int width, int height) {
+        camera = new OrthographicCamera();
+        camera.viewportHeight = Gdx.graphics.getHeight() / scale;
+        camera.viewportWidth = Gdx.graphics.getWidth() / scale;
+    }
     @Override
     public void render(float delta){
         Gdx.gl.glClearColor(0, 0, 0, 1);

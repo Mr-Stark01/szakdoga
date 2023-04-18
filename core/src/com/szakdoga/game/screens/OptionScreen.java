@@ -15,6 +15,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.szakdoga.game.TowerDefence;
 
+import java.util.*;
+
 import static com.szakdoga.game.screens.MainMenu.UIscale;
 
 
@@ -22,10 +24,20 @@ public class OptionScreen extends ScreenAdapter {
     SpriteBatch spriteBatch = new SpriteBatch();
     TextField UIscaleField;
     protected TextButton.TextButtonStyle style;
+    TextButton.TextButtonStyle styleHover;
     protected Stage stage;
     protected Table table;
+    protected List<Map.Entry<Integer,Integer>> res= new ArrayList<>();
+    protected int resCursor=0;
+    protected boolean fullScreen=Gdx.graphics.isFullscreen();
+    protected TowerDefence game;
     public OptionScreen(TowerDefence game)  {
-
+        this.game=game;
+        styleHover = new TextButton.TextButtonStyle();
+        styleHover.font = game.fontHover;
+        res.add(new AbstractMap.SimpleEntry<>(1000,540));
+        res.add(new AbstractMap.SimpleEntry<>(1920,1080));
+        res.add(new AbstractMap.SimpleEntry<>(1280,720));
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Kanit-Black.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = (int) (75*UIscale);
@@ -35,6 +47,7 @@ public class OptionScreen extends ScreenAdapter {
         textFieldStyle.font=font;
         textFieldStyle.fontColor=Color.WHITE;
 
+
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         table = new Table();
@@ -43,11 +56,13 @@ public class OptionScreen extends ScreenAdapter {
         style = new TextButton.TextButtonStyle();
         style.font = font;
         style.font.setColor(Color.BLUE);
-        table.row().minHeight((float) (game.screenHeight*0.25*UIscale)).minWidth(game.screenWidth);//gets inherited
+        table.row().minHeight((float) (game.screenHeight*0.25*UIscale)).maxWidth(Gdx.graphics.getWidth());//gets inherited
 
 
-        TextButton UIScale = new TextButton("UI Scale write a number here 1-10 can be float", style);
+        TextButton UIScale = new TextButton("UI Scale write a number \n here 0-3 can be float", style);
         TextButton exit = new TextButton("Back to menu", style);
+        //TextButton Resolution = new TextButton("Res:"+res.get(resCursor).getKey()+"x"+res.get(resCursor).getValue(),style);
+        TextButton fullscreen = new TextButton("Fullscreen: OFF",style);
         UIScale.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -61,39 +76,87 @@ public class OptionScreen extends ScreenAdapter {
                 game.setScreen(new MainMenu(game));
             }
         });
+        fullscreen.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event,float x,float y){
+                if(!fullScreen) {
+                    Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+                    fullscreen.setText("Fullscreen: ON");
+                    fullScreen=true;
+                }
+                else{
+                    Gdx.graphics.setWindowedMode(res.get(resCursor).getKey(),res.get(resCursor).getValue());
+                    fullscreen.setText("Fullscreen: OFF");
+                    fullScreen=false;
+                }
+                game.setScreen(new OptionScreen(game));
+            }
+        });
+        /*Resolution.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event,float x,float y){
+                    resCursor++;
+                    if(resCursor>=res.size()){
+                        resCursor=0;
+                    }
+                    //Gdx.graphics.setWindowedMode(res.get(resCursor).getKey(),res.get(resCursor).getValue());
+                    Resolution.setText("Res:"+res.get(resCursor).getKey()+"x"+res.get(resCursor).getValue());
+                    //game.setScreen(new MainMenu(game));
+                }
+        });*/
 
 
         UIscaleField = new TextField("", textFieldStyle);
-        UIscaleField.setSize(300, 150);
+        UIscaleField.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         UIscaleField.setMessageText("Input");
 
         table.row().minHeight((float) (game.screenHeight*0.15*UIscale));
         table.add(UIScale).fill();
         table.row().minHeight((float) (game.screenHeight*0.15*UIscale));
         table.add(UIscaleField).fill();
+        //table.row().minHeight((float) (game.screenHeight*0.15*UIscale));
+        //table.add(Resolution).fill();
+        table.row().minHeight((float) (game.screenHeight*0.15*UIscale));
+        table.add(fullscreen).fill();
         table.row().minHeight((float) (game.screenHeight*0.15*UIscale));
         table.add(exit).fill();
 
 
         stage.addActor(table);
         stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+        resize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
     }
     @Override
     public void render(float delta){
-        ScreenUtils.clear(1, 0, 0, 1);
+        ScreenUtils.clear(0, 0, 0, 1);
         spriteBatch.begin();
         stage.draw();
         spriteBatch.end();
+        if(((TextButton)((Table)stage.getActors().get(0)).getCells().get(2).getActor()).getClickListener().isOver()){
+            System.out.println("Hover over button");
+            ((TextButton)((Table)stage.getActors().get(0)).getCells().get(0).getActor()).setStyle((style));
+            ((TextButton)((Table)stage.getActors().get(0)).getCells().get(2).getActor()).setStyle((styleHover));
+            ((TextButton)((Table)stage.getActors().get(0)).getCells().get(3).getActor()).setStyle((style));
+        }
+
         try{
         UIscale=Float.parseFloat(UIscaleField.getText());
+        if(UIscale>0 && UIscale<3) {
+            game.setScreen(new OptionScreen(game));
+        }
         }catch (NumberFormatException e){
-            e.printStackTrace();
+
         }
 
     }
     @Override
+    public void resize (int width, int height) {
+        stage.getViewport().update(width,height);
+    }
+    @Override
     public void dispose(){
+        spriteBatch.dispose();
         stage.dispose();
     }
 }
