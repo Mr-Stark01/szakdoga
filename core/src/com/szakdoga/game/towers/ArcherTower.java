@@ -2,7 +2,6 @@ package com.szakdoga.game.towers;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.datatransferobject.TowerDTO;
 
 import static com.szakdoga.game.screens.GameScreen.player;

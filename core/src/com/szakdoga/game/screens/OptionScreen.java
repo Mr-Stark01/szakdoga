@@ -3,9 +3,7 @@ package com.szakdoga.game.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -13,9 +11,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.szakdoga.game.FontCreator;
+import com.szakdoga.game.Logger;
 import com.szakdoga.game.TowerDefence;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import static com.szakdoga.game.screens.MainMenu.UIscale;
 
@@ -32,19 +34,12 @@ public class OptionScreen extends ScreenAdapter {
     protected boolean fullScreen=Gdx.graphics.isFullscreen();
     protected TowerDefence game;
     public OptionScreen(TowerDefence game)  {
+
         this.game=game;
         styleHover = new TextButton.TextButtonStyle();
         styleHover.font = game.fontHover;
-        res.add(new AbstractMap.SimpleEntry<>(1000,540));
-        res.add(new AbstractMap.SimpleEntry<>(1920,1080));
-        res.add(new AbstractMap.SimpleEntry<>(1280,720));
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Kanit-Black.ttf"));
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = (int) (75*UIscale);
-        BitmapFont font = generator.generateFont(parameter);
-        generator.dispose();
         TextField.TextFieldStyle textFieldStyle = new TextField.TextFieldStyle();
-        textFieldStyle.font=font;
+        textFieldStyle.font=game.font;
         textFieldStyle.fontColor=Color.WHITE;
 
 
@@ -54,15 +49,14 @@ public class OptionScreen extends ScreenAdapter {
         table.setDebug(true);
         table.setFillParent(true);
         style = new TextButton.TextButtonStyle();
-        style.font = font;
+        style.font = game.font;
         style.font.setColor(Color.BLUE);
         table.row().minHeight((float) (game.screenHeight*0.25*UIscale)).maxWidth(Gdx.graphics.getWidth());//gets inherited
 
 
         TextButton UIScale = new TextButton("UI Scale write a number \n here 0-3 can be float", style);
-        TextButton exit = new TextButton("Back to menu", style);
-        //TextButton Resolution = new TextButton("Res:"+res.get(resCursor).getKey()+"x"+res.get(resCursor).getValue(),style);
         TextButton fullscreen = new TextButton("Fullscreen: OFF",style);
+        TextButton exit = new TextButton("Back to menu", style);
         UIScale.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -83,28 +77,17 @@ public class OptionScreen extends ScreenAdapter {
                     Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
                     fullscreen.setText("Fullscreen: ON");
                     fullScreen=true;
+                    Logger.writeLogDisplayLog("log","Diplayed switched to fullscreen",this.getClass().getName());
                 }
                 else{
-                    Gdx.graphics.setWindowedMode(res.get(resCursor).getKey(),res.get(resCursor).getValue());
+                    Gdx.graphics.setWindowedMode(1000,540);
                     fullscreen.setText("Fullscreen: OFF");
                     fullScreen=false;
+                    Logger.writeLogDisplayLog("log","Diplayed switched to windowed",this.getClass().getName());
                 }
                 game.setScreen(new OptionScreen(game));
             }
         });
-        /*Resolution.addListener(new ClickListener(){
-                @Override
-                public void clicked(InputEvent event,float x,float y){
-                    resCursor++;
-                    if(resCursor>=res.size()){
-                        resCursor=0;
-                    }
-                    //Gdx.graphics.setWindowedMode(res.get(resCursor).getKey(),res.get(resCursor).getValue());
-                    Resolution.setText("Res:"+res.get(resCursor).getKey()+"x"+res.get(resCursor).getValue());
-                    //game.setScreen(new MainMenu(game));
-                }
-        });*/
-
 
         UIscaleField = new TextField("", textFieldStyle);
         UIscaleField.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -114,8 +97,6 @@ public class OptionScreen extends ScreenAdapter {
         table.add(UIScale).fill();
         table.row().minHeight((float) (game.screenHeight*0.15*UIscale));
         table.add(UIscaleField).fill();
-        //table.row().minHeight((float) (game.screenHeight*0.15*UIscale));
-        //table.add(Resolution).fill();
         table.row().minHeight((float) (game.screenHeight*0.15*UIscale));
         table.add(fullscreen).fill();
         table.row().minHeight((float) (game.screenHeight*0.15*UIscale));
@@ -134,19 +115,25 @@ public class OptionScreen extends ScreenAdapter {
         stage.draw();
         spriteBatch.end();
         if(((TextButton)((Table)stage.getActors().get(0)).getCells().get(2).getActor()).getClickListener().isOver()){
-            System.out.println("Hover over button");
             ((TextButton)((Table)stage.getActors().get(0)).getCells().get(0).getActor()).setStyle((style));
             ((TextButton)((Table)stage.getActors().get(0)).getCells().get(2).getActor()).setStyle((styleHover));
             ((TextButton)((Table)stage.getActors().get(0)).getCells().get(3).getActor()).setStyle((style));
         }
 
         try{
-        UIscale=Float.parseFloat(UIscaleField.getText());
-        if(UIscale>0 && UIscale<3) {
-            game.setScreen(new OptionScreen(game));
-        }
+            String tmpScale=UIscaleField.getText();
+            if(!tmpScale.isEmpty()) {
+                UIscale = Float.parseFloat(tmpScale);
+                if (UIscale > 0 && UIscale < 3) {
+                    Logger.writeLogDisplayLog("log", "UIscale set to:" + UIscale,this.getClass().getName());
+                    //Readjust fonts for the new scale
+                    game.font = FontCreator.createFont();
+                    game.fontHover = FontCreator.createFont(150, Color.ORANGE, "fonts/Kanit-Black.ttf");
+                    game.setScreen(new OptionScreen(game));
+                }
+            }
         }catch (NumberFormatException e){
-
+            Logger.writeLogDisplayLog("error","UIscale given wrong input",this.getClass().getName());
         }
 
     }

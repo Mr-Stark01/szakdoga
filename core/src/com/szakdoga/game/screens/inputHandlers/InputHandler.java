@@ -10,6 +10,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
+import com.szakdoga.game.Logger;
+import com.szakdoga.game.towers.TowerRangeCircle;
 import com.szakdoga.game.units.Unit;
 
 import static com.szakdoga.game.screens.GameScreen.player;
@@ -17,6 +19,7 @@ import static com.szakdoga.game.screens.MainMenu.UIscale;
 
 public class InputHandler implements InputProcessor {
     private static Sprite currentlyDragging;
+    private static TowerRangeCircle towerRangeCircle;
     private OrthographicCamera camera;
     private float scale;
     private float limit=10f*UIscale;
@@ -34,6 +37,7 @@ public class InputHandler implements InputProcessor {
         }
         if(keycode == Input.Keys.P){
             player.buyUnit(Unit.createPikeUnit(player.getPositionX(), player.getPositionY(), "PikeUnitPlaceHolder"));
+            Logger.writeLogDisplayLog("log","player bought pikeunit",this.getClass().getName());
         }
         return true;
     }
@@ -50,12 +54,11 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        //Vector3 mouse2 = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0)); //For getting coordinates
-        //System.out.println("MOUSE:"+mouse2.x+"\t"+mouse2.y);
         if(currentlyDragging != null && button == Input.Buttons.LEFT){
             Vector3 mouse = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
             player.addTower(mouse.x,mouse.y);
             currentlyDragging=null;
+            towerRangeCircle=null;
         }
         return true;
     }
@@ -85,8 +88,9 @@ public class InputHandler implements InputProcessor {
 
         if(currentlyDragging != null){
             Vector3 mouse = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
-            currentlyDragging.setX(mouse.x);
-            currentlyDragging.setY(mouse.y);
+            currentlyDragging.setX(mouse.x-0.5f);
+            currentlyDragging.setY(mouse.y-0.5f);
+            towerRangeCircle.updatePos(mouse.x,mouse.y);
         }
         return true;
     }
@@ -106,10 +110,12 @@ public class InputHandler implements InputProcessor {
     public void render(SpriteBatch batch){
         if(currentlyDragging != null) {
             currentlyDragging.draw(batch);
+            towerRangeCircle.draw(batch);
         }
     }
-    public void draggingArcher(String fileHandle) {
+    public void draggingArcher(String fileHandle,int range) {
         currentlyDragging=new Sprite(new Texture(fileHandle));
+        towerRangeCircle = new TowerRangeCircle(range);
         currentlyDragging.setSize(1,1);
     }
 }

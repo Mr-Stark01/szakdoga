@@ -1,7 +1,7 @@
 package com.szakdoga.game.units;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.datatransferobject.UnitDTO;
 
 import java.util.ArrayList;

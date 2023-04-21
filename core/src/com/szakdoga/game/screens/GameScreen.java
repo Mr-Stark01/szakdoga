@@ -5,25 +5,20 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.szakdoga.game.FontCreator;
-import com.szakdoga.game.network.GameServerHandler;
-import com.szakdoga.game.screens.inputHandlers.InputHandler;
+import com.szakdoga.game.Logger;
 import com.szakdoga.game.Player;
 import com.szakdoga.game.TowerDefence;
-import com.szakdoga.game.network.Client;
-import com.szakdoga.game.pathFinder.PathFinder;
+import com.szakdoga.game.network.GameServerHandler;
+import com.szakdoga.game.screens.inputHandlers.InputHandler;
 import com.szakdoga.game.ui.Hud;
 
 import java.io.IOException;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -33,12 +28,12 @@ public class GameScreen extends ScreenAdapter {
 
     public static Player player;
     public static Player enemyPlayer;
-    static float scale;
+    static float tileScale;
     final TowerDefence game;
-    Texture bg;
+    private final String ip;
+    private final String name;
     private SpriteBatch batch;
-    private ExecutorService executor = Executors.newFixedThreadPool(20);
-    private ScheduledExecutorService schedueldExecutor = Executors.newScheduledThreadPool(10);
+    private ScheduledExecutorService executor = Executors.newScheduledThreadPool(20);
     private TiledMapTileLayer tileyLayer;
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
@@ -46,44 +41,46 @@ public class GameScreen extends ScreenAdapter {
     private InputHandler inputHandler;
     private Hud hud;
     private InputMultiplexer multiplexer;
-    public GameScreen(TowerDefence game){
+    public GameScreen(TowerDefence game,String ip,String name){
+        this.ip=ip;
+        this.name=name;
         this.game = game;
         this.batch = new SpriteBatch();
         inputHandler = new InputHandler();
-        System.out.println("asd");
-        //Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
     }
     @Override
     public void show(){
-        bg = new Texture("textures/tower.png");
         //Importing and creating map
         TmxMapLoader loader = new TmxMapLoader();
         map = loader.load("maps/defmap.tmx");
         tileyLayer = (TiledMapTileLayer) map.getLayers().get(0);
-        scale = (float) tileyLayer.getTileWidth();
-        renderer = new OrthogonalTiledMapRenderer(map, 1 / scale);
+        tileScale = (float) tileyLayer.getTileWidth();
+        renderer = new OrthogonalTiledMapRenderer(map, 1 / tileScale);
 
-        PathFinder pathfinder= new PathFinder(tileyLayer);
-        player = new Player(pathfinder);
-        enemyPlayer = new Player(pathfinder);
+        player = new Player();
+        enemyPlayer = new Player();
 
         GameServerHandler gameServerHandler;
         try {
-            gameServerHandler = new GameServerHandler("0.0.0.0",56227);
+            gameServerHandler = new GameServerHandler(ip,56227);
+            Logger.writeLogDisplayLog("LOG","Succesfully connected to server",this.getClass().getSimpleName());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        schedueldExecutor.scheduleAtFixedRate(gameServerHandler,0,50, TimeUnit.MILLISECONDS);//TODO probálgatni
+        executor.scheduleAtFixedRate(gameServerHandler,0,50,TimeUnit.MILLISECONDS);
+        Logger.writeLogDisplayLog("LOG","executor started and linked with server handler",this.getClass().getSimpleName());
 
         //Player and pathfinder
 
         camera = new OrthographicCamera();
-        camera.viewportHeight = Gdx.graphics.getHeight() / scale;
-        camera.viewportWidth = Gdx.graphics.getWidth() / scale;
+        camera.viewportHeight = Gdx.graphics.getHeight() / tileScale;
+        camera.viewportWidth = Gdx.graphics.getWidth() / tileScale;
+        camera.position.x=tileyLayer.getWidth()/2;
+        camera.position.y=tileyLayer.getHeight()/2;
+        Logger.writeLogDisplayLog("LOG","Camera setup with Height:"+camera.viewportHeight+"  Width:"+camera.viewportWidth,this.getClass().getSimpleName());
 
-        inputHandler.setView(camera,scale,renderer);
+        inputHandler.setView(camera,tileScale,renderer);
         ScreenUtils.clear(1, 0, 0, 1);
-
 
         multiplexer = new InputMultiplexer();
         hud = new Hud(multiplexer,batch,inputHandler);
@@ -94,9 +91,10 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void resize (int width, int height) {
-        camera = new OrthographicCamera();
-        camera.viewportHeight = Gdx.graphics.getHeight() / scale;
-        camera.viewportWidth = Gdx.graphics.getWidth() / scale;
+        camera.viewportHeight = Gdx.graphics.getHeight() / tileScale;
+        camera.viewportWidth = Gdx.graphics.getWidth() / tileScale;
+        camera.update();
+        Logger.writeLogDisplayLog("LOG","Camera updated with Height:"+camera.viewportHeight+"  Width:"+camera.viewportWidth,this.getClass().getSimpleName());
     }
     @Override
     public void render(float delta){
@@ -118,7 +116,7 @@ public class GameScreen extends ScreenAdapter {
     public void dispose(){
         batch.dispose();
         renderer.dispose();
-        schedueldExecutor.shutdown();
+        executor.shutdown();
     }
     public void finished(){
         if(GameServerHandler.getId()==-3) {

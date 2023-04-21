@@ -9,7 +9,6 @@ import com.szakdoga.game.CompareReturn;
 import org.datatransferobject.UnitDTO;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -82,7 +81,7 @@ public abstract class Unit {
   }
 
   /**
-   * A factory method essentially
+   * A factory method for creating unit
    * @param X starting place
    * @param Y starting place
    * @param unitName class Name in string form es
@@ -103,16 +102,9 @@ public abstract class Unit {
    * Calculates the deltas for stepping how much should it move between frames
    */
   public void calculateAngle() {
-    if(Math.sqrt((Math.pow(this.sprite.getX()-this.getNextX().get(0),2))+(Math.pow(this.sprite.getY()-this.getNextY().get(0),2))) < 0.1f ) {
-      System.out.println("delete first from list");
-      nextXCoordinates.remove(0);
-      nextYCoordinates.remove(0);
-      lastStep = new Date().getTime();
-
       float angle = MathUtils.atan2(nextYCoordinates.get(0) - sprite.getY(), nextXCoordinates.get(0) - sprite.getX());
       deltaX = MathUtils.cos(angle);
       deltaY = MathUtils.sin(angle);
-    }
   }
 
   /**
@@ -167,7 +159,7 @@ public abstract class Unit {
   }
 
   /**
-   * Update values from network
+   * Update values coming from Server
    * @param unitDTO
    */
   public synchronized void setValuesFromDTO(UnitDTO unitDTO) {
@@ -175,6 +167,10 @@ public abstract class Unit {
       this.health = unitDTO.getHealth();
       this.damage = unitDTO.getDamage();
       this.price = unitDTO.getPrice();
+      if(sprite.getX()-unitDTO.getX()>0.3f || sprite.getY()-unitDTO.getY()>0.3f) {
+        this.sprite.setX(unitDTO.getX());
+        this.sprite.setY(unitDTO.getY());
+      }
       this.PreviousX = unitDTO.getPreviousX();
       this.PreviousY = unitDTO.getPreviousY();
       this.nextXCoordinates = deepcopy((ArrayList<Integer>) unitDTO.getNextX());
@@ -187,14 +183,29 @@ public abstract class Unit {
   }
   // Bellow this are mostly auto generated functions
   public boolean equalsToDTO(UnitDTO unit){
-    return Float.compare(unit.getSpeed(), getSpeed()) == 0 && Float.compare(unit.getHealth(), getHealth()) == 0 && Float.compare(unit.getDamage(), getDamage()) == 0 && getPrice() == unit.getPrice() && getPreviousX() == unit.getPreviousX() && getPreviousY() == unit.getPreviousY() && getNextX().equals(unit.getNextX()) && getNextY().equals(unit.getNextY()) && Float.compare(unit.getDeltaX(), getDeltaX()) == 0 && Float.compare(unit.getDeltaY(), getDeltaY()) == 0 && Float.compare(unit.getDistance(), getDistance()) == 0;
+    return Float.compare(unit.getSpeed(), getSpeed()) == 0 &&
+            Float.compare(unit.getHealth(), getHealth()) == 0 &&
+            Float.compare(unit.getDamage(), getDamage()) == 0 &&
+            getPrice() == unit.getPrice() && getPreviousX() == unit.getPreviousX() &&
+            getPreviousY() == unit.getPreviousY() && getNextX().equals(unit.getNextX()) &&
+            getNextY().equals(unit.getNextY()) && Float.compare(unit.getDeltaX(), getDeltaX()) == 0 &&
+            Float.compare(unit.getDeltaY(), getDeltaY()) == 0 &&
+            Float.compare(unit.getDistance(), getDistance()) == 0;
   }
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     Unit unit = (Unit) o;
-    return Float.compare(unit.getSpeed(), getSpeed()) == 0 && Float.compare(unit.getHealth(), getHealth()) == 0 && Float.compare(unit.getDamage(), getDamage()) == 0 && getPrice() == unit.getPrice() && getPreviousX() == unit.getPreviousX() && getPreviousY() == unit.getPreviousY() && getNextX() == unit.getNextX() && getNextY() == unit.getNextY() && Float.compare(unit.getDeltaX(), getDeltaX()) == 0 && Float.compare(unit.getDeltaY(), getDeltaY()) == 0 && Float.compare(unit.getDistance(), getDistance()) == 0;
+    return Float.compare(unit.getSpeed(), getSpeed()) == 0 &&
+            Float.compare(unit.getHealth(), getHealth()) == 0 &&
+            Float.compare(unit.getDamage(), getDamage()) == 0 &&
+            getPrice() == unit.getPrice() &&
+            getPreviousX() == unit.getPreviousX() &&
+            getPreviousY() == unit.getPreviousY() &&
+            getNextX() == unit.getNextX() && getNextY() == unit.getNextY() &&
+            Float.compare(unit.getDeltaX(), getDeltaX()) == 0 && Float.compare(unit.getDeltaY(), getDeltaY()) == 0 &&
+            Float.compare(unit.getDistance(), getDistance()) == 0;
   }
 
   public void setDeltaX(float deltaX) {
@@ -228,6 +239,14 @@ public abstract class Unit {
 
   public int getId() {
     return id;
+  }
+
+  public long getLastStep() {
+    return lastStep;
+  }
+
+  public void setLastStep(long lastStep) {
+    this.lastStep = lastStep;
   }
 
   public int getPreviousX() {

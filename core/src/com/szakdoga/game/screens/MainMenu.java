@@ -2,9 +2,7 @@ package com.szakdoga.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -12,9 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.FillViewport;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.szakdoga.game.FontCreator;
+import com.szakdoga.game.Logger;
 import com.szakdoga.game.TowerDefence;
 
 
@@ -31,6 +28,7 @@ public class MainMenu extends ScreenAdapter {
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         table = new Table();
+        table.setDebug(true);
         table.setFillParent(true);
         style = new TextButton.TextButtonStyle();
         style.font = FontCreator.createFont(100);
@@ -42,13 +40,15 @@ public class MainMenu extends ScreenAdapter {
         startButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                Logger.writeLog("log","startButton clicked",this.getClass().getName());
                 dispose();
-                game.setScreen( new GameScreen(game) );
+                game.setScreen( new InputScreen(game) );
             }
         });
         options.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                Logger.writeLog("log","optionsButton clicked",this.getClass().getName());
                 dispose();
                 game.setScreen( new OptionScreen(game) );
             }
@@ -56,6 +56,7 @@ public class MainMenu extends ScreenAdapter {
         exit.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                Logger.writeLog("log","exitButton clicked",this.getClass().getName());
                 dispose();
                 Gdx.app.exit();
             }
@@ -111,6 +112,7 @@ public class MainMenu extends ScreenAdapter {
     public void dispose(){
         hide();
         stage.dispose();
+        Logger.writeLogDisplayLog("log","Main Menu disposed",this.getClass().getName());
     }
     @Override
     public void resize (int width, int height) {

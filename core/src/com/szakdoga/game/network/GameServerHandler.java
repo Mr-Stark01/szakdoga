@@ -1,5 +1,6 @@
 package com.szakdoga.game.network;
 
+import com.szakdoga.game.Logger;
 import com.szakdoga.game.network.DTO.Preparator;
 import org.datatransferobject.DTO;
 
@@ -8,7 +9,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -31,65 +31,43 @@ public class GameServerHandler implements Runnable{
             objectInputStream = new ObjectInputStream(clientSocket.getInputStream());
         }catch (IOException e){
             e.printStackTrace();
+            Logger.writeLog("error",e.getMessage(),this.getClass().getSimpleName());
+            throw new RuntimeException(e.getMessage());
         }
     }
     @Override
     public void run() {
         //TODO alapból kapjon csak egy checket és csak azzután néze meg ehmaybe
-        try {
-            sendData();
-            receiveData();
-            if(id.get()<0){
-                clientSocket.close();
+            try {
+                sendData();
+                receiveData();
+                if (id.get() < 0) {
+                    clientSocket.close();
+                }
+            } catch (IOException | ClassNotFoundException e) {
+                Logger.writeLog("error",e.getMessage(),this.getClass().getSimpleName());
+                throw new RuntimeException(e.getMessage());
             }
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-
-        }
     }
 
     protected void receiveData() throws IOException, ClassNotFoundException {
-        System.out.println("receive 1");
-
+        Logger.displayLog("log","Currently waiting for data from server");
         DTOList=((ArrayList<DTO>) objectInputStream.readObject());
-
+        Logger.displayLog("log","Received data from server");
+        Logger.displayLog("log","This client's data:");
+        Logger.displayLog("log","Enemy client's data:");
         id.set(DTOList.get(0).getId());
-
         player.exchangeData(DTOList.get(0));
-        System.out.println("enemy");
-        if(enemyPlayer.getTowers().size()>1){
-            System.out.println(enemyPlayer.getTowers().get(0).getX()+"\t"+enemyPlayer.getTowers().get(0).getY());
-            System.out.println(enemyPlayer.getTowers().get(1).getX()+"\t"+enemyPlayer.getTowers().get(1).getY());
-        }
         enemyPlayer.exchangeData(DTOList.get(1));
-        System.out.println("asd");
-        System.out.println("Time"+new Date().getTime());
-        System.out.println("Player id:"+DTOList.get(0).getUnitDTOs().size());
-        System.out.println("Enemy id:"+DTOList.get(1).getUnitDTOs().size());
-        System.out.println("Player date:"+DTOList.get(0).getDateOfCreation().getTime());
-        System.out.println("Enemy date:"+DTOList.get(1).getDateOfCreation().getTime());
-        if(player.getUnits().size()>0){
-            System.out.println("own: \t"+
-            player.getUnits().get(0).getId()
-                    +"\t"+
-            DTOList.get(0).getUnitDTOs().get(0).getId());
-        }
-        if(enemyPlayer.getUnits().size()>0){
-            System.out.println("ENEMY: \t"+
-                    enemyPlayer.getUnits().get(0).getId()
-                            +"\t"+
-                            DTOList.get(1).getUnitDTOs().get(0).getId());
-        }
-        System.out.println("receive 2");
+        Logger.displayLog("log","Succesfully received and exchanged data from server");
     }
         protected void sendData() throws IOException {
-        System.out.println("send data1");
-        System.out.println(id.get());
+        Logger.displayLog("log","Sending data");
         objectOutputStream.writeObject(new DTO(Preparator.createUnitDTOListFromUnitList(player.getUnits()),
                                                 Preparator.createTowerDTOListFromTowertList(player.getTowers()),
                                                 Preparator.createPlayerDTOFromPlayer(player),id.get()));
         objectOutputStream.flush();
-        System.out.println("send data2");
+        Logger.displayLog("log","Data sent");
         }
     public DTO getDtoIn() {
         return dtoIn;

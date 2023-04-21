@@ -30,7 +30,8 @@ public class Preparator {
                 new String(unit.getUnitClass()),
                 unit.getId(),
                 deepcopy(unit.getNextX()),
-                deepcopy(unit.getNextY()));
+                deepcopy(unit.getNextY()),
+                unit.getLastStep());
     }
 
     public static ArrayList<Integer> deepcopy(ArrayList<Integer> nextList) {

@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -17,12 +16,14 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.szakdoga.game.FontCreator;
+import com.szakdoga.game.Logger;
 import com.szakdoga.game.screens.inputHandlers.InputHandler;
 import com.szakdoga.game.towers.ArcherTower;
 import com.szakdoga.game.units.Unit;
 
+import java.util.Date;
+
 import static com.szakdoga.game.screens.GameScreen.player;
-import static com.szakdoga.game.screens.MainMenu.UIscale;
 import static com.szakdoga.game.towers.Tower.*;
 
 /**
@@ -38,6 +39,7 @@ public class Hud implements Disposable {
     private Label healthLabel;
     private Label unitNumberLabel;
     private Viewport viewport;
+    private long lastPressedButton = new Date().getTime();
 
     public Hud(final InputMultiplexer multiplexer, SpriteBatch batch, final InputHandler inputHandler) {
 
@@ -68,24 +70,36 @@ public class Hud implements Disposable {
         archerTowerHudElement.addListener(new ClickListener(){ //TODO esetleg refractor
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                inputHandler.draggingArcher("textures/archertower.png");
-                player.create(createArcherTower(0,0));
+                if(new Date().getTime()-lastPressedButton>1000) {
+                    inputHandler.draggingArcher("textures/archertower.png", 4);
+                    player.create(createArcherTower(0, 0));
+                    lastPressedButton=new Date().getTime();
+                    Logger.writeLogDisplayLog("log","player bought archer tower",this.getClass().getSimpleName());
+                }
             }
         });
         tableTop.add(archerTowerHudElement).height(Gdx.graphics.getHeight()/6f).width(Gdx.graphics.getHeight()/6f);
         crossBowTowerHudElement.addListener(new ClickListener(){ //TODO esetleg refractor
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                inputHandler.draggingArcher("textures/crossbowtower.png");
-                player.create(createCrossBowTower(0,0));
+                if(new Date().getTime()-lastPressedButton>1000) {
+                    inputHandler.draggingArcher("textures/crossbowtower.png",8);
+                    player.create(createCrossBowTower(0, 0));
+                    lastPressedButton=new Date().getTime();
+                    Logger.writeLogDisplayLog("log","player bought crossbow tower",this.getClass().getSimpleName());
+                }
             }
         });
         tableTop.add(crossBowTowerHudElement).height(Gdx.graphics.getHeight()/6f).width(Gdx.graphics.getHeight()/6f);
         wizzardTowerHudElement.addListener(new ClickListener(){ //TODO esetleg refractor
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                inputHandler.draggingArcher("textures/wizardtower.png");
-                player.create(createWizardTower(0,0));
+                if(new Date().getTime()-lastPressedButton>1000) {
+                    inputHandler.draggingArcher("textures/wizardtower.png",3);
+                    player.create(createWizardTower(0,0));
+                    lastPressedButton=new Date().getTime();
+                    Logger.writeLogDisplayLog("log","player bought wizard tower",this.getClass().getSimpleName());
+                }
             }
         });
         tableTop.add(wizzardTowerHudElement).height(Gdx.graphics.getHeight()/6f).width(Gdx.graphics.getHeight()/6f);
@@ -96,21 +110,33 @@ public class Hud implements Disposable {
         knightUnitHudElement.addListener(new ClickListener(){ //TODO esetleg refractor
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                player.buyUnit(Unit.createKnightUnit(player.getPositionX(), player.getPositionY(), "Knight"));
+                if(new Date().getTime()-lastPressedButton>1000) {
+                    player.buyUnit(Unit.createKnightUnit(player.getPositionX(), player.getPositionY(), "Knight"));
+                    lastPressedButton=new Date().getTime();
+                    Logger.writeLogDisplayLog("log","player bought knight unit",this.getClass().getSimpleName());
+                }
             }
         });
         tableTop.add(knightUnitHudElement).height(Gdx.graphics.getHeight()/6f).width(Gdx.graphics.getHeight()/6f);
         wizardUnitHudElement.addListener(new ClickListener(){ //TODO esetleg refractor
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                player.buyUnit(Unit.createWizardUnit(player.getPositionX(), player.getPositionY(), "Wizard"));
+                if(new Date().getTime()-lastPressedButton>1000) {
+                    player.buyUnit(Unit.createWizardUnit(player.getPositionX(), player.getPositionY(), "Wizard"));
+                    lastPressedButton=new Date().getTime();
+                    Logger.writeLogDisplayLog("log","player bought wizard unit",this.getClass().getSimpleName());
+                }
             }
         });
         tableTop.add(wizardUnitHudElement).height(Gdx.graphics.getHeight()/6f).width(Gdx.graphics.getHeight()/6f);
         pikeUnitHudElement.addListener(new ClickListener(){ //TODO esetleg refractor
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                player.buyUnit(Unit.createPikeUnit(player.getPositionX(), player.getPositionY(), "Pike"));
+                if(new Date().getTime()-lastPressedButton>1000) {
+                    player.buyUnit(Unit.createPikeUnit(player.getPositionX(), player.getPositionY(), "Pike"));
+                    lastPressedButton=new Date().getTime();
+                    Logger.writeLogDisplayLog("log","player bought pike unit",this.getClass().getSimpleName());
+                }
             }
         });
         tableTop.add(pikeUnitHudElement).height(Gdx.graphics.getHeight()/6f).width(Gdx.graphics.getHeight()/6f);
