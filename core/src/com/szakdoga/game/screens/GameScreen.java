@@ -34,7 +34,7 @@ public class GameScreen extends ScreenAdapter {
     private final String name;
     private SpriteBatch batch;
     private ScheduledExecutorService executor = Executors.newScheduledThreadPool(20);
-    private TiledMapTileLayer tileyLayer;
+    public static TiledMapTileLayer tileLayer;
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
@@ -53,8 +53,8 @@ public class GameScreen extends ScreenAdapter {
         //Importing and creating map
         TmxMapLoader loader = new TmxMapLoader();
         map = loader.load("maps/defmap.tmx");
-        tileyLayer = (TiledMapTileLayer) map.getLayers().get(0);
-        tileScale = (float) tileyLayer.getTileWidth();
+        tileLayer = (TiledMapTileLayer) map.getLayers().get(0);
+        tileScale = (float) tileLayer.getTileWidth();
         renderer = new OrthogonalTiledMapRenderer(map, 1 / tileScale);
 
         player = new Player();
@@ -70,13 +70,13 @@ public class GameScreen extends ScreenAdapter {
         executor.scheduleAtFixedRate(gameServerHandler,0,50,TimeUnit.MILLISECONDS);
         Logger.writeLogDisplayLog("LOG","executor started and linked with server handler",this.getClass().getSimpleName());
 
-        //Player and pathfinder
+        //Player
 
         camera = new OrthographicCamera();
         camera.viewportHeight = Gdx.graphics.getHeight() / tileScale;
         camera.viewportWidth = Gdx.graphics.getWidth() / tileScale;
-        camera.position.x=tileyLayer.getWidth()/2;
-        camera.position.y=tileyLayer.getHeight()/2;
+        camera.position.x=tileLayer.getWidth()/2;
+        camera.position.y=tileLayer.getHeight()/2;
         Logger.writeLogDisplayLog("LOG","Camera setup with Height:"+camera.viewportHeight+"  Width:"+camera.viewportWidth,this.getClass().getSimpleName());
 
         inputHandler.setView(camera,tileScale,renderer);

@@ -79,6 +79,17 @@ public abstract class Unit {
     }
     return null;
   }
+  public static Unit createUnit(int X,int Y,String unitName){
+    switch (unitName){
+      case "Pike":
+        return createPikeUnit(X,Y,unitName);
+      case "Wizard":
+        return createWizardUnit(X,Y,unitName);
+      case "Knight":
+        return createKnightUnit(X,Y,unitName);
+    }
+    return null;
+  }
 
   /**
    * A factory method for creating unit

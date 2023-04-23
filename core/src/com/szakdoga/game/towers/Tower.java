@@ -58,6 +58,18 @@ public abstract class Tower{ //TODO teszt osztály
         return null;
     }
 
+    public static Tower createTower(float spawnX,float spawnY,String towerClass) {
+        switch (towerClass){
+            case "Archer":
+                return createArcherTower(spawnX,spawnY);
+            case "Wizard":
+                return createWizardTower(spawnX,spawnY);
+            case "CrossBow":
+                return createCrossBowTower(spawnX,spawnY);
+        }
+        return null;
+    }
+
     /**
      * Archer factory method
      * @param spawnX

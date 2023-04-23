@@ -85,7 +85,6 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-
         if(currentlyDragging != null){
             Vector3 mouse = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
             currentlyDragging.setX(mouse.x-0.5f);
