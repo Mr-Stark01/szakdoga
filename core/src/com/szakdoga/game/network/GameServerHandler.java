@@ -40,7 +40,6 @@ public class GameServerHandler implements Runnable{
     @Override
     public void run() {
         //TODO alapból kapjon csak egy checket és csak azzután néze meg ehmaybe
-        System.out.println("started");
             try {
                 sendData();
                 receiveData();
@@ -51,7 +50,6 @@ public class GameServerHandler implements Runnable{
                 Logger.writeLog("error",e.getMessage(),this.getClass().getSimpleName());
                 System.exit(-1);
             }
-        System.out.println("ended");
     }
 
     protected void receiveData() throws IOException, ClassNotFoundException {
@@ -60,29 +58,18 @@ public class GameServerHandler implements Runnable{
         Logger.displayLog("log","Received data from server");
         Logger.displayLog("log","This client's data:");
         Logger.displayLog("log","Enemy client's data:");
-        System.out.println(id.get()+"\t"+DTOList.get(0).getId());
         id.set(DTOList.get(0).getId());
-        if(DTOList.get(0).getPlayerDTO().getPositionX()==DTOList.get(1).getPlayerDTO().getPositionX()){
-            System.out.println("problem eherherherher");
-        }
         player.exchangeData(DTOList.get(0));
         enemyPlayer.exchangeData(DTOList.get(1));
         Logger.displayLog("log","Succesfully received and exchanged data from server");
     }
         protected void sendData() throws IOException {
-        if(player.getPositionX()==enemyPlayer.getPositionX()){
-            System.out.println(player.getPositionX());
-            System.out.println(enemyPlayer.getPositionX());
-                System.out.println("ULTIMA PROBLEM");
-        }
-            System.out.println(id.get());
         Logger.displayLog("log","Sending data");
         objectOutputStream.writeObject(new DTO(Preparator.createUnitDTOListFromUnitList(player.getUnits()),
                                                 Preparator.createTowerDTOListFromTowertList(player.getTowers()),
                                                 Preparator.createPlayerDTOFromPlayer(player),id.get(),name));
         objectOutputStream.flush();
         Logger.displayLog("log","Data sent");
-            System.out.println("data sent");
         }
     public DTO getDtoIn() {
         return dtoIn;
