@@ -62,12 +62,12 @@ public class GameScreen extends ScreenAdapter {
 
         GameServerHandler gameServerHandler;
         try {
-            gameServerHandler = new GameServerHandler(ip,56227);
+            gameServerHandler = new GameServerHandler(ip,56227,name);
             Logger.writeLogDisplayLog("LOG","Succesfully connected to server",this.getClass().getSimpleName());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        executor.scheduleAtFixedRate(gameServerHandler,0,50,TimeUnit.MILLISECONDS);
+        executor.scheduleAtFixedRate(gameServerHandler,0,10,TimeUnit.MILLISECONDS);
         Logger.writeLogDisplayLog("LOG","executor started and linked with server handler",this.getClass().getSimpleName());
 
         //Player
@@ -94,6 +94,7 @@ public class GameScreen extends ScreenAdapter {
         camera.viewportHeight = Gdx.graphics.getHeight() / tileScale;
         camera.viewportWidth = Gdx.graphics.getWidth() / tileScale;
         camera.update();
+        hud.resize(width,height);
         Logger.writeLogDisplayLog("LOG","Camera updated with Height:"+camera.viewportHeight+"  Width:"+camera.viewportWidth,this.getClass().getSimpleName());
     }
     @Override

@@ -152,7 +152,9 @@ public class Hud implements Disposable {
                 if(new Date().getTime()-lastPressedButton>1000) {
                     player.buyUnit(Unit.createUnit(player.getPositionX(), player.getPositionY(), TMP.getUnitClass()));
                     lastPressedButton=new Date().getTime();
-                    infoTable.setPosition(-10000,-10000);
+                    if(infoTable!=null) {
+                        infoTable.setPosition(-10000, -10000);
+                    }
                     Logger.writeLogDisplayLog("log","player bought "+TMP.getUnitClass()+" unit",this.getClass().getSimpleName());
                 }
             }
@@ -180,10 +182,11 @@ public class Hud implements Disposable {
             public void clicked(InputEvent event, float x, float y) {
                 if(new Date().getTime()-lastPressedButton>1000) {
                     inputHandler.draggingArcher(textureHandle, TMP.getRange());
-                    player.create(createTower(0, 0,TMP.getTowerClass()));
-                    lastPressedButton=new Date().getTime();
-                    Logger.writeLogDisplayLog("log","player bought "+TMP.getTowerClass()+" tower",this.getClass().getSimpleName());
-                    infoTable.setPosition(-1000,-1000);
+                    player.create(createTower(0, 0, TMP.getTowerClass()));
+                    lastPressedButton = new Date().getTime();
+                    Logger.writeLogDisplayLog("log", "player bought " + TMP.getTowerClass() + " tower", this.getClass().getSimpleName());
+                    infoTable.setPosition(-1000, -1000);
+
                 }
             }
             @Override
@@ -203,6 +206,9 @@ public class Hud implements Disposable {
             }
         };
         return clickListener;
+    }
+    public void resize (int width, int height) {
+        stage.getViewport().update(width,height);
     }
     public void dispose() {
 

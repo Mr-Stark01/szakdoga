@@ -22,10 +22,12 @@ public class GameServerHandler implements Runnable{
     private List<DTO> DTOList= new ArrayList<>();
     private final Socket clientSocket;
     private DTO dtoIn;
+    private String name;
     private static AtomicInteger id=new AtomicInteger(0);
 
-    public GameServerHandler(String ip, int port) throws IOException {
+    public GameServerHandler(String ip, int port,String name) throws IOException {
         this.clientSocket=new Socket(ip,port);
+        this.name=name;
         try {
             objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
             objectInputStream = new ObjectInputStream(clientSocket.getInputStream());
@@ -38,6 +40,7 @@ public class GameServerHandler implements Runnable{
     @Override
     public void run() {
         //TODO alapból kapjon csak egy checket és csak azzután néze meg ehmaybe
+        System.out.println("started");
             try {
                 sendData();
                 receiveData();
@@ -46,8 +49,9 @@ public class GameServerHandler implements Runnable{
                 }
             } catch (IOException | ClassNotFoundException e) {
                 Logger.writeLog("error",e.getMessage(),this.getClass().getSimpleName());
-                throw new RuntimeException(e.getMessage());
+                System.exit(-1);
             }
+        System.out.println("ended");
     }
 
     protected void receiveData() throws IOException, ClassNotFoundException {
@@ -56,18 +60,29 @@ public class GameServerHandler implements Runnable{
         Logger.displayLog("log","Received data from server");
         Logger.displayLog("log","This client's data:");
         Logger.displayLog("log","Enemy client's data:");
+        System.out.println(id.get()+"\t"+DTOList.get(0).getId());
         id.set(DTOList.get(0).getId());
+        if(DTOList.get(0).getPlayerDTO().getPositionX()==DTOList.get(1).getPlayerDTO().getPositionX()){
+            System.out.println("problem eherherherher");
+        }
         player.exchangeData(DTOList.get(0));
         enemyPlayer.exchangeData(DTOList.get(1));
         Logger.displayLog("log","Succesfully received and exchanged data from server");
     }
         protected void sendData() throws IOException {
+        if(player.getPositionX()==enemyPlayer.getPositionX()){
+            System.out.println(player.getPositionX());
+            System.out.println(enemyPlayer.getPositionX());
+                System.out.println("ULTIMA PROBLEM");
+        }
+            System.out.println(id.get());
         Logger.displayLog("log","Sending data");
         objectOutputStream.writeObject(new DTO(Preparator.createUnitDTOListFromUnitList(player.getUnits()),
                                                 Preparator.createTowerDTOListFromTowertList(player.getTowers()),
-                                                Preparator.createPlayerDTOFromPlayer(player),id.get()));
+                                                Preparator.createPlayerDTOFromPlayer(player),id.get(),name));
         objectOutputStream.flush();
         Logger.displayLog("log","Data sent");
+            System.out.println("data sent");
         }
     public DTO getDtoIn() {
         return dtoIn;

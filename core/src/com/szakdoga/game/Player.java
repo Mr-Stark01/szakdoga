@@ -57,7 +57,9 @@ public class Player {
         positionY = playerDTO.getPositionY();
         //Create new units only used if it's enemy data
         for(int i = units.size(); dto.getUnitDTOs().size()>units.size(); i++) {
-            units.add(Unit.createUnitFromDTO(dto.getUnitDTOs().get(i)));
+            if(dto.getUnitDTOs().get(i).getId()!=-1) {
+                units.add(Unit.createUnitFromDTO(dto.getUnitDTOs().get(i)));
+            }
         }
         //Updating data from server to already existing units
         for(int i = 0; i<dto.getUnitDTOs().size(); i++){
@@ -81,7 +83,9 @@ public class Player {
         }
         //Creating enemy towers
         for(int i = towers.size(); dto.getTowerDTOs().size()>towers.size() ; i++) {
+            if(dto.getTowerDTOs().get(i).getId()!=-1) {
                 towers.add(Tower.createTowerFromDTO(dto.getTowerDTOs().get(i)));
+            }
         }
         //In its current form essentially unused towers can't really change
         for(int i = 0; i<dto.getTowerDTOs().size();i++){

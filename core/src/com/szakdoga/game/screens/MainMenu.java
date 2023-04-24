@@ -59,6 +59,7 @@ public class MainMenu extends ScreenAdapter {
                 Logger.writeLog("log","exitButton clicked",this.getClass().getName());
                 dispose();
                 Gdx.app.exit();
+                System.exit(-1);
             }
         });
 

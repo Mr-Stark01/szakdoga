@@ -34,6 +34,7 @@ public class InputHandler implements InputProcessor {
     public boolean keyDown(int keycode) {
         if(keycode == Input.Keys.ESCAPE){
             Gdx.app.exit();
+            System.exit(-1);
         }
         if(keycode == Input.Keys.P){
             player.buyUnit(Unit.createPikeUnit(player.getPositionX(), player.getPositionY(), "PikeUnitPlaceHolder"));
