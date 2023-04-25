@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
-import static com.szakdoga.game.screens.MainMenu.UIscale;
+import static com.szakdoga.game.TowerDefence.UIscale;
 
 public class FontCreator {
     public static BitmapFont createFont(){

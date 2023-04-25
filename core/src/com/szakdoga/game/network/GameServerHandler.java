@@ -7,6 +7,7 @@ import org.datatransferobject.DTO;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,8 @@ public class GameServerHandler implements Runnable{
     private static AtomicInteger id=new AtomicInteger(0);
 
     public GameServerHandler(String ip, int port,String name) throws IOException {
-        this.clientSocket=new Socket(ip,port);
+        this.clientSocket=new Socket();
+        clientSocket.connect(new InetSocketAddress(ip, port), 10000);
         this.name=name;
         try {
             objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());

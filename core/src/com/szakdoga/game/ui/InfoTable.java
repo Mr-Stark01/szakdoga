@@ -9,7 +9,8 @@ import com.szakdoga.game.FontCreator;
 import com.szakdoga.game.towers.Tower;
 import com.szakdoga.game.units.Unit;
 
-import static com.szakdoga.game.screens.MainMenu.UIscale;
+import static com.szakdoga.game.TowerDefence.UIscale;
+
 
 public class InfoTable {
     private static Table table;

@@ -3,6 +3,7 @@ package com.szakdoga.game.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -57,8 +58,8 @@ public class GameScreen extends ScreenAdapter {
         tileScale = (float) tileLayer.getTileWidth();
         renderer = new OrthogonalTiledMapRenderer(map, 1 / tileScale);
 
-        player = new Player();
-        enemyPlayer = new Player();
+        player = new Player("textures/tower.png", Color.BLUE);
+        enemyPlayer = new Player("textures/dragon.png",Color.RED);
 
         GameServerHandler gameServerHandler;
         try {

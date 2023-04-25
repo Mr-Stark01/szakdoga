@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.szakdoga.game.screens.MainMenu.UIscale;
+import static com.szakdoga.game.TowerDefence.UIscale;
 
 
 public class OptionScreen extends ScreenAdapter {

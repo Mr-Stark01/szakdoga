@@ -14,8 +14,8 @@ import com.szakdoga.game.Logger;
 import com.szakdoga.game.towers.TowerRangeCircle;
 import com.szakdoga.game.units.Unit;
 
+import static com.szakdoga.game.TowerDefence.UIscale;
 import static com.szakdoga.game.screens.GameScreen.player;
-import static com.szakdoga.game.screens.MainMenu.UIscale;
 
 public class InputHandler implements InputProcessor {
     private static Sprite currentlyDragging;

@@ -1,6 +1,7 @@
 package com.szakdoga.game.units;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -149,10 +150,11 @@ public abstract class Unit {
     }
   }
 
-  public void render(SpriteBatch batch){
+  public void render(SpriteBatch batch, Color color){
     if (id > 0) {
       addTexture();
       step();
+      sprite.setColor(color);
       sprite.draw(batch);
     }
   }
