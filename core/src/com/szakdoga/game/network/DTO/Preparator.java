@@ -51,7 +51,7 @@ public class Preparator {
                 tower.getRange(),
                 createUnitDTOFromUnit(tower.getTarget()),
                 tower.getAttackTime(),
-                tower.getDeltaSum(),
+                tower.getLastTimeOfAttack(),
                 tower.getId(),
                 tower.getTowerClass());
     }

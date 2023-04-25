@@ -18,7 +18,7 @@ public abstract class Tower{ //TODO teszt osztály
     protected int price;
     protected int range;
     protected Unit target=null;
-    protected float deltaSum = 0;
+    protected long lastTimeOfAttack;
     protected float attackTime;
     protected int id;
     protected String towerClass;
@@ -147,8 +147,8 @@ public abstract class Tower{ //TODO teszt osztály
     public void setValuesFromDTO(TowerDTO towerDTO) {
         this.id = towerDTO.getId();
         this.target = towerDTO.getTarget() == null ? null : player.getUnitWithId(towerDTO.getTarget().getId());
-        this.deltaSum = towerDTO.getDeltaSum();
         this.attackTime = towerDTO.getAttackTime();
+        this.lastTimeOfAttack=towerDTO.getLastTimeOfAttack();
         this.damage = towerDTO.getDamage();
         this.price = towerDTO.getPrice();
         this.range = towerDTO.getRange();
@@ -158,8 +158,9 @@ public abstract class Tower{ //TODO teszt osztály
         return Float.compare(tower.getDamage(), getDamage()) == 0 &&
                 getPrice() == tower.getPrice() &&
                 getRange() == tower.getRange() &&
-                Float.compare(tower.getDeltaSum(), getDeltaSum()) == 0 &&
+                Float.compare(tower.getLastTimeOfAttack(), getLastTimeOfAttack()) == 0 &&
                 Float.compare(tower.getAttackTime(), getAttackTime()) == 0 &&
+                tower.getLastTimeOfAttack() == getLastTimeOfAttack() &&
                 Objects.equals(getTarget(), tower.getTarget());
     }
     @Override
@@ -170,14 +171,22 @@ public abstract class Tower{ //TODO teszt osztály
         return Float.compare(tower.getDamage(), getDamage()) == 0 &&
                 getPrice() == tower.getPrice() &&
                 getRange() == tower.getRange()
-                && Float.compare(tower.getDeltaSum(), getDeltaSum()) == 0 &&
+                && Float.compare(tower.getLastTimeOfAttack(), getLastTimeOfAttack()) == 0 &&
                 Float.compare(tower.getAttackTime(), getAttackTime()) == 0 &&
                 Objects.equals(getTarget(), tower.getTarget());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getDamage(), getPrice(), getRange(), getTarget(), getDeltaSum(), getAttackTime());
+        return Objects.hash(getDamage(), getPrice(), getRange(), getTarget(), getLastTimeOfAttack(), getAttackTime());
+    }
+
+    public long getLastTimeOfAttack() {
+        return lastTimeOfAttack;
+    }
+
+    public void setLastTimeOfAttack(long lastTimeOfAttack) {
+        this.lastTimeOfAttack = lastTimeOfAttack;
     }
 
     public int getId() {
@@ -210,10 +219,6 @@ public abstract class Tower{ //TODO teszt osztály
 
     public Unit getTarget() {
         return target;
-    }
-
-    public float getDeltaSum() {
-        return deltaSum;
     }
 
     public float getAttackTime() {
