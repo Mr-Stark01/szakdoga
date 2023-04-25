@@ -3,6 +3,7 @@ package com.szakdoga.game.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -57,17 +58,17 @@ public class GameScreen extends ScreenAdapter {
         tileScale = (float) tileLayer.getTileWidth();
         renderer = new OrthogonalTiledMapRenderer(map, 1 / tileScale);
 
-        player = new Player();
-        enemyPlayer = new Player();
+        player = new Player("textures/tower.png", Color.BLUE);
+        enemyPlayer = new Player("textures/dragon.png",Color.RED);
 
         GameServerHandler gameServerHandler;
         try {
-            gameServerHandler = new GameServerHandler(ip,56227);
+            gameServerHandler = new GameServerHandler(ip,56227,name);
             Logger.writeLogDisplayLog("LOG","Succesfully connected to server",this.getClass().getSimpleName());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        executor.scheduleAtFixedRate(gameServerHandler,0,50,TimeUnit.MILLISECONDS);
+        executor.scheduleAtFixedRate(gameServerHandler,0,10,TimeUnit.MILLISECONDS);
         Logger.writeLogDisplayLog("LOG","executor started and linked with server handler",this.getClass().getSimpleName());
 
         //Player
@@ -94,6 +95,7 @@ public class GameScreen extends ScreenAdapter {
         camera.viewportHeight = Gdx.graphics.getHeight() / tileScale;
         camera.viewportWidth = Gdx.graphics.getWidth() / tileScale;
         camera.update();
+        hud.resize(width,height);
         Logger.writeLogDisplayLog("LOG","Camera updated with Height:"+camera.viewportHeight+"  Width:"+camera.viewportWidth,this.getClass().getSimpleName());
     }
     @Override

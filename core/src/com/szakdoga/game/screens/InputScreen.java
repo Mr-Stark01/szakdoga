@@ -16,7 +16,7 @@ import com.szakdoga.game.TowerDefence;
 
 import java.util.regex.Pattern;
 
-import static com.szakdoga.game.screens.MainMenu.UIscale;
+import static com.szakdoga.game.TowerDefence.UIscale;
 
 public class InputScreen extends ScreenAdapter {
     private TowerDefence game;

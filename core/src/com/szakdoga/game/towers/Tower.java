@@ -1,5 +1,6 @@
 package com.szakdoga.game.towers;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -131,9 +132,10 @@ public abstract class Tower{ //TODO teszt osztály
      * Main render method gets called for every frame everything visual in this class should be called here such as projectiles
      * @param batch
      */
-    public void render(SpriteBatch batch){
+    public void render(SpriteBatch batch, Color color){
         if (id > 0) {
             addTexture();
+            sprite.setColor(color);
             sprite.draw(batch);
         }
     }

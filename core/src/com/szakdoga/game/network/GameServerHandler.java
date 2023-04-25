@@ -7,6 +7,7 @@ import org.datatransferobject.DTO;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,10 +23,13 @@ public class GameServerHandler implements Runnable{
     private List<DTO> DTOList= new ArrayList<>();
     private final Socket clientSocket;
     private DTO dtoIn;
+    private String name;
     private static AtomicInteger id=new AtomicInteger(0);
 
-    public GameServerHandler(String ip, int port) throws IOException {
-        this.clientSocket=new Socket(ip,port);
+    public GameServerHandler(String ip, int port,String name) throws IOException {
+        this.clientSocket=new Socket();
+        clientSocket.connect(new InetSocketAddress(ip, port), 10000);
+        this.name=name;
         try {
             objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
             objectInputStream = new ObjectInputStream(clientSocket.getInputStream());
@@ -46,7 +50,7 @@ public class GameServerHandler implements Runnable{
                 }
             } catch (IOException | ClassNotFoundException e) {
                 Logger.writeLog("error",e.getMessage(),this.getClass().getSimpleName());
-                throw new RuntimeException(e.getMessage());
+                System.exit(-1);
             }
     }
 
@@ -65,7 +69,7 @@ public class GameServerHandler implements Runnable{
         Logger.displayLog("log","Sending data");
         objectOutputStream.writeObject(new DTO(Preparator.createUnitDTOListFromUnitList(player.getUnits()),
                                                 Preparator.createTowerDTOListFromTowertList(player.getTowers()),
-                                                Preparator.createPlayerDTOFromPlayer(player),id.get()));
+                                                Preparator.createPlayerDTOFromPlayer(player),id.get(),name));
         objectOutputStream.flush();
         Logger.displayLog("log","Data sent");
         }

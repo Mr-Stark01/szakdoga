@@ -14,10 +14,11 @@ import com.szakdoga.game.FontCreator;
 import com.szakdoga.game.Logger;
 import com.szakdoga.game.TowerDefence;
 
+import static com.szakdoga.game.TowerDefence.UIscale;
+
 
 public class MainMenu extends ScreenAdapter {
     final TowerDefence game;
-    public static float UIscale=1;
     protected TextButton.TextButtonStyle style;
     protected Stage stage;
     protected Table table;
@@ -59,6 +60,7 @@ public class MainMenu extends ScreenAdapter {
                 Logger.writeLog("log","exitButton clicked",this.getClass().getName());
                 dispose();
                 Gdx.app.exit();
+                System.exit(-1);
             }
         });
 

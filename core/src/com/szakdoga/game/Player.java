@@ -1,5 +1,8 @@
 package com.szakdoga.game;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.szakdoga.game.towers.Tower;
 import com.szakdoga.game.units.Unit;
@@ -17,9 +20,14 @@ public class Player {
     private int positionX=-1,positionY=-1;
     private float health=10000;
     private Tower towerInDraggingState;
+    private Sprite base;
+    private final Color color;
 
-    public Player(){
-
+    public Player(String baseURL,Color color){
+        base=new Sprite();
+        base.set(new Sprite(new Texture(baseURL)));
+        base.setSize(1,1);
+        this.color=color;
 
     }
     public synchronized boolean addTower(float x,float y){
@@ -41,12 +49,20 @@ public class Player {
     }
     public void render(SpriteBatch batch){
         for (int i=0;i<towers.size();i++) {
-            towers.get(i).render(batch);
+            towers.get(i).render(batch,color);
         }
         for (int i=0;i<units.size();i++) {
-            units.get(i).render(batch);
+            units.get(i).render(batch,color);
         }
+        updateBasePosition();
+        base.draw(batch);
 
+    }
+    public void updateBasePosition(){
+        base.setX(positionX);
+        base.setY(positionY);
+        base.setColor(color);
+        base.setSize(1,1);
     }
 
     public void exchangeData(DTO dto){
@@ -57,7 +73,9 @@ public class Player {
         positionY = playerDTO.getPositionY();
         //Create new units only used if it's enemy data
         for(int i = units.size(); dto.getUnitDTOs().size()>units.size(); i++) {
-            units.add(Unit.createUnitFromDTO(dto.getUnitDTOs().get(i)));
+            if(dto.getUnitDTOs().get(i).getId()!=-1) {
+                units.add(Unit.createUnitFromDTO(dto.getUnitDTOs().get(i)));
+            }
         }
         //Updating data from server to already existing units
         for(int i = 0; i<dto.getUnitDTOs().size(); i++){
@@ -81,7 +99,9 @@ public class Player {
         }
         //Creating enemy towers
         for(int i = towers.size(); dto.getTowerDTOs().size()>towers.size() ; i++) {
+            if(dto.getTowerDTOs().get(i).getId()!=-1) {
                 towers.add(Tower.createTowerFromDTO(dto.getTowerDTOs().get(i)));
+            }
         }
         //In its current form essentially unused towers can't really change
         for(int i = 0; i<dto.getTowerDTOs().size();i++){

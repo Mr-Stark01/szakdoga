@@ -13,14 +13,14 @@ public class Logger {
     private static FileHandle logFile = Gdx.files.local("log/"+format1+"log.txt");
     public static void writeLog(String lvl,String log,String clazz){
         log = new Date().getTime() + "\t "+ lvl +" \t "+clazz+ "\t"+ log;
-        logFile.writeString(log, true);
-        logFile.writeString("\n", true);
+        //logFile.writeString(log, true);
+        //logFile.writeString("\n", true);
     }
     public static void writeLogDisplayLog(String lvl,String log,String clazz){
         lvl=lvl.toLowerCase().strip();
         log = new Date().getTime() + "\t "+ lvl +" \t"+clazz+"\t"+ log;
-        logFile.writeString(log, true);
-        logFile.writeString("\n", true);
+        //logFile.writeString(log, true);
+        //logFile.writeString("\n", true);
         switch (lvl){
             case "log":
                 displayLog("STD",log);

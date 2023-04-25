@@ -16,6 +16,7 @@ public class TowerDefence extends Game {
 	public int screenHeight;
 	public int screenWidth;
 	public static Logger LOGGER;
+	public static float UIscale=1;
 
 
 	@Override
