@@ -15,7 +15,6 @@ public class TowerDefence extends Game {
 	public BitmapFont fontHover; //Hover as in when mouse is over it
 	public int screenHeight;
 	public int screenWidth;
-	public static Logger LOGGER;
 	public static float UIscale=1;
 
 
@@ -26,7 +25,7 @@ public class TowerDefence extends Game {
 		fontHover = FontCreator.createFont(150, Color.ORANGE,"fonts/Kanit-Black.ttf");
 		screenHeight = Gdx.graphics.getHeight();
 		screenWidth = Gdx.graphics.getWidth();
-		LOGGER.writeLog("LOG","Succesfull startup lwjgl started",this.getClass().getSimpleName());
+		Logger.writeLog("LOG","Succesfull startup lwjgl started",this.getClass().getSimpleName());
 		this.setScreen(new MainMenu(this));
 	}
 

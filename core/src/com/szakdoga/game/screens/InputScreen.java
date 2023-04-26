@@ -17,6 +17,7 @@ import com.szakdoga.game.TowerDefence;
 import java.util.regex.Pattern;
 
 import static com.szakdoga.game.TowerDefence.UIscale;
+import static com.szakdoga.game.TowerDefence.font;
 
 public class InputScreen extends ScreenAdapter {
     private TowerDefence game;
@@ -25,7 +26,7 @@ public class InputScreen extends ScreenAdapter {
     protected TextButton.TextButtonStyle style;
     private TextField ip;
     private TextField name;
-    Label.LabelStyle labelStyle= new Label.LabelStyle(game.font, Color.RED);
+    Label.LabelStyle labelStyle= new Label.LabelStyle(font, Color.RED);
     Label message = new Label("",labelStyle);
     public InputScreen(TowerDefence game){
         this.game=game;
@@ -36,10 +37,10 @@ public class InputScreen extends ScreenAdapter {
         table.setFillParent(true);
 
         TextField.TextFieldStyle textFieldStyle = new TextField.TextFieldStyle();
-        textFieldStyle.font=game.font;
+        textFieldStyle.font=font;
         textFieldStyle.fontColor= Color.WHITE;
         TextButton.TextButtonStyle textButtonStyle =new TextButton.TextButtonStyle();
-        textButtonStyle.font = game.font;
+        textButtonStyle.font = font;
         textButtonStyle.font.setColor(Color.BLUE);
 
         TextButton startButton = new TextButton("Start", textButtonStyle);

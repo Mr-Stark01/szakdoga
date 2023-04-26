@@ -53,7 +53,7 @@ public class GameServerHandler implements Runnable{
                 System.exit(-1);
             }
     }
-
+    @SuppressWarnings("unchecked")
     protected void receiveData() throws IOException, ClassNotFoundException {
         Logger.displayLog("log","Currently waiting for data from server");
         DTOList=((ArrayList<DTO>) objectInputStream.readObject());

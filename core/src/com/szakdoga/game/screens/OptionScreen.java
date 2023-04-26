@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.szakdoga.game.TowerDefence.UIscale;
+import static com.szakdoga.game.TowerDefence.font;
 
 
 public class OptionScreen extends ScreenAdapter {
@@ -39,7 +40,7 @@ public class OptionScreen extends ScreenAdapter {
         styleHover = new TextButton.TextButtonStyle();
         styleHover.font = game.fontHover;
         TextField.TextFieldStyle textFieldStyle = new TextField.TextFieldStyle();
-        textFieldStyle.font=game.font;
+        textFieldStyle.font=font;
         textFieldStyle.fontColor=Color.WHITE;
 
 
@@ -49,7 +50,7 @@ public class OptionScreen extends ScreenAdapter {
         table.setDebug(true);
         table.setFillParent(true);
         style = new TextButton.TextButtonStyle();
-        style.font = game.font;
+        style.font = font;
         style.font.setColor(Color.BLUE);
         table.row().minHeight((float) (game.screenHeight*0.25*UIscale)).maxWidth(Gdx.graphics.getWidth());//gets inherited
 
@@ -127,7 +128,7 @@ public class OptionScreen extends ScreenAdapter {
                 if (UIscale > 0 && UIscale < 3) {
                     Logger.writeLogDisplayLog("log", "UIscale set to:" + UIscale,this.getClass().getName());
                     //Readjust fonts for the new scale
-                    game.font = FontCreator.createFont();
+                    font = FontCreator.createFont();
                     game.fontHover = FontCreator.createFont(150, Color.ORANGE, "fonts/Kanit-Black.ttf");
                     game.setScreen(new OptionScreen(game));
                 }

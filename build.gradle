@@ -39,6 +39,12 @@ allprojects {
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
     }
+
+    tasks.withType(JavaCompile).all {
+        options.compilerArgs.add("-Xlint:all")
+        options.compilerArgs.add("-Werror")
+    }
+
 }
 
 project(":desktop") {

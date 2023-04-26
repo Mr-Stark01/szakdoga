@@ -72,9 +72,13 @@ public class Player {
         positionX = playerDTO.getPositionX();
         positionY = playerDTO.getPositionY();
         //Create new units only used if it's enemy data
-        for(int i = units.size(); dto.getUnitDTOs().size()>units.size(); i++) {
+        for(int i = units.size(); dto.getUnitDTOs().size()>i; i++) {
             if(dto.getUnitDTOs().get(i).getId()!=-1) {
                 units.add(Unit.createUnitFromDTO(dto.getUnitDTOs().get(i)));
+            }
+            else{
+                dto.getUnitDTOs().remove(i);
+                i--;
             }
         }
         //Updating data from server to already existing units
@@ -98,9 +102,14 @@ public class Player {
             }
         }
         //Creating enemy towers
-        for(int i = towers.size(); dto.getTowerDTOs().size()>towers.size() ; i++) {
+
+        for(int i = towers.size(); dto.getTowerDTOs().size()>i ; i++) {
             if(dto.getTowerDTOs().get(i).getId()!=-1) {
                 towers.add(Tower.createTowerFromDTO(dto.getTowerDTOs().get(i)));
+            }
+            else{
+                dto.getTowerDTOs().remove(i);
+                i--;
             }
         }
         //In its current form essentially unused towers can't really change
@@ -123,6 +132,7 @@ public class Player {
                     break;
             }
         }
+        System.out.println("end");
     }
 
     public synchronized void buyUnit(Unit unit) {
