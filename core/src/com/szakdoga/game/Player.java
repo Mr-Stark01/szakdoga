@@ -18,7 +18,7 @@ public class Player {
     private List<Unit> units= Collections.synchronizedList(new ArrayList<Unit>());
     private int money=10000;
     private int positionX=-1,positionY=-1;
-    private float health=10000;
+    private float health=100;
     private Tower towerInDraggingState;
     private Sprite base;
     private final Color color;
@@ -132,7 +132,6 @@ public class Player {
                     break;
             }
         }
-        System.out.println("end");
     }
 
     public synchronized void buyUnit(Unit unit) {

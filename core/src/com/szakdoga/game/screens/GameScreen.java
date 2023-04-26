@@ -121,13 +121,16 @@ public class GameScreen extends ScreenAdapter {
         executor.shutdown();
     }
     public void finished(){
-        if(GameServerHandler.getId()==-3) {
+        if(player.getHealth()<=0) {
+            executor.shutdown();
             dispose();
             game.setScreen(new EndScreen("Loss"));
         }
-        if(GameServerHandler.getId()==-4) {
+        if(enemyPlayer.getHealth()<=0) {
+            executor.shutdown();
             dispose();
             game.setScreen(new EndScreen("Win"));
+
         }
 
     }

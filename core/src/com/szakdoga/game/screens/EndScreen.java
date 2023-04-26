@@ -14,6 +14,7 @@ public class EndScreen extends ScreenAdapter {
     private SpriteBatch batch;
     private String status;
     public EndScreen(String status){
+        System.out.println("wtfasdasdasdasd");
         this.status=status;
     }
     @Override
@@ -28,6 +29,7 @@ public class EndScreen extends ScreenAdapter {
         font.draw(batch,status, Gdx.graphics.getHeight()/2,Gdx.graphics.getWidth()/2);
         if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
             Gdx.app.exit();
+            System.exit(0);
         }
         batch.end();
     }
