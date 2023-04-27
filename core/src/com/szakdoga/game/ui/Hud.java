@@ -143,7 +143,7 @@ public class Hud implements Disposable {
         unitNumberLabel.setText(player.getTowers().size());
     }
     public ClickListener getClickListener(ImageButton imageButton,Unit TMP){
-        ClickListener clickListener = new ClickListener(){ //TODO esetleg refractor
+        ClickListener clickListener = new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if(new Date().getTime()-lastPressedButton>1000) {

@@ -2,6 +2,7 @@ package com.szakdoga.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -33,8 +34,10 @@ public class MainMenu extends ScreenAdapter {
         table.setFillParent(true);
         style = new TextButton.TextButtonStyle();
         style.font = FontCreator.createFont(100);
+        TextButton.TextButtonStyle styleTitle = new TextButton.TextButtonStyle();
+        styleTitle.font = FontCreator.createFont(120, Color.valueOf("#B21031"));
         table.row().minHeight((float) (game.screenHeight*0.25*UIscale)).minWidth(game.screenWidth);//gets inherited
-        table.add(new TextButton("Szakdoga", style));
+        table.add(new TextButton("Tower Defence", styleTitle));
         TextButton startButton = new TextButton("Start", style);
         TextButton options = new TextButton("Options", style);
         TextButton exit = new TextButton("Exit", style);

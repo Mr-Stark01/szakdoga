@@ -13,8 +13,14 @@ public class EndScreen extends ScreenAdapter {
     BitmapFont font = FontCreator.createFont(200, Color.BLACK);
     private SpriteBatch batch;
     private String status;
+    private Color color;
     public EndScreen(String status){
-        System.out.println("wtfasdasdasdasd");
+        if(status.equals("Win")){
+            color=Color.GREEN;
+        }
+        else{
+            color=Color.RED;
+        }
         this.status=status;
     }
     @Override
@@ -24,7 +30,7 @@ public class EndScreen extends ScreenAdapter {
     }
     @Override
     public void render(float delta){
-        ScreenUtils.clear(1, 0, 0, 1);
+        ScreenUtils.clear(color);
         batch.begin();
         font.draw(batch,status, Gdx.graphics.getHeight()/2,Gdx.graphics.getWidth()/2);
         if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){

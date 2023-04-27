@@ -15,6 +15,7 @@ import com.szakdoga.game.Logger;
 import com.szakdoga.game.TowerDefence;
 
 import java.util.regex.Pattern;
+import java.util.zip.DeflaterInputStream;
 
 import static com.szakdoga.game.TowerDefence.UIscale;
 import static com.szakdoga.game.TowerDefence.font;
@@ -24,8 +25,10 @@ public class InputScreen extends ScreenAdapter {
     protected Stage stage;
     protected Table table;
     protected TextButton.TextButtonStyle style;
+    protected TextButton startButton;
     private TextField ip;
     private TextField name;
+    private boolean startNewScreen=false;
     Label.LabelStyle labelStyle= new Label.LabelStyle(font, Color.RED);
     Label message = new Label("",labelStyle);
     public InputScreen(TowerDefence game){
@@ -43,7 +46,7 @@ public class InputScreen extends ScreenAdapter {
         textButtonStyle.font = font;
         textButtonStyle.font.setColor(Color.BLUE);
 
-        TextButton startButton = new TextButton("Start", textButtonStyle);
+         startButton = new TextButton("Start", textButtonStyle);
         ip = new TextField("0.0.0.0",textFieldStyle);
         name = new TextField("Player",textFieldStyle);
 
@@ -51,10 +54,10 @@ public class InputScreen extends ScreenAdapter {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if(correctIPCheck(ip.getText())) {
+                    startButton.setText("LOADING");
                     Logger.writeLog("log", "startButton clicked w/ip:" + ip.getText() +
                             "and name:" +name.getText(),this.getClass().getSimpleName());
-                    dispose();
-                    game.setScreen(new GameScreen(game,ip.getText(),name.getText()));
+                    startNewScreen=true;
                 }
                 else{
                     message.setText("The ip input was wrong try again.");
@@ -74,13 +77,20 @@ public class InputScreen extends ScreenAdapter {
     public void render(float delta){
         ScreenUtils.clear(0, 0, 0, 1);
         stage.draw();
-
+        setGameScreen();
     }
     @Override
     public void dispose(){
         hide();
         stage.dispose();
         Logger.writeLogDisplayLog("log","Main Menu disposed",this.getClass().getSimpleName());
+    }
+
+    public void setGameScreen(){
+        if(startNewScreen) {
+            game.setScreen(new GameScreen(game, ip.getText(), name.getText()));
+            dispose();
+        }
     }
     public boolean correctIPCheck(String text) {
         String IPV4_REGEX = "^(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})$";

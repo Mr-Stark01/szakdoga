@@ -25,10 +25,11 @@ public class GameServerHandler implements Runnable{
     private DTO dtoIn;
     private String name;
     private static AtomicInteger id=new AtomicInteger(0);
+    private final int TIMEOUT=10000;
 
     public GameServerHandler(String ip, int port,String name) throws IOException {
         this.clientSocket=new Socket();
-        clientSocket.connect(new InetSocketAddress(ip, port), 10000);
+        clientSocket.connect(new InetSocketAddress(ip, port), TIMEOUT);
         this.name=name;
         try {
             objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
@@ -41,7 +42,6 @@ public class GameServerHandler implements Runnable{
     }
     @Override
     public void run() {
-        //TODO alapból kapjon csak egy checket és csak azzután néze meg ehmaybe
             try {
                 sendData();
                 receiveData();
@@ -54,21 +54,19 @@ public class GameServerHandler implements Runnable{
         Logger.displayLog("log","Currently waiting for data from server");
         DTOList=((ArrayList<DTO>) objectInputStream.readObject());
         Logger.displayLog("log","Received data from server");
-        Logger.displayLog("log","This client's data:");
-        Logger.displayLog("log","Enemy client's data:");
         id.set(DTOList.get(0).getId());
         player.exchangeData(DTOList.get(0));
         enemyPlayer.exchangeData(DTOList.get(1));
         Logger.displayLog("log","Succesfully received and exchanged data from server");
     }
-        protected void sendData() throws IOException {
-        Logger.displayLog("log","Sending data");
+    protected void sendData() throws IOException {
+        Logger.displayLog("log","Sending data to server");
         objectOutputStream.writeObject(new DTO(Preparator.createUnitDTOListFromUnitList(player.getUnits()),
                                                 Preparator.createTowerDTOListFromTowertList(player.getTowers()),
                                                 Preparator.createPlayerDTOFromPlayer(player),id.get(),name));
         objectOutputStream.flush();
-        Logger.displayLog("log","Data sent");
-        }
+        Logger.displayLog("log","Data sent to server");
+    }
     public DTO getDtoIn() {
         return dtoIn;
     }
