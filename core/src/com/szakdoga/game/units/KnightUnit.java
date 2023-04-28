@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import static com.szakdoga.game.network.DTO.Preparator.deepcopy;
 
 public class KnightUnit extends Unit{
+
     public KnightUnit(float X,float Y) {
         super(5,300,50,100,X,Y,"Knight");//TODO how
         textureURL="textures/knightunit.png";

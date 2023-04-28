@@ -31,6 +31,7 @@ import com.szakdoga.game.units.WizardUnit;
 
 import java.util.Date;
 
+import static com.szakdoga.game.screens.GameScreen.enemyPlayer;
 import static com.szakdoga.game.screens.GameScreen.player;
 import static com.szakdoga.game.towers.Tower.*;
 import static com.szakdoga.game.ui.InfoTable.InfoTableFactory;
@@ -47,6 +48,7 @@ public class Hud implements Disposable {
     private Label.LabelStyle labelStyle;
     private Label moneyLabel;
     private Label healthLabel;
+    private Label enemyHealthLabel;
     private Label unitNumberLabel;
     private Viewport viewport;
     private long lastPressedButton = new Date().getTime();
@@ -105,14 +107,18 @@ public class Hud implements Disposable {
         HorizontalGroup horizontalGroup = new HorizontalGroup();
         moneyLabel=new Label(Integer.toString(0),labelStyle);
         healthLabel=new Label(Integer.toString(0),labelStyle);
+        enemyHealthLabel=new Label(Integer.toString(0),labelStyle);
         unitNumberLabel=new Label(Integer.toString(0),labelStyle);
         Image coin = new Image(new TextureRegionDrawable(new Texture("textures/coin.png")));
         Image health = new Image(new TextureRegionDrawable(new Texture("textures/health.png")));
+        Image enemyHealth = new Image(new TextureRegionDrawable(new Texture("textures/enemyhealth.png")));
         Image unit = new Image(new TextureRegionDrawable(new Texture("textures/tower.png")));//todo not unit
         tableBottom.add(coin).height(Gdx.graphics.getHeight()/6f).width(Gdx.graphics.getHeight()/6f);
         tableBottom.add(moneyLabel);
         tableBottom.add(health).height(Gdx.graphics.getHeight()/6f).width(Gdx.graphics.getHeight()/6f);
         tableBottom.add(healthLabel);
+        tableBottom.add(enemyHealth).height(Gdx.graphics.getHeight()/6f).width(Gdx.graphics.getHeight()/6f);
+        tableBottom.add(enemyHealthLabel);
         tableBottom.add(unit).height(Gdx.graphics.getHeight()/6f).width(Gdx.graphics.getHeight()/6f);
         tableBottom.add(unitNumberLabel);
 
@@ -137,6 +143,7 @@ public class Hud implements Disposable {
         moneyLabel.setText(Integer.toString(player.getMoney()));
     }
     public void updateHealth(){
+        enemyHealthLabel.setText(Float.toString(enemyPlayer.getHealth()));
         healthLabel.setText(Float.toString(player.getHealth()));
     }
     public void updateUnitNumber(){
@@ -182,8 +189,9 @@ public class Hud implements Disposable {
                     player.create(createTower(0, 0, TMP.getTowerClass()));
                     lastPressedButton = new Date().getTime();
                     Logger.writeLogDisplayLog("log", "player bought " + TMP.getTowerClass() + " tower", this.getClass().getSimpleName());
-                    infoTable.setPosition(-1000, -1000);
-
+                    if(infoTable!=null) {
+                        infoTable.setPosition(-1000, -1000);
+                    }
                 }
             }
             @Override

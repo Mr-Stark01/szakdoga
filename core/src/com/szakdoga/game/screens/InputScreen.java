@@ -26,9 +26,11 @@ public class InputScreen extends ScreenAdapter {
     protected Table table;
     protected TextButton.TextButtonStyle style;
     protected TextButton startButton;
+    protected TextButton backButton;
     private TextField ip;
     private TextField name;
     private boolean startNewScreen=false;
+    private int counter =0;
     Label.LabelStyle labelStyle= new Label.LabelStyle(font, Color.RED);
     Label message = new Label("",labelStyle);
     public InputScreen(TowerDefence game){
@@ -46,7 +48,8 @@ public class InputScreen extends ScreenAdapter {
         textButtonStyle.font = font;
         textButtonStyle.font.setColor(Color.BLUE);
 
-         startButton = new TextButton("Start", textButtonStyle);
+        startButton = new TextButton("Start", textButtonStyle);
+        backButton = new TextButton("Back", textButtonStyle);
         ip = new TextField("0.0.0.0",textFieldStyle);
         name = new TextField("Player",textFieldStyle);
 
@@ -66,11 +69,21 @@ public class InputScreen extends ScreenAdapter {
                 }
             }
         });
+        backButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+            game.setScreen(new MainMenu(game));
+            dispose();
+            }
+
+        });
         table.add(startButton);
         table.row().minHeight((float) (game.screenHeight*0.15*UIscale));
         table.add(ip).width(Gdx.graphics.getWidth());
         table.row().minHeight((float) (game.screenHeight*0.15*UIscale));
         table.add(name).width(Gdx.graphics.getWidth());
+        table.row().minHeight((float) (game.screenHeight*0.15*UIscale));
+        table.add(backButton).width(Gdx.graphics.getWidth());
         stage.addActor(table);
     }
     @Override
@@ -88,8 +101,11 @@ public class InputScreen extends ScreenAdapter {
 
     public void setGameScreen(){
         if(startNewScreen) {
-            game.setScreen(new GameScreen(game, ip.getText(), name.getText()));
-            dispose();
+            counter++;
+            if(counter>4) {
+                game.setScreen(new GameScreen(game, ip.getText(), name.getText()));
+                dispose();
+            }
         }
     }
     public boolean correctIPCheck(String text) {

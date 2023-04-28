@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import static com.szakdoga.game.network.DTO.Preparator.deepcopy;
 
 public class WizardUnit extends Unit{
+
     public WizardUnit(float X,float Y) {
         super(1,50,20,40,X,Y,"Wizard");//TODO how
         textureURL="textures/wizardunit.png";

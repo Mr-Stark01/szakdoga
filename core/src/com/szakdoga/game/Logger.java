@@ -34,12 +34,12 @@ public class Logger {
         }
     }
     public static void displayLog(String tag,String message){
-        Gdx.app.log(tag,message);
+        //Gdx.app.log(tag,message);
     }
     public static void displayError(String tag,String message){
-        Gdx.app.error(tag,message);
+        //Gdx.app.error(tag,message);
     }
     public static void displayDebug(String tag,String message){
-        Gdx.app.debug(tag,message);
+        //Gdx.app.debug(tag,message);
     }
 }

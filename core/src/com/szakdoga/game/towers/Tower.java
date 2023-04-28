@@ -1,5 +1,6 @@
 package com.szakdoga.game.towers;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -8,6 +9,7 @@ import com.szakdoga.game.CompareReturn;
 import com.szakdoga.game.units.Unit;
 import org.datatransferobject.TowerDTO;
 
+import java.util.Date;
 import java.util.Objects;
 
 import static com.szakdoga.game.screens.GameScreen.player;
@@ -26,6 +28,8 @@ public abstract class Tower{ //TODO teszt osztály
     protected int X,Y;
     protected boolean hasTexture=false;
     protected String textureURL;
+    protected Projectile projectile;
+    private float deltaSumForShoot;
     public Tower(
             float damage, int price, int range, float attackTime, float spawnX, float spawnY,String towerClass) {
         this.towerClass=towerClass;
@@ -128,6 +132,24 @@ public abstract class Tower{ //TODO teszt osztály
         }
     }
 
+    public void shot(SpriteBatch batch){
+        deltaSumForShoot+=Gdx.graphics.getDeltaTime();
+        if(target != null && !target.isDead()){
+            if(deltaSumForShoot>attackTime && target.getNextX().size()>2){
+                deltaSumForShoot=0;
+                projectile=new Projectile(X,Y,target.getNextX().get(1),target.getNextY().get(1));
+                projectile.shot(batch);
+            }
+        }
+        if(projectile!=null){
+            projectile.shot(batch);
+            if(projectile.reached()){
+                projectile=null;
+            }
+        }
+    }
+
+
     /**
      * Main render method gets called for every frame everything visual in this class should be called here such as projectiles
      * @param batch
@@ -135,6 +157,7 @@ public abstract class Tower{ //TODO teszt osztály
     public void render(SpriteBatch batch, Color color){
         if (id > 0) {
             addTexture();
+            shot(batch);
             sprite.setColor(color);
             sprite.draw(batch);
         }

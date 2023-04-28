@@ -33,11 +33,13 @@ public abstract class Unit {
   protected Sprite sprite;
   protected String textureURL;
   protected Boolean hasTexture=false;
+  protected int MAXHEALTH;
 
   public Unit(float speed, float health, float damage, int price, float X, float Y,String unitClass) {
     this.speed = speed;
     this.health = health;
     this.damage = damage;
+    this.MAXHEALTH= (int) health;
     this.price = price;
     this.PreviousX = (int) X;
     this.PreviousY = (int) Y;
@@ -155,6 +157,7 @@ public abstract class Unit {
       addTexture();
       step();
       sprite.setColor(color);
+      sprite.setAlpha(health/MAXHEALTH);
       sprite.draw(batch);
     }
   }
@@ -318,7 +321,7 @@ public abstract class Unit {
   }
 
   public boolean isDead() {
-    return health < 0;
+    return health <= 0;
   }
 
   public String getUnitClass() {

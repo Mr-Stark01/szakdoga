@@ -2,8 +2,10 @@ package com.szakdoga.game;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.szakdoga.game.towers.Tower;
 import com.szakdoga.game.units.Unit;
 import org.datatransferobject.DTO;
@@ -22,6 +24,8 @@ public class Player {
     private Tower towerInDraggingState;
     private Sprite base;
     private final Color color;
+
+
 
     public Player(String baseURL,Color color){
         base=new Sprite();
@@ -64,6 +68,7 @@ public class Player {
         base.setColor(color);
         base.setSize(1,1);
     }
+
 
     public void exchangeData(DTO dto){
         PlayerDTO playerDTO = dto.getPlayerDTO();
