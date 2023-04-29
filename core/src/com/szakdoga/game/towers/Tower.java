@@ -135,11 +135,24 @@ public abstract class Tower{ //TODO teszt osztály
     public void shot(SpriteBatch batch){
         deltaSumForShoot+=Gdx.graphics.getDeltaTime();
         if(target != null && !target.isDead()){
-            if(deltaSumForShoot>attackTime && target.getNextX().size()>2){
+            int toShotX,toShotY;
+            synchronized (this){
+                if(target!=null &&target.getNextX().size()>2) {
+                    toShotX = target.getNextX().get(1);
+                    toShotY = target.getNextY().get(1);
+                }
+                else{
+                    return ;
+                }
+            }
+            if(deltaSumForShoot*0.8f>attackTime && target.getNextX().size()>2){
                 deltaSumForShoot=0;
-                projectile=new Projectile(X,Y,target.getNextX().get(1),target.getNextY().get(1));
+                projectile=new Projectile(X,Y,toShotX,toShotY);
                 projectile.shot(batch);
             }
+        }
+        else{
+            projectile=null;
         }
         if(projectile!=null){
             projectile.shot(batch);
@@ -169,7 +182,7 @@ public abstract class Tower{ //TODO teszt osztály
      */
     public void setValuesFromDTO(TowerDTO towerDTO) {
         this.id = towerDTO.getId();
-        this.target = towerDTO.getTarget() == null ? null : player.getUnitWithId(towerDTO.getTarget().getId());
+        this.target = towerDTO.getTarget() == null ? null : Unit.createUnitFromDTO(towerDTO.getTarget());
         this.attackTime = towerDTO.getAttackTime();
         this.lastTimeOfAttack=towerDTO.getLastTimeOfAttack();
         this.damage = towerDTO.getDamage();

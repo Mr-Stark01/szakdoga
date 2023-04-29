@@ -221,7 +221,8 @@ public abstract class Unit {
             getPreviousY() == unit.getPreviousY() &&
             getNextX() == unit.getNextX() && getNextY() == unit.getNextY() &&
             Float.compare(unit.getDeltaX(), getDeltaX()) == 0 && Float.compare(unit.getDeltaY(), getDeltaY()) == 0 &&
-            Float.compare(unit.getDistance(), getDistance()) == 0;
+            Float.compare(unit.getDistance(), getDistance()) == 0 &&
+            getId()==unit.getId();
   }
 
   public void setDeltaX(float deltaX) {
