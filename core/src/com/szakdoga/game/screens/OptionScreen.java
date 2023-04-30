@@ -76,13 +76,13 @@ public class OptionScreen extends ScreenAdapter {
             public void clicked(InputEvent event,float x,float y){
                 if(!fullScreen) {
                     Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
-                    fullscreen.setText("Fullscreen: ON");
+                    fullscreen.setText("Fullscreen: ON"); //TODO kiemelni tit
                     fullScreen=true;
                     Logger.writeLogDisplayLog("log","Diplayed switched to fullscreen",this.getClass().getName());
                 }
                 else{
-                    Gdx.graphics.setWindowedMode(1000,540);
-                    fullscreen.setText("Fullscreen: OFF");
+                    Gdx.graphics.setWindowedMode(1000,540);//TODO kiemelni display conf
+                    fullscreen.setText("Fullscreen: OFF"); //TODO kiemelni display conf
                     fullScreen=false;
                     Logger.writeLogDisplayLog("log","Diplayed switched to windowed",this.getClass().getName());
                 }
@@ -92,9 +92,9 @@ public class OptionScreen extends ScreenAdapter {
 
         UIscaleField = new TextField("", textFieldStyle);
         UIscaleField.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        UIscaleField.setMessageText("Input");
+        UIscaleField.setMessageText("Input"); //TODO kiemelni display conf
 
-        table.row().minHeight((float) (game.screenHeight*0.15*UIscale));
+        table.row().minHeight((float) (game.screenHeight*0.15*UIscale)); //TODO kiemelni display conf
         table.add(UIScale).fill();
         table.row().minHeight((float) (game.screenHeight*0.15*UIscale));
         table.add(UIscaleField).fill();

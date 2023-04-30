@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
 
 
 public class GameScreen extends ScreenAdapter {
-
+    private static final String MAP_URI="maps/defmap.tmx";
     public static Player player;
     public static Player enemyPlayer;
     static float tileScale;
@@ -53,13 +53,13 @@ public class GameScreen extends ScreenAdapter {
     public void show(){
         //Importing and creating map
         TmxMapLoader loader = new TmxMapLoader();
-        map = loader.load("maps/defmap.tmx");
+        map = loader.load(MAP_URI);
         tileLayer = (TiledMapTileLayer) map.getLayers().get(0);
         tileScale = (float) tileLayer.getTileWidth();
         renderer = new OrthogonalTiledMapRenderer(map, 1 / tileScale);
 
-        player = new Player("textures/tower.png", Color.BLUE);
-        enemyPlayer = new Player("textures/dragon.png",Color.RED);
+        player = new Player("textures/tower.png", Color.BLUE);//TODO kiemelni
+        enemyPlayer = new Player("textures/dragon.png",Color.RED);//TODO kiemelni
 
         GameServerHandler gameServerHandler;
         try {
@@ -123,12 +123,12 @@ public class GameScreen extends ScreenAdapter {
     public void finished(){
         if(enemyPlayer.getHealth()<=0) {
             executor.shutdown();
-            game.setScreen(new EndScreen("Win"));
+            game.setScreen(new EndScreen("Win")); //TODO kiemelni
             hide();
         }
         if(player.getHealth()<=0) {
             executor.shutdown();
-            game.setScreen(new EndScreen("Loss"));
+            game.setScreen(new EndScreen("Loss")); //TODO kiemelni titles
             hide();
         }
     }

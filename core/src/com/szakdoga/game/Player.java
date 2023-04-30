@@ -122,6 +122,7 @@ public class Player {
             CompareReturn compareReturn=towers.get(i).compareToDTO(dto.getTowerDTOs().get(i));
             switch (compareReturn){
                 case SameIdSameValue:
+                    System.out.println("sameidsamevalue");
                     break;
                 case SameIdDifferentValue:
                     towers.get(i).setValuesFromDTO(dto.getTowerDTOs().get(i));

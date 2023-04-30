@@ -13,18 +13,20 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.szakdoga.game.FontCreator;
 import com.szakdoga.game.Logger;
+import com.szakdoga.game.DisplayConfig;
 import com.szakdoga.game.TowerDefence;
+
 
 import static com.szakdoga.game.TowerDefence.UIscale;
 
 
 public class MainMenu extends ScreenAdapter {
     final TowerDefence game;
-    protected TextButton.TextButtonStyle style;
-    protected Stage stage;
-    protected Table table;
-    Texture bg;
-    TextButton.TextButtonStyle styleHover;
+    private TextButton.TextButtonStyle style;
+    private Stage stage;
+    private Table table;
+    private Texture bg;
+    private TextButton.TextButtonStyle styleHover;
     public MainMenu(final TowerDefence game){
         this.game=game;
         stage = new Stage();
@@ -33,12 +35,12 @@ public class MainMenu extends ScreenAdapter {
         table.setDebug(true);
         table.setFillParent(true);
         style = new TextButton.TextButtonStyle();
-        style.font = FontCreator.createFont(100);
+        style.font = FontCreator.createFont(100);//TODO 0.15 kiemelni
         TextButton.TextButtonStyle styleTitle = new TextButton.TextButtonStyle();
-        styleTitle.font = FontCreator.createFont(120, Color.valueOf("#B21031"));
-        table.row().minHeight((float) (game.screenHeight*0.25*UIscale)).minWidth(game.screenWidth);//gets inherited
-        table.add(new TextButton("Tower Defence", styleTitle));
-        TextButton startButton = new TextButton("Start", style);
+        styleTitle.font = FontCreator.createFont(120, Color.valueOf("#B21031"));//TODO kiemelni
+        table.row().minHeight((float) (game.screenHeight*0.25*UIscale)).minWidth(game.screenWidth);//gets inherited//TODO 0.15 kiemelni
+        table.add(new TextButton(DisplayConfig.GAME_TITLE, styleTitle));
+        TextButton startButton = new TextButton("Start", style);//TODO  kiemelni
         TextButton options = new TextButton("Options", style);
         TextButton exit = new TextButton("Exit", style);
         startButton.addListener(new ClickListener(){
@@ -67,7 +69,7 @@ public class MainMenu extends ScreenAdapter {
             }
         });
 
-        table.row().minHeight((float) (game.screenHeight*0.15*UIscale));
+        table.row().minHeight((float) (game.screenHeight*0.15*UIscale));//TODO 0.15 kiemelni
         table.add(startButton).fill();
         table.row().minHeight((float) (game.screenHeight*0.15*UIscale));
         table.add(options).fill();

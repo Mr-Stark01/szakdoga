@@ -15,7 +15,7 @@ public class TowerDefence extends Game {
 	public BitmapFont fontHover; //Hover as in when mouse is over it
 	public int screenHeight;
 	public int screenWidth;
-	public static float UIscale=1;
+	public static float UIscale=1;//TODO kiemelni starting post
 
 
 	@Override

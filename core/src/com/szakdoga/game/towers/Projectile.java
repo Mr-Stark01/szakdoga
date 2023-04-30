@@ -9,7 +9,7 @@ import com.badlogic.gdx.math.MathUtils;
 public class Projectile {
     private Sprite sprite;
     private float deltaX,deltaY,targetX,targetY;
-    private float speed=5f;
+    private float speed=10f;
     private float dieSum;
     public Projectile(float X,float Y,float targetX,float targetY){
         sprite=new Sprite(new Texture("textures/projectile.png"));

@@ -22,7 +22,7 @@ public class InputHandler implements InputProcessor {
     private static TowerRangeCircle towerRangeCircle;
     private OrthographicCamera camera;
     private float scale;
-    private float limit=10f*UIscale;
+    private float limit=10f*UIscale;//TODO kiemelni display conf
     private OrthogonalTiledMapRenderer renderer;
 
     public void setView(OrthographicCamera camera, float scale, OrthogonalTiledMapRenderer renderer){

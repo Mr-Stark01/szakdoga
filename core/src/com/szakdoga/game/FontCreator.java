@@ -9,7 +9,7 @@ import static com.szakdoga.game.TowerDefence.UIscale;
 
 public class FontCreator {
     public static BitmapFont createFont(){
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Kanit-Black.ttf"));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Kanit-Black.ttf"));//TODO kiemelni display conf
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = (int) (75*UIscale);
         BitmapFont font = generator.generateFont(parameter);

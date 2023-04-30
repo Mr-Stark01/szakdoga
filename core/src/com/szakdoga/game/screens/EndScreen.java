@@ -15,7 +15,7 @@ public class EndScreen extends ScreenAdapter {
     private String status;
     private Color color;
     public EndScreen(String status){
-        if(status.equals("Win")){
+        if(status.equals("Win")){ //todo kiemelni display log titles
             color=Color.GREEN;
         }
         else{

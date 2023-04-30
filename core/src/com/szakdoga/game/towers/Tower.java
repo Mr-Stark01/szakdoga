@@ -53,7 +53,7 @@ public abstract class Tower{ //TODO teszt osztály
      */
     public static Tower createTowerFromDTO(TowerDTO towerDTO) {
         switch (towerDTO.getTowerClass()){
-            case "Archer":
+            case "Archer"://TODO kiemelni osztály szintü
                 return createArcherTowerFromDTO(towerDTO);
             case "Wizard":
                 return createWizardTowerFromDTO(towerDTO);
@@ -82,7 +82,7 @@ public abstract class Tower{ //TODO teszt osztály
      * @return
      */
     public static Tower createArcherTower(float spawnX,float spawnY){
-        return new ArcherTower(spawnX, spawnY,"Archer");
+        return new ArcherTower(spawnX, spawnY,"Archer");//TODO kiemelni osztály szintü
     }
     public static Tower createWizardTower(float spawnX,float spawnY){
         return new WizardTower(spawnX, spawnY,"Wizard");
@@ -124,7 +124,7 @@ public abstract class Tower{ //TODO teszt osztály
     public void addTexture(){
         if(!hasTexture){
             float X=getX(),Y=getY();
-            sprite.set(new Sprite(new Texture("textures/tower.png")));
+            sprite.set(new Sprite(new Texture("textures/tower.png")));//TODO kiemelni display conf
             sprite.setX(X);
             sprite.setY(Y);
             sprite.setSize(1,1);

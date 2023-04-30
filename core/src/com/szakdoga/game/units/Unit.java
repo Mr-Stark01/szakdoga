@@ -33,13 +33,13 @@ public abstract class Unit {
   protected Sprite sprite;
   protected String textureURL;
   protected Boolean hasTexture=false;
-  protected int MAXHEALTH;
+  protected final int MAX_HEALTH;
 
   public Unit(float speed, float health, float damage, int price, float X, float Y,String unitClass) {
     this.speed = speed;
     this.health = health;
     this.damage = damage;
-    this.MAXHEALTH= (int) health;
+    this.MAX_HEALTH= (int) health;
     this.price = price;
     this.PreviousX = (int) X;
     this.PreviousY = (int) Y;
@@ -73,7 +73,7 @@ public abstract class Unit {
    */
   public static Unit createUnitFromDTO(UnitDTO unitDTO) {
     switch (unitDTO.getUnitClass()){
-      case "Pike":
+      case "Pike": //TODO kiemelni osztály
         return createPikeUnitFromDTO(unitDTO);
       case "Wizard":
         return createKnightUnitFromDTO(unitDTO);
@@ -83,7 +83,7 @@ public abstract class Unit {
     return null;
   }
   public static Unit createUnit(int X,int Y,String unitName){
-    switch (unitName){
+    switch (unitName){ //TODO kiemelni osztály
       case "Pike":
         return createPikeUnit(X,Y,unitName);
       case "Wizard":
@@ -127,7 +127,7 @@ public abstract class Unit {
    */
   public void step(){
     //If reached destination it stops and waits for destruction
-    if(nextXCoordinates.get(0)==-1 && nextYCoordinates.get(0)==-1){
+    if(nextXCoordinates.get(0)==-1 && nextYCoordinates.get(0)==-1){//TODO kiemelni osztály
       sprite.setX(Math.round(getX()));
       sprite.setY(Math.round(getY()));
       return;
@@ -144,7 +144,7 @@ public abstract class Unit {
   public void addTexture(){
     if(!hasTexture){
       float X=getX(),Y=getY();
-      sprite.set(new Sprite(new Texture("textures/tower.png")));
+      sprite.set(new Sprite(new Texture("textures/tower.png")));//TODO kiemelni display conf
       sprite.setX(X);
       sprite.setY(Y);
       sprite.setSize(1,1);
@@ -157,7 +157,7 @@ public abstract class Unit {
       addTexture();
       step();
       sprite.setColor(color);
-      sprite.setAlpha(health/MAXHEALTH);
+      sprite.setAlpha(health/MAX_HEALTH);
       sprite.draw(batch);
     }
   }
@@ -205,6 +205,8 @@ public abstract class Unit {
             getPrice() == unit.getPrice() && getPreviousX() == unit.getPreviousX() &&
             getPreviousY() == unit.getPreviousY() && getNextX().equals(unit.getNextX()) &&
             getNextY().equals(unit.getNextY()) && Float.compare(unit.getDeltaX(), getDeltaX()) == 0 &&
+            Float.compare(unit.getX(),getX()) == 0 &&
+            Float.compare(unit.getY(),getY()) == 0 &&
             Float.compare(unit.getDeltaY(), getDeltaY()) == 0 &&
             Float.compare(unit.getDistance(), getDistance()) == 0;
   }

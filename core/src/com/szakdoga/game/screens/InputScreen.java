@@ -21,16 +21,17 @@ import static com.szakdoga.game.TowerDefence.UIscale;
 import static com.szakdoga.game.TowerDefence.font;
 
 public class InputScreen extends ScreenAdapter {
+    private static final String IPV4_REGEX = "^(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})$";
+    private static final int LOAD_DELAY_LIMIT=4;
     private TowerDefence game;
     protected Stage stage;
     protected Table table;
-    protected TextButton.TextButtonStyle style;
     protected TextButton startButton;
     protected TextButton backButton;
     private TextField ip;
     private TextField name;
     private boolean startNewScreen=false;
-    private int counter =0;
+    private int loadDelayCounter =0;
     Label.LabelStyle labelStyle= new Label.LabelStyle(font, Color.RED);
     Label message = new Label("",labelStyle);
     public InputScreen(TowerDefence game){
@@ -46,9 +47,9 @@ public class InputScreen extends ScreenAdapter {
         textFieldStyle.fontColor= Color.WHITE;
         TextButton.TextButtonStyle textButtonStyle =new TextButton.TextButtonStyle();
         textButtonStyle.font = font;
-        textButtonStyle.font.setColor(Color.BLUE);
+        textButtonStyle.font.setColor(Color.BLUE);//TODO kiemelni
 
-        startButton = new TextButton("Start", textButtonStyle);
+        startButton = new TextButton("Start", textButtonStyle);//TODO kiemelni
         backButton = new TextButton("Back", textButtonStyle);
         ip = new TextField("0.0.0.0",textFieldStyle);
         name = new TextField("Player",textFieldStyle);
@@ -78,7 +79,7 @@ public class InputScreen extends ScreenAdapter {
 
         });
         table.add(startButton);
-        table.row().minHeight((float) (game.screenHeight*0.15*UIscale));
+        table.row().minHeight((float) (game.screenHeight*0.15*UIscale));//TODO kiemelni
         table.add(ip).width(Gdx.graphics.getWidth());
         table.row().minHeight((float) (game.screenHeight*0.15*UIscale));
         table.add(name).width(Gdx.graphics.getWidth());
@@ -101,15 +102,14 @@ public class InputScreen extends ScreenAdapter {
 
     public void setGameScreen(){
         if(startNewScreen) {
-            counter++;
-            if(counter>4) {
+            loadDelayCounter++;
+            if(loadDelayCounter>4) {
                 game.setScreen(new GameScreen(game, ip.getText(), name.getText()));
                 dispose();
             }
         }
     }
     public boolean correctIPCheck(String text) {
-        String IPV4_REGEX = "^(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})$";
         Pattern IPv4_PATTERN = Pattern.compile(IPV4_REGEX);
         if (text == null) {
             return false;
