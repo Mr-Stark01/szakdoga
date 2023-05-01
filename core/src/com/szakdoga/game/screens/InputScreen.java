@@ -11,11 +11,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.szakdoga.game.DisplayConfig;
 import com.szakdoga.game.Logger;
 import com.szakdoga.game.TowerDefence;
 
 import java.util.regex.Pattern;
-import java.util.zip.DeflaterInputStream;
 
 import static com.szakdoga.game.TowerDefence.UIscale;
 import static com.szakdoga.game.TowerDefence.font;
@@ -47,10 +47,10 @@ public class InputScreen extends ScreenAdapter {
         textFieldStyle.fontColor= Color.WHITE;
         TextButton.TextButtonStyle textButtonStyle =new TextButton.TextButtonStyle();
         textButtonStyle.font = font;
-        textButtonStyle.font.setColor(Color.BLUE);//TODO kiemelni
+        textButtonStyle.font.setColor(DisplayConfig.BLUE_COLOR);
 
-        startButton = new TextButton("Start", textButtonStyle);//TODO kiemelni
-        backButton = new TextButton("Back", textButtonStyle);
+        startButton = new TextButton(DisplayConfig.START_TEXT, textButtonStyle);
+        backButton = new TextButton(DisplayConfig.BACK_TEXT, textButtonStyle);
         ip = new TextField("0.0.0.0",textFieldStyle);
         name = new TextField("Player",textFieldStyle);
 
@@ -79,11 +79,11 @@ public class InputScreen extends ScreenAdapter {
 
         });
         table.add(startButton);
-        table.row().minHeight((float) (game.screenHeight*0.15*UIscale));//TODO kiemelni
+        table.row().minHeight((float) (game.screenHeight*DisplayConfig.HUD_TABLE_ADJUSTMENT *UIscale));
         table.add(ip).width(Gdx.graphics.getWidth());
-        table.row().minHeight((float) (game.screenHeight*0.15*UIscale));
+        table.row().minHeight((float) (game.screenHeight*DisplayConfig.HUD_TABLE_ADJUSTMENT *UIscale));
         table.add(name).width(Gdx.graphics.getWidth());
-        table.row().minHeight((float) (game.screenHeight*0.15*UIscale));
+        table.row().minHeight((float) (game.screenHeight*DisplayConfig.HUD_TABLE_ADJUSTMENT *UIscale));
         table.add(backButton).width(Gdx.graphics.getWidth());
         stage.addActor(table);
     }

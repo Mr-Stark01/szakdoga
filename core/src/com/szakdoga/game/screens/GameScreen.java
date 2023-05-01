@@ -12,6 +12,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.szakdoga.game.DisplayConfig;
 import com.szakdoga.game.Logger;
 import com.szakdoga.game.Player;
 import com.szakdoga.game.TowerDefence;
@@ -58,8 +59,8 @@ public class GameScreen extends ScreenAdapter {
         tileScale = (float) tileLayer.getTileWidth();
         renderer = new OrthogonalTiledMapRenderer(map, 1 / tileScale);
 
-        player = new Player("textures/tower.png", Color.BLUE);//TODO kiemelni
-        enemyPlayer = new Player("textures/dragon.png",Color.RED);//TODO kiemelni
+        player = new Player(DisplayConfig.TOWER_TEXTURE,DisplayConfig.BLUE_COLOR);
+        enemyPlayer = new Player(DisplayConfig.DRAGON_TEXTURE,DisplayConfig.RED_COLOR);
 
         GameServerHandler gameServerHandler;
         try {
@@ -123,12 +124,12 @@ public class GameScreen extends ScreenAdapter {
     public void finished(){
         if(enemyPlayer.getHealth()<=0) {
             executor.shutdown();
-            game.setScreen(new EndScreen("Win")); //TODO kiemelni
+            game.setScreen(new EndScreen(DisplayConfig.WIN_TEXT));
             hide();
         }
         if(player.getHealth()<=0) {
             executor.shutdown();
-            game.setScreen(new EndScreen("Loss")); //TODO kiemelni titles
+            game.setScreen(new EndScreen(DisplayConfig.LOSS_TEXT)); 
             hide();
         }
     }

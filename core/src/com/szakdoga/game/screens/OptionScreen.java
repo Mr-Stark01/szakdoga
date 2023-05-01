@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.szakdoga.game.DisplayConfig;
 import com.szakdoga.game.FontCreator;
 import com.szakdoga.game.Logger;
 import com.szakdoga.game.TowerDefence;
@@ -76,13 +77,13 @@ public class OptionScreen extends ScreenAdapter {
             public void clicked(InputEvent event,float x,float y){
                 if(!fullScreen) {
                     Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
-                    fullscreen.setText("Fullscreen: ON"); //TODO kiemelni tit
+                    fullscreen.setText(DisplayConfig.FULLSCREEN_ON_TEXT);
                     fullScreen=true;
                     Logger.writeLogDisplayLog("log","Diplayed switched to fullscreen",this.getClass().getName());
                 }
                 else{
-                    Gdx.graphics.setWindowedMode(1000,540);//TODO kiemelni display conf
-                    fullscreen.setText("Fullscreen: OFF"); //TODO kiemelni display conf
+                    Gdx.graphics.setWindowedMode(DisplayConfig.STANDARD_WINDOW_SIZE_WIDTH,DisplayConfig.STANDARD_WINDOW_SIZE_HEIGHT);
+                    fullscreen.setText(DisplayConfig.FULLSCREEN_OFF_TEXT);
                     fullScreen=false;
                     Logger.writeLogDisplayLog("log","Diplayed switched to windowed",this.getClass().getName());
                 }
@@ -92,15 +93,15 @@ public class OptionScreen extends ScreenAdapter {
 
         UIscaleField = new TextField("", textFieldStyle);
         UIscaleField.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        UIscaleField.setMessageText("Input"); //TODO kiemelni display conf
+        UIscaleField.setMessageText("Input");
 
-        table.row().minHeight((float) (game.screenHeight*0.15*UIscale)); //TODO kiemelni display conf
+        table.row().minHeight((float) (game.screenHeight*DisplayConfig.HUD_TABLE_ADJUSTMENT*UIscale));
         table.add(UIScale).fill();
-        table.row().minHeight((float) (game.screenHeight*0.15*UIscale));
+        table.row().minHeight((float) (game.screenHeight*DisplayConfig.HUD_TABLE_ADJUSTMENT*UIscale));
         table.add(UIscaleField).fill();
-        table.row().minHeight((float) (game.screenHeight*0.15*UIscale));
+        table.row().minHeight((float) (game.screenHeight*DisplayConfig.HUD_TABLE_ADJUSTMENT*UIscale));
         table.add(fullscreen).fill();
-        table.row().minHeight((float) (game.screenHeight*0.15*UIscale));
+        table.row().minHeight((float) (game.screenHeight*DisplayConfig.HUD_TABLE_ADJUSTMENT*UIscale));
         table.add(exit).fill();
 
 

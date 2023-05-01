@@ -2,12 +2,10 @@ package com.szakdoga.game;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.szakdoga.game.towers.Tower;
-import com.szakdoga.game.units.Unit;
+import com.szakdoga.game.entities.towers.Tower;
+import com.szakdoga.game.entities.units.Unit;
 import org.datatransferobject.DTO;
 import org.datatransferobject.PlayerDTO;
 
@@ -122,7 +120,6 @@ public class Player {
             CompareReturn compareReturn=towers.get(i).compareToDTO(dto.getTowerDTOs().get(i));
             switch (compareReturn){
                 case SameIdSameValue:
-                    System.out.println("sameidsamevalue");
                     break;
                 case SameIdDifferentValue:
                     towers.get(i).setValuesFromDTO(dto.getTowerDTOs().get(i));

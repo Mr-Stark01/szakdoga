@@ -1,26 +1,28 @@
-package com.szakdoga.game.units;
+package com.szakdoga.game.entities.units;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.szakdoga.game.DisplayConfig;
+import com.szakdoga.game.entities.EntitiesConfig;
 import org.datatransferobject.UnitDTO;
 
 import java.util.ArrayList;
 
 import static com.szakdoga.game.network.DTO.Preparator.deepcopy;
 
-public class PikeUnit extends Unit{
-    public PikeUnit(float X,float Y) {
-    super(2,100,5,25,X,Y,"Pike");
-    textureURL="textures/pikeunit.png";
-    sprite.set(new Sprite(new Texture(textureURL)));
-    sprite.setSize(1,1);
-    sprite.setX(X);
-    sprite.setY(Y);
+public class KnightUnit extends Unit{
 
+    public KnightUnit(float X,float Y) {
+        super(5,300,50,100,X,Y, EntitiesConfig.KNIGHT_UNIT);
+        textureURL = DisplayConfig.KNIGHT_UNIT_TEXTURE;
+        sprite.set(new Sprite(new Texture(textureURL)));
+        sprite.setSize(1,1);
+        sprite.setX(X);
+        sprite.setY(Y);
     }
-    public PikeUnit(UnitDTO unitDTO){//TODO teljesen átmásolni
+    public KnightUnit(UnitDTO unitDTO){
         super(unitDTO.getSpeed(),unitDTO.getHealth(),unitDTO.getDamage(), unitDTO.getPrice(), unitDTO.getX(), unitDTO.getY(),unitDTO.getUnitClass());
-        textureURL="textures/pikeunit.png";
+        textureURL = DisplayConfig.KNIGHT_UNIT_TEXTURE;
         sprite.setSize(1,1);
         sprite.setX(unitDTO.getX());
         sprite.setY(unitDTO.getY());

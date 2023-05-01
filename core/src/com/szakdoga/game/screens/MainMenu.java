@@ -35,14 +35,14 @@ public class MainMenu extends ScreenAdapter {
         table.setDebug(true);
         table.setFillParent(true);
         style = new TextButton.TextButtonStyle();
-        style.font = FontCreator.createFont(100);//TODO 0.15 kiemelni
+        style.font = FontCreator.createFont(DisplayConfig.MEDIUM_FONT_SIZE);
         TextButton.TextButtonStyle styleTitle = new TextButton.TextButtonStyle();
-        styleTitle.font = FontCreator.createFont(120, Color.valueOf("#B21031"));//TODO kiemelni
-        table.row().minHeight((float) (game.screenHeight*0.25*UIscale)).minWidth(game.screenWidth);//gets inherited//TODO 0.15 kiemelni
+        styleTitle.font = FontCreator.createFont(DisplayConfig.BIG_FONT_SIZE, DisplayConfig.CRIMSON_COLOR);
+        table.row().minHeight((float) (game.screenHeight*DisplayConfig.MAIN_MENU_TABLE_ADJUSTMENT*UIscale)).minWidth(game.screenWidth);
         table.add(new TextButton(DisplayConfig.GAME_TITLE, styleTitle));
-        TextButton startButton = new TextButton("Start", style);//TODO  kiemelni
-        TextButton options = new TextButton("Options", style);
-        TextButton exit = new TextButton("Exit", style);
+        TextButton startButton = new TextButton(DisplayConfig.START_TEXT, style);
+        TextButton options = new TextButton(DisplayConfig.OPTION_TEXT, style);
+        TextButton exit = new TextButton(DisplayConfig.EXIT_TEXT, style);
         startButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -69,11 +69,11 @@ public class MainMenu extends ScreenAdapter {
             }
         });
 
-        table.row().minHeight((float) (game.screenHeight*0.15*UIscale));//TODO 0.15 kiemelni
+        table.row().minHeight((float) (game.screenHeight*DisplayConfig.HUD_TABLE_ADJUSTMENT*UIscale));
         table.add(startButton).fill();
-        table.row().minHeight((float) (game.screenHeight*0.15*UIscale));
+        table.row().minHeight((float) (game.screenHeight*DisplayConfig.HUD_TABLE_ADJUSTMENT*UIscale));
         table.add(options).fill();
-        table.row().minHeight((float) (game.screenHeight*0.15*UIscale));
+        table.row().minHeight((float) (game.screenHeight*DisplayConfig.HUD_TABLE_ADJUSTMENT*UIscale));
         table.add(exit).fill();
         stage.addActor(table);
         stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
@@ -81,7 +81,7 @@ public class MainMenu extends ScreenAdapter {
     }
     @Override
     public void show(){
-        bg = new Texture("menu/start_menu.png");
+        bg = new Texture(DisplayConfig.MAIN_MENU_BACKGROUND_TEXTURE);
         styleHover = new TextButton.TextButtonStyle();
         styleHover.font = game.fontHover;
     }

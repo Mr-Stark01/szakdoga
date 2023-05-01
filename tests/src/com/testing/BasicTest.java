@@ -1,6 +1,6 @@
 package com.testing;
 
-import com.szakdoga.game.towers.ArcherTower;
+import com.szakdoga.game.entities.towers.ArcherTower;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

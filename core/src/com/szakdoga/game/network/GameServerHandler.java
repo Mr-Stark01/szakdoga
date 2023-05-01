@@ -37,7 +37,7 @@ public class GameServerHandler implements Runnable{
         }catch (IOException e){
             e.printStackTrace();
             Logger.writeLog("error",e.getMessage(),this.getClass().getSimpleName());
-            throw new RuntimeException(e.getMessage());
+            System.exit(-1);
         }
     }
     @Override
@@ -47,6 +47,7 @@ public class GameServerHandler implements Runnable{
                 receiveData();
             } catch (IOException | ClassNotFoundException e) {
                 Logger.writeLog("error",e.getMessage(),this.getClass().getSimpleName());
+                System.exit(-1);
             }
     }
     @SuppressWarnings("unchecked")

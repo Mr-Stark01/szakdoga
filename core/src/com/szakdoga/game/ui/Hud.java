@@ -17,23 +17,24 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.Null;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.szakdoga.game.DisplayConfig;
 import com.szakdoga.game.FontCreator;
 import com.szakdoga.game.Logger;
 import com.szakdoga.game.screens.inputHandlers.InputHandler;
-import com.szakdoga.game.towers.ArcherTower;
-import com.szakdoga.game.towers.CrossBowTower;
-import com.szakdoga.game.towers.Tower;
-import com.szakdoga.game.towers.WizardTower;
-import com.szakdoga.game.units.KnightUnit;
-import com.szakdoga.game.units.PikeUnit;
-import com.szakdoga.game.units.Unit;
-import com.szakdoga.game.units.WizardUnit;
+import com.szakdoga.game.entities.towers.ArcherTower;
+import com.szakdoga.game.entities.towers.CrossBowTower;
+import com.szakdoga.game.entities.towers.Tower;
+import com.szakdoga.game.entities.towers.WizardTower;
+import com.szakdoga.game.entities.units.KnightUnit;
+import com.szakdoga.game.entities.units.PikeUnit;
+import com.szakdoga.game.entities.units.Unit;
+import com.szakdoga.game.entities.units.WizardUnit;
 
 import java.util.Date;
 
 import static com.szakdoga.game.screens.GameScreen.enemyPlayer;
 import static com.szakdoga.game.screens.GameScreen.player;
-import static com.szakdoga.game.towers.Tower.*;
+import static com.szakdoga.game.entities.towers.Tower.*;
 import static com.szakdoga.game.ui.InfoTable.InfoTableFactory;
 
 /**
@@ -109,10 +110,10 @@ public class Hud implements Disposable {
         healthLabel=new Label(Integer.toString(0),labelStyle);
         enemyHealthLabel=new Label(Integer.toString(0),labelStyle);
         unitNumberLabel=new Label(Integer.toString(0),labelStyle);
-        Image coin = new Image(new TextureRegionDrawable(new Texture("textures/coin.png")));
-        Image health = new Image(new TextureRegionDrawable(new Texture("textures/health.png")));
-        Image enemyHealth = new Image(new TextureRegionDrawable(new Texture("textures/enemyhealth.png")));
-        Image unit = new Image(new TextureRegionDrawable(new Texture("textures/tower.png")));//todo not unit
+        Image coin = new Image(new TextureRegionDrawable(new Texture(DisplayConfig.COIN_TEXTURE)));
+        Image health = new Image(new TextureRegionDrawable(new Texture(DisplayConfig.HEALTH_TEXTURE)));
+        Image enemyHealth = new Image(new TextureRegionDrawable(new Texture(DisplayConfig.ENEMY_HEALTH_TEXTURE)));
+        Image unit = new Image(new TextureRegionDrawable(new Texture(DisplayConfig.TOWER_TEXTURE)));
         tableBottom.add(coin).height(Gdx.graphics.getHeight()/6f).width(Gdx.graphics.getHeight()/6f);
         tableBottom.add(moneyLabel);
         tableBottom.add(health).height(Gdx.graphics.getHeight()/6f).width(Gdx.graphics.getHeight()/6f);
@@ -181,7 +182,7 @@ public class Hud implements Disposable {
         return clickListener;
     }
     public ClickListener getClickListener(ImageButton imageButton, Tower TMP,InputHandler inputHandler,String textureHandle){
-        ClickListener clickListener = new ClickListener(){ //TODO esetleg refractor
+        return new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if(new Date().getTime()-lastPressedButton>1000) {
@@ -210,7 +211,6 @@ public class Hud implements Disposable {
                 }
             }
         };
-        return clickListener;
     }
     public void resize (int width, int height) {
         stage.getViewport().update(width,height);

@@ -1,4 +1,4 @@
-package com.szakdoga.game.towers;
+package com.szakdoga.game.entities.towers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;

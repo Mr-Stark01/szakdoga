@@ -15,14 +15,14 @@ public class TowerDefence extends Game {
 	public BitmapFont fontHover; //Hover as in when mouse is over it
 	public int screenHeight;
 	public int screenWidth;
-	public static float UIscale=1;//TODO kiemelni starting post
+	public static float UIscale=1;
 
 
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
 		font = FontCreator.createFont();
-		fontHover = FontCreator.createFont(150, Color.ORANGE,"fonts/Kanit-Black.ttf");
+		fontHover = FontCreator.createFont(150, Color.ORANGE,DisplayConfig.STANDARD_FONT);
 		screenHeight = Gdx.graphics.getHeight();
 		screenWidth = Gdx.graphics.getWidth();
 		Logger.writeLog("LOG","Succesfull startup lwjgl started",this.getClass().getSimpleName());

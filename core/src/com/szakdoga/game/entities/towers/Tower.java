@@ -1,4 +1,4 @@
-package com.szakdoga.game.towers;
+package com.szakdoga.game.entities.towers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -6,16 +6,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.szakdoga.game.CompareReturn;
-import com.szakdoga.game.units.Unit;
+import com.szakdoga.game.DisplayConfig;
+import com.szakdoga.game.entities.EntitiesConfig;
+import com.szakdoga.game.entities.units.Unit;
 import org.datatransferobject.TowerDTO;
 
-import java.util.Date;
 import java.util.Objects;
 
-import static com.szakdoga.game.screens.GameScreen.player;
-
-public abstract class Tower{ //TODO teszt osztály
-    //TODO factory method és construcktorba csinálni egy new texturet
+public abstract class Tower{
     protected float damage;
     protected int price;
     protected int range;
@@ -53,11 +51,11 @@ public abstract class Tower{ //TODO teszt osztály
      */
     public static Tower createTowerFromDTO(TowerDTO towerDTO) {
         switch (towerDTO.getTowerClass()){
-            case "Archer"://TODO kiemelni osztály szintü
+            case EntitiesConfig.ARCHER_TOWER:
                 return createArcherTowerFromDTO(towerDTO);
-            case "Wizard":
+            case EntitiesConfig.WIZARD_TOWER:
                 return createWizardTowerFromDTO(towerDTO);
-            case "CrossBow":
+            case EntitiesConfig.CROSSBOW_TOWER:
                 return createCrossBowTowerFromDTO(towerDTO);
         }
         return null;
@@ -65,11 +63,11 @@ public abstract class Tower{ //TODO teszt osztály
 
     public static Tower createTower(float spawnX,float spawnY,String towerClass) {
         switch (towerClass){
-            case "Archer":
+            case EntitiesConfig.ARCHER_TOWER:
                 return createArcherTower(spawnX,spawnY);
-            case "Wizard":
+            case EntitiesConfig.WIZARD_TOWER:
                 return createWizardTower(spawnX,spawnY);
-            case "CrossBow":
+            case EntitiesConfig.CROSSBOW_TOWER:
                 return createCrossBowTower(spawnX,spawnY);
         }
         return null;
@@ -82,13 +80,13 @@ public abstract class Tower{ //TODO teszt osztály
      * @return
      */
     public static Tower createArcherTower(float spawnX,float spawnY){
-        return new ArcherTower(spawnX, spawnY,"Archer");//TODO kiemelni osztály szintü
+        return new ArcherTower(spawnX, spawnY, EntitiesConfig.ARCHER_TOWER);
     }
     public static Tower createWizardTower(float spawnX,float spawnY){
-        return new WizardTower(spawnX, spawnY,"Wizard");
+        return new WizardTower(spawnX, spawnY,EntitiesConfig.WIZARD_TOWER);
     }
     public static Tower createCrossBowTower(float spawnX,float spawnY){
-        return new CrossBowTower(spawnX, spawnY,"CrossBow");
+        return new CrossBowTower(spawnX, spawnY,EntitiesConfig.CROSSBOW_TOWER);
     }
 
     /**
@@ -124,7 +122,7 @@ public abstract class Tower{ //TODO teszt osztály
     public void addTexture(){
         if(!hasTexture){
             float X=getX(),Y=getY();
-            sprite.set(new Sprite(new Texture("textures/tower.png")));//TODO kiemelni display conf
+            sprite.set(new Sprite(new Texture(DisplayConfig.TOWER_TEXTURE)));
             sprite.setX(X);
             sprite.setY(Y);
             sprite.setSize(1,1);

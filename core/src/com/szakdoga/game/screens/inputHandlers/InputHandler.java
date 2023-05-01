@@ -10,9 +10,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
+import com.szakdoga.game.DisplayConfig;
 import com.szakdoga.game.Logger;
-import com.szakdoga.game.towers.TowerRangeCircle;
-import com.szakdoga.game.units.Unit;
+import com.szakdoga.game.entities.towers.TowerRangeCircle;
+import com.szakdoga.game.entities.units.Unit;
 
 import static com.szakdoga.game.TowerDefence.UIscale;
 import static com.szakdoga.game.screens.GameScreen.player;
@@ -22,11 +23,11 @@ public class InputHandler implements InputProcessor {
     private static TowerRangeCircle towerRangeCircle;
     private OrthographicCamera camera;
     private float scale;
-    private float limit=10f*UIscale;//TODO kiemelni display conf
+    private float limit = DisplayConfig.CAMERA_AREA_LIMIT * UIscale;
     private OrthogonalTiledMapRenderer renderer;
 
     public void setView(OrthographicCamera camera, float scale, OrthogonalTiledMapRenderer renderer){
-        this.camera=camera;//Maybe throw already has camera excpetion?
+        this.camera=camera;
         this.scale=scale;
         this.renderer=renderer;
     }

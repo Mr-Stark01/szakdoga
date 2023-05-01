@@ -1,4 +1,4 @@
-package com.szakdoga.game.units;
+package com.szakdoga.game.entities.units;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.szakdoga.game.CompareReturn;
+import com.szakdoga.game.DisplayConfig;
+import com.szakdoga.game.entities.EntitiesConfig;
 import org.datatransferobject.UnitDTO;
 
 import java.util.ArrayList;
@@ -73,22 +75,22 @@ public abstract class Unit {
    */
   public static Unit createUnitFromDTO(UnitDTO unitDTO) {
     switch (unitDTO.getUnitClass()){
-      case "Pike": //TODO kiemelni osztály
+      case EntitiesConfig.PIKE_UNIT:
         return createPikeUnitFromDTO(unitDTO);
-      case "Wizard":
+      case EntitiesConfig.WIZARD_UNIT:
         return createKnightUnitFromDTO(unitDTO);
-      case "Knight":
+      case EntitiesConfig.KNIGHT_UNIT:
         return createWizardUnitFromDTO(unitDTO);
     }
     return null;
   }
   public static Unit createUnit(int X,int Y,String unitName){
-    switch (unitName){ //TODO kiemelni osztály
-      case "Pike":
+    switch (unitName){
+      case EntitiesConfig.PIKE_UNIT:
         return createPikeUnit(X,Y,unitName);
-      case "Wizard":
+      case EntitiesConfig.WIZARD_UNIT:
         return createWizardUnit(X,Y,unitName);
-      case "Knight":
+      case EntitiesConfig.KNIGHT_UNIT:
         return createKnightUnit(X,Y,unitName);
     }
     return null;
@@ -127,7 +129,7 @@ public abstract class Unit {
    */
   public void step(){
     //If reached destination it stops and waits for destruction
-    if(nextXCoordinates.get(0)==-1 && nextYCoordinates.get(0)==-1){//TODO kiemelni osztály
+    if(nextXCoordinates.get(0)==EntitiesConfig.STOP_COORDINATE && nextYCoordinates.get(0)==EntitiesConfig.STOP_COORDINATE){
       sprite.setX(Math.round(getX()));
       sprite.setY(Math.round(getY()));
       return;
@@ -144,7 +146,7 @@ public abstract class Unit {
   public void addTexture(){
     if(!hasTexture){
       float X=getX(),Y=getY();
-      sprite.set(new Sprite(new Texture("textures/tower.png")));//TODO kiemelni display conf
+      sprite.set(new Sprite(new Texture(DisplayConfig.TOWER_TEXTURE)));
       sprite.setX(X);
       sprite.setY(Y);
       sprite.setSize(1,1);
