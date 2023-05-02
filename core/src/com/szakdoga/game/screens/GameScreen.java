@@ -3,7 +3,6 @@ package com.szakdoga.game.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -19,24 +18,22 @@ import com.szakdoga.game.TowerDefence;
 import com.szakdoga.game.network.GameServerHandler;
 import com.szakdoga.game.screens.inputHandlers.InputHandler;
 import com.szakdoga.game.ui.Hud;
-
 import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-
 public class GameScreen extends ScreenAdapter {
     private static final String MAP_URI="maps/defmap.tmx";
     public static Player player;
     public static Player enemyPlayer;
+    public static TiledMapTileLayer tileLayer;
     static float tileScale;
     final TowerDefence game;
     private final String ip;
     private final String name;
     private SpriteBatch batch;
     private ScheduledExecutorService executor = Executors.newScheduledThreadPool(20);
-    public static TiledMapTileLayer tileLayer;
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;

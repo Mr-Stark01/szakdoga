@@ -1,5 +1,10 @@
 package com.szakdoga.game.ui;
 
+import static com.szakdoga.game.entities.towers.Tower.*;
+import static com.szakdoga.game.screens.GameScreen.enemyPlayer;
+import static com.szakdoga.game.screens.GameScreen.player;
+import static com.szakdoga.game.ui.InfoTable.InfoTableFactory;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
@@ -20,7 +25,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.szakdoga.game.DisplayConfig;
 import com.szakdoga.game.FontCreator;
 import com.szakdoga.game.Logger;
-import com.szakdoga.game.screens.inputHandlers.InputHandler;
 import com.szakdoga.game.entities.towers.ArcherTower;
 import com.szakdoga.game.entities.towers.CrossBowTower;
 import com.szakdoga.game.entities.towers.Tower;
@@ -29,13 +33,8 @@ import com.szakdoga.game.entities.units.KnightUnit;
 import com.szakdoga.game.entities.units.PikeUnit;
 import com.szakdoga.game.entities.units.Unit;
 import com.szakdoga.game.entities.units.WizardUnit;
-
+import com.szakdoga.game.screens.inputHandlers.InputHandler;
 import java.util.Date;
-
-import static com.szakdoga.game.screens.GameScreen.enemyPlayer;
-import static com.szakdoga.game.screens.GameScreen.player;
-import static com.szakdoga.game.entities.towers.Tower.*;
-import static com.szakdoga.game.ui.InfoTable.InfoTableFactory;
 
 /**
  * Displays HUD and handles HUD interactions

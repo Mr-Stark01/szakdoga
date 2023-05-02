@@ -1,8 +1,9 @@
 package com.szakdoga.game.screens;
 
+import static com.szakdoga.game.TowerDefence.UIscale;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -11,14 +12,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.szakdoga.game.DisplayConfig;
 import com.szakdoga.game.FontCreator;
 import com.szakdoga.game.Logger;
-import com.szakdoga.game.DisplayConfig;
 import com.szakdoga.game.TowerDefence;
-
-
-import static com.szakdoga.game.TowerDefence.UIscale;
-
 
 public class MainMenu extends ScreenAdapter {
     final TowerDefence game;

@@ -1,14 +1,13 @@
 package com.szakdoga.game.entities.units;
 
+import static com.szakdoga.game.network.DTO.Preparator.deepcopy;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.szakdoga.game.DisplayConfig;
 import com.szakdoga.game.entities.EntitiesConfig;
-import org.datatransferobject.UnitDTO;
-
 import java.util.ArrayList;
-
-import static com.szakdoga.game.network.DTO.Preparator.deepcopy;
+import org.datatransferobject.UnitDTO;
 
 public class PikeUnit extends Unit{
     public PikeUnit(float X,float Y) {

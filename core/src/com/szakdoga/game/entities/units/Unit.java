@@ -1,5 +1,7 @@
 package com.szakdoga.game.entities.units;
 
+import static com.szakdoga.game.network.DTO.Preparator.deepcopy;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -9,15 +11,13 @@ import com.badlogic.gdx.math.MathUtils;
 import com.szakdoga.game.CompareReturn;
 import com.szakdoga.game.DisplayConfig;
 import com.szakdoga.game.entities.EntitiesConfig;
-import org.datatransferobject.UnitDTO;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import static com.szakdoga.game.network.DTO.Preparator.deepcopy;
+import org.datatransferobject.UnitDTO;
 
 public abstract class Unit {
+  protected final int MAX_HEALTH;
   protected float speed;
   protected float health;
   protected float damage;
@@ -35,7 +35,6 @@ public abstract class Unit {
   protected Sprite sprite;
   protected String textureURL;
   protected Boolean hasTexture=false;
-  protected final int MAX_HEALTH;
 
   public Unit(float speed, float health, float damage, int price, float X, float Y,String unitClass) {
     this.speed = speed;
@@ -229,14 +228,6 @@ public abstract class Unit {
             getId()==unit.getId();
   }
 
-  public void setDeltaX(float deltaX) {
-    this.deltaX = deltaX;
-  }
-
-  public void setDeltaY(float deltaY) {
-    this.deltaY = deltaY;
-  }
-
   public ArrayList<Integer> getNextX() {
     return (ArrayList<Integer>)  nextXCoordinates;
   }
@@ -290,8 +281,16 @@ public abstract class Unit {
     return deltaX;
   }
 
+  public void setDeltaX(float deltaX) {
+    this.deltaX = deltaX;
+  }
+
   public float getDeltaY() {
     return deltaY;
+  }
+
+  public void setDeltaY(float deltaY) {
+    this.deltaY = deltaY;
   }
 
   public float getSpeed() {

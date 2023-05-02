@@ -1,10 +1,10 @@
 package com.szakdoga.game.entities.towers;
 
+import static com.szakdoga.game.screens.GameScreen.player;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.datatransferobject.TowerDTO;
-
-import static com.szakdoga.game.screens.GameScreen.player;
 
 public class WizardTower extends Tower{
     public WizardTower(float spawnX, float spawnY, String towerClass) {

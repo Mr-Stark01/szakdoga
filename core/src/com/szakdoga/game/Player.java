@@ -6,14 +6,14 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.szakdoga.game.entities.towers.Tower;
 import com.szakdoga.game.entities.units.Unit;
-import org.datatransferobject.DTO;
-import org.datatransferobject.PlayerDTO;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import org.datatransferobject.DTO;
+import org.datatransferobject.PlayerDTO;
 
 public class Player {
+    private final Color color;
     private List<Tower> towers = Collections.synchronizedList(new ArrayList<Tower>());
     private List<Unit> units= Collections.synchronizedList(new ArrayList<Unit>());
     private int money=10000;
@@ -21,7 +21,6 @@ public class Player {
     private float health=100;
     private Tower towerInDraggingState;
     private Sprite base;
-    private final Color color;
 
 
 

@@ -2,7 +2,6 @@ package com.szakdoga.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;

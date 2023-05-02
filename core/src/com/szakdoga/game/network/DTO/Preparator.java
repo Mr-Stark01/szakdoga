@@ -3,12 +3,11 @@ package com.szakdoga.game.network.DTO;
 import com.szakdoga.game.Player;
 import com.szakdoga.game.entities.towers.Tower;
 import com.szakdoga.game.entities.units.Unit;
+import java.util.ArrayList;
+import java.util.List;
 import org.datatransferobject.PlayerDTO;
 import org.datatransferobject.TowerDTO;
 import org.datatransferobject.UnitDTO;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Preparator {
     public static UnitDTO createUnitDTOFromUnit(Unit unit){

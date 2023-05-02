@@ -9,9 +9,8 @@ import com.szakdoga.game.CompareReturn;
 import com.szakdoga.game.DisplayConfig;
 import com.szakdoga.game.entities.EntitiesConfig;
 import com.szakdoga.game.entities.units.Unit;
-import org.datatransferobject.TowerDTO;
-
 import java.util.Objects;
+import org.datatransferobject.TowerDTO;
 
 public abstract class Tower{
     protected float damage;
@@ -259,16 +258,19 @@ public abstract class Tower{
         return attackTime;
     }
 
-    public void setX(float X){
-        this.X=(int)X;
-    }
-    public void setY(float Y){
-        this.Y=(int)Y;
-    }
     public float getX(){
         return X;
     }
+
+    public void setX(float X){
+        this.X=(int)X;
+    }
+
     public float getY(){
         return Y;
+    }
+
+    public void setY(float Y){
+        this.Y=(int)Y;
     }
 }

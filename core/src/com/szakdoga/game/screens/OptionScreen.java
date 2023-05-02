@@ -1,5 +1,8 @@
 package com.szakdoga.game.screens;
 
+import static com.szakdoga.game.TowerDefence.UIscale;
+import static com.szakdoga.game.TowerDefence.font;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
@@ -15,26 +18,21 @@ import com.szakdoga.game.DisplayConfig;
 import com.szakdoga.game.FontCreator;
 import com.szakdoga.game.Logger;
 import com.szakdoga.game.TowerDefence;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.szakdoga.game.TowerDefence.UIscale;
-import static com.szakdoga.game.TowerDefence.font;
-
-
 public class OptionScreen extends ScreenAdapter {
-    SpriteBatch spriteBatch = new SpriteBatch();
-    TextField UIscaleField;
     protected TextButton.TextButtonStyle style;
-    TextButton.TextButtonStyle styleHover;
     protected Stage stage;
     protected Table table;
     protected List<Map.Entry<Integer,Integer>> res= new ArrayList<>();
     protected int resCursor=0;
     protected boolean fullScreen=Gdx.graphics.isFullscreen();
     protected TowerDefence game;
+    SpriteBatch spriteBatch = new SpriteBatch();
+    TextField UIscaleField;
+    TextButton.TextButtonStyle styleHover;
     public OptionScreen(TowerDefence game)  {
 
         this.game=game;

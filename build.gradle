@@ -125,7 +125,6 @@ project(":tests"){
 project(":core") {
     apply plugin: "java-library"
 
-
     dependencies {
         implementation ('com.github.Mr-Stark01:DTO:master-SNAPSHOT'){
             changing = true

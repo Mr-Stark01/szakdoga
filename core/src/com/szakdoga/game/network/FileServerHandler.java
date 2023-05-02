@@ -1,7 +1,6 @@
 package com.szakdoga.game.network;
 
 import com.badlogic.gdx.Gdx;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.FileOutputStream;

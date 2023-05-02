@@ -1,5 +1,8 @@
 package com.szakdoga.game.screens.inputHandlers;
 
+import static com.szakdoga.game.TowerDefence.UIscale;
+import static com.szakdoga.game.screens.GameScreen.player;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
@@ -14,9 +17,6 @@ import com.szakdoga.game.DisplayConfig;
 import com.szakdoga.game.Logger;
 import com.szakdoga.game.entities.towers.TowerRangeCircle;
 import com.szakdoga.game.entities.units.Unit;
-
-import static com.szakdoga.game.TowerDefence.UIscale;
-import static com.szakdoga.game.screens.GameScreen.player;
 
 public class InputHandler implements InputProcessor {
     private static Sprite currentlyDragging;

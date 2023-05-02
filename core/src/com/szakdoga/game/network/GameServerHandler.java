@@ -1,9 +1,10 @@
 package com.szakdoga.game.network;
 
+import static com.szakdoga.game.screens.GameScreen.enemyPlayer;
+import static com.szakdoga.game.screens.GameScreen.player;
+
 import com.szakdoga.game.Logger;
 import com.szakdoga.game.network.DTO.Preparator;
-import org.datatransferobject.DTO;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -12,20 +13,17 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import static com.szakdoga.game.screens.GameScreen.enemyPlayer;
-import static com.szakdoga.game.screens.GameScreen.player;
-
+import org.datatransferobject.DTO;
 
 public class GameServerHandler implements Runnable{
     private static ObjectOutputStream objectOutputStream ;
     private static ObjectInputStream objectInputStream ;
-    private List<DTO> DTOList= new ArrayList<>();
+    private static AtomicInteger id=new AtomicInteger(0);
     private final Socket clientSocket;
+    private final int TIMEOUT=10000;
+    private List<DTO> DTOList= new ArrayList<>();
     private DTO dtoIn;
     private String name;
-    private static AtomicInteger id=new AtomicInteger(0);
-    private final int TIMEOUT=10000;
 
     public GameServerHandler(String ip, int port,String name) throws IOException {
         this.clientSocket=new Socket();
@@ -40,6 +38,11 @@ public class GameServerHandler implements Runnable{
             System.exit(-1);
         }
     }
+
+    public static int getId(){
+        return id.get();
+    }
+
     @Override
     public void run() {
             try {
@@ -50,6 +53,7 @@ public class GameServerHandler implements Runnable{
                 System.exit(-1);
             }
     }
+
     @SuppressWarnings("unchecked")
     protected void receiveData() throws IOException, ClassNotFoundException {
         Logger.displayLog("log","Currently waiting for data from server");
@@ -60,6 +64,7 @@ public class GameServerHandler implements Runnable{
         enemyPlayer.exchangeData(DTOList.get(1));
         Logger.displayLog("log","Succesfully received and exchanged data from server");
     }
+
     protected void sendData() throws IOException {
         Logger.displayLog("log","Sending data to server");
         objectOutputStream.writeObject(new DTO(Preparator.createUnitDTOListFromUnitList(player.getUnits()),
@@ -68,6 +73,7 @@ public class GameServerHandler implements Runnable{
         objectOutputStream.flush();
         Logger.displayLog("log","Data sent to server");
     }
+
     public DTO getDtoIn() {
         return dtoIn;
     }
@@ -78,9 +84,6 @@ public class GameServerHandler implements Runnable{
 
     public List<DTO> getDtoOut() {
         return DTOList;
-    }
-    public static int getId(){
-        return id.get();
     }
 }
 
