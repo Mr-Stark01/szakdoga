@@ -17,10 +17,10 @@ public class EndScreen extends ScreenAdapter {
     private Color color;
     public EndScreen(String status){
         if(status.equals(DisplayConfig.WIN_TEXT)){
-            color=Color.GREEN;
+            color=DisplayConfig.BLUE_COLOR;
         }
         else{
-            color=Color.RED;
+            color=DisplayConfig.CRIMSON_COLOR;
         }
         this.status=status;
     }
