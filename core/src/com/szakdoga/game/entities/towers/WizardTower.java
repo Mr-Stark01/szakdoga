@@ -4,18 +4,19 @@ import static com.szakdoga.game.screens.GameScreen.player;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.szakdoga.game.config.DisplayConfig;
 import org.datatransferobject.TowerDTO;
 
 public class WizardTower extends Tower{
     public WizardTower(float spawnX, float spawnY, String towerClass) {
         super(50, 70, 3,3f, spawnX, spawnY,towerClass);
-        textureURL="textures/wizardtower.png";
+        textureURL = DisplayConfig.WIZARD_TOWER_TEXTURE;
         sprite.set(new Sprite(new Texture(textureURL)));
         sprite.setSize(1,1);
     }
     public WizardTower(TowerDTO towerDTO){
         super(towerDTO.getDamage(), towerDTO.getPrice(), towerDTO.getRange(),towerDTO.getAttackTime(), towerDTO.getX(), towerDTO.getY(),towerDTO.getTowerClass());
-        textureURL="textures/wizardtower.png";
+        textureURL = DisplayConfig.WIZARD_TOWER_TEXTURE;
         sprite.setSize(1,1);
         this.X=towerDTO.getX();
         this.Y=towerDTO.getY();

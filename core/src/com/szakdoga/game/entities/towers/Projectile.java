@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.szakdoga.game.config.DisplayConfig;
 
 public class Projectile {
     private Sprite sprite;
@@ -12,7 +13,7 @@ public class Projectile {
     private float speed=10f;
     private float dieSum;
     public Projectile(float X,float Y,float targetX,float targetY){
-        sprite=new Sprite(new Texture("textures/projectile.png"));
+        sprite=new Sprite(new Texture(DisplayConfig.PROJECTILE_TEXTURE));
         sprite.setPosition(X,Y);
         sprite.setSize(0.5f,0.5f);
         this.targetX=targetX;

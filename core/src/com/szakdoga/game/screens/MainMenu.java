@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.szakdoga.game.DisplayConfig;
+import com.szakdoga.game.config.DisplayConfig;
 import com.szakdoga.game.FontCreator;
 import com.szakdoga.game.Logger;
 import com.szakdoga.game.TowerDefence;
@@ -29,7 +29,6 @@ public class MainMenu extends ScreenAdapter {
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         table = new Table();
-        table.setDebug(true);
         table.setFillParent(true);
         style = new TextButton.TextButtonStyle();
         style.font = FontCreator.createFont(DisplayConfig.MEDIUM_FONT_SIZE);

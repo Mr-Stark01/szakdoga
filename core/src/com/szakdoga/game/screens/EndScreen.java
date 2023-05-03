@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.szakdoga.game.DisplayConfig;
+import com.szakdoga.game.config.DisplayConfig;
 import com.szakdoga.game.FontCreator;
 
 public class EndScreen extends ScreenAdapter {

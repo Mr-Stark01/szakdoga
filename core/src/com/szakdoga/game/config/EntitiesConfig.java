@@ -1,4 +1,4 @@
-package com.szakdoga.game.entities;
+package com.szakdoga.game.config;
 public class EntitiesConfig {
     //Towers
     public static final String ARCHER_TOWER="Archer";

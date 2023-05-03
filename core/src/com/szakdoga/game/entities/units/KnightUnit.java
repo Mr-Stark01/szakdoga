@@ -4,8 +4,8 @@ import static com.szakdoga.game.network.DTO.Preparator.deepcopy;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.szakdoga.game.DisplayConfig;
-import com.szakdoga.game.entities.EntitiesConfig;
+import com.szakdoga.game.config.DisplayConfig;
+import com.szakdoga.game.config.EntitiesConfig;
 import java.util.ArrayList;
 import org.datatransferobject.UnitDTO;
 

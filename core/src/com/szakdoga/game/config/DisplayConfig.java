@@ -1,4 +1,4 @@
-package com.szakdoga.game;
+package com.szakdoga.game.config;
 
 import com.badlogic.gdx.graphics.Color;
 
@@ -22,12 +22,16 @@ public class DisplayConfig {
     public static final String TOWER_TEXTURE = "textures/tower.png";
     public static final String DRAGON_TEXTURE = "textures/dragon.png";
     public static final String CIRCLE_TEXTURE = "textures/circle.png";
+    public static final String PROJECTILE_TEXTURE = "textures/projectile.png";
     public static final String COIN_TEXTURE = "textures/coin.png";
     public static final String HEALTH_TEXTURE = "textures/health.png";
     public static final String ENEMY_HEALTH_TEXTURE = "textures/enemyhealth.png";
     public static final String PIKE_UNIT_TEXTURE = "textures/pikeunit.png";
     public static final String KNIGHT_UNIT_TEXTURE = "textures/knightunit.png";
     public static final String WIZARD_UNIT_TEXTURE = "textures/wizardunit.png";
+    public static final String ARCHER_TOWER_TEXTURE = "textures/archertower.png";
+    public static final String CROSS_BOW_TOWER_TEXTURE = "textures/crossbowtower.png";
+    public static final String WIZARD_TOWER_TEXTURE = "textures/wizardtower.png";
     //Colors
     public static final Color RED_COLOR = Color.RED;
     public static final Color BLUE_COLOR = Color.BLUE;

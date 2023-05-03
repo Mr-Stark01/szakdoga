@@ -3,7 +3,7 @@ package com.szakdoga.game.entities.towers;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.szakdoga.game.DisplayConfig;
+import com.szakdoga.game.config.DisplayConfig;
 
 public class TowerRangeCircle extends Sprite {
     private int range;

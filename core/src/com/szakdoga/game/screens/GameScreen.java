@@ -11,10 +11,11 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.szakdoga.game.DisplayConfig;
+import com.szakdoga.game.config.DisplayConfig;
 import com.szakdoga.game.Logger;
 import com.szakdoga.game.Player;
 import com.szakdoga.game.TowerDefence;
+import com.szakdoga.game.network.FileServerHandler;
 import com.szakdoga.game.network.GameServerHandler;
 import com.szakdoga.game.screens.inputHandlers.InputHandler;
 import com.szakdoga.game.ui.Hud;
@@ -49,6 +50,8 @@ public class GameScreen extends ScreenAdapter {
     }
     @Override
     public void show(){
+        //Acquire map from server
+        new FileServerHandler(ip,56227);
         //Importing and creating map
         TmxMapLoader loader = new TmxMapLoader();
         map = loader.load(MAP_URI);
@@ -58,6 +61,7 @@ public class GameScreen extends ScreenAdapter {
 
         player = new Player(DisplayConfig.TOWER_TEXTURE,DisplayConfig.BLUE_COLOR);
         enemyPlayer = new Player(DisplayConfig.DRAGON_TEXTURE,DisplayConfig.RED_COLOR);
+
 
         GameServerHandler gameServerHandler;
         try {

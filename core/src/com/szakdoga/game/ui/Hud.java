@@ -22,9 +22,10 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.Null;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.szakdoga.game.DisplayConfig;
+import com.szakdoga.game.config.DisplayConfig;
 import com.szakdoga.game.FontCreator;
 import com.szakdoga.game.Logger;
+import com.szakdoga.game.config.EntitiesConfig;
 import com.szakdoga.game.entities.towers.ArcherTower;
 import com.szakdoga.game.entities.towers.CrossBowTower;
 import com.szakdoga.game.entities.towers.Tower;
@@ -72,26 +73,26 @@ public class Hud implements Disposable {
         labelStyle.font=font;
         style.font = font;
         style.font.setColor(Color.BLUE);
-        ImageButton archerTowerHudElement = new ImageButton(new TextureRegionDrawable(new Texture("textures/archertower.png")));
-        ImageButton crossBowTowerHudElement = new ImageButton(new TextureRegionDrawable(new Texture("textures/crossbowtower.png")));
-        ImageButton wizzardTowerHudElement = new ImageButton(new TextureRegionDrawable(new Texture("textures/wizardtower.png")));
+        ImageButton archerTowerHudElement = new ImageButton(new TextureRegionDrawable(new Texture(DisplayConfig.ARCHER_TOWER_TEXTURE)));
+        ImageButton crossBowTowerHudElement = new ImageButton(new TextureRegionDrawable(new Texture(DisplayConfig.CROSS_BOW_TOWER_TEXTURE)));
+        ImageButton wizzardTowerHudElement = new ImageButton(new TextureRegionDrawable(new Texture(DisplayConfig.WIZARD_TOWER_TEXTURE)));
         /**
          * add different eventListeners here for all the clickable elements of the hud
          */
         tableTop.top();
-        archerTowerHudElement.addListener(getClickListener(archerTowerHudElement,new ArcherTower(-10000,-1000,"Archer")
-                ,inputHandler,"textures/archertower.png"));
+        archerTowerHudElement.addListener(getClickListener(archerTowerHudElement,new ArcherTower(-10000,-1000, EntitiesConfig.ARCHER_TOWER)
+                ,inputHandler,DisplayConfig.ARCHER_TOWER_TEXTURE));
         tableTop.add(archerTowerHudElement).height(Gdx.graphics.getHeight()/6f).width(Gdx.graphics.getHeight()/6f);
-        crossBowTowerHudElement.addListener(getClickListener(crossBowTowerHudElement,new CrossBowTower(-10000,-1000,"CrossBow")
-                ,inputHandler,"textures/crossbowtower.png"));
+        crossBowTowerHudElement.addListener(getClickListener(crossBowTowerHudElement,new CrossBowTower(-10000,-1000,EntitiesConfig.CROSSBOW_TOWER)
+                ,inputHandler,DisplayConfig.CROSS_BOW_TOWER_TEXTURE));
         tableTop.add(crossBowTowerHudElement).height(Gdx.graphics.getHeight()/6f).width(Gdx.graphics.getHeight()/6f);
-        wizzardTowerHudElement.addListener(getClickListener(wizzardTowerHudElement,new WizardTower(-10000,-1000,"Wizard")
-                ,inputHandler,"textures/wizardtower.png"));
+        wizzardTowerHudElement.addListener(getClickListener(wizzardTowerHudElement,new WizardTower(-10000,-1000,EntitiesConfig.WIZARD_TOWER)
+                ,inputHandler,DisplayConfig.WIZARD_TOWER_TEXTURE));
         tableTop.add(wizzardTowerHudElement).height(Gdx.graphics.getHeight()/6f).width(Gdx.graphics.getHeight()/6f);
 
-        ImageButton knightUnitHudElement = new ImageButton(new TextureRegionDrawable(new Texture("textures/knightunit.png")));
-        ImageButton wizardUnitHudElement = new ImageButton(new TextureRegionDrawable(new Texture("textures/wizardunit.png")));
-        ImageButton pikeUnitHudElement = new ImageButton(new TextureRegionDrawable(new Texture("textures/pikeunit.png")));
+        ImageButton knightUnitHudElement = new ImageButton(new TextureRegionDrawable(new Texture(DisplayConfig.KNIGHT_UNIT_TEXTURE)));
+        ImageButton wizardUnitHudElement = new ImageButton(new TextureRegionDrawable(new Texture(DisplayConfig.WIZARD_UNIT_TEXTURE)));
+        ImageButton pikeUnitHudElement = new ImageButton(new TextureRegionDrawable(new Texture(DisplayConfig.PIKE_UNIT_TEXTURE)));
 
         knightUnitHudElement.addListener(getClickListener(knightUnitHudElement,new KnightUnit(10,10)));
         tableTop.add(knightUnitHudElement).height(Gdx.graphics.getHeight()/6f).width(Gdx.graphics.getHeight()/6f);
