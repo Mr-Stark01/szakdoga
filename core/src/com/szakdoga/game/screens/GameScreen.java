@@ -51,7 +51,7 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void show(){
         //Acquire map from server
-        new FileServerHandler(ip,56227);
+        //new FileServerHandler(ip,56227);
         //Importing and creating map
         TmxMapLoader loader = new TmxMapLoader();
         map = loader.load(MAP_URI);
