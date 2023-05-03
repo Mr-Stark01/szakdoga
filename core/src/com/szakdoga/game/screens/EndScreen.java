@@ -12,6 +12,7 @@ import com.szakdoga.game.FontCreator;
 
 public class EndScreen extends ScreenAdapter {
     BitmapFont font = FontCreator.createFont(200, Color.BLACK);
+    BitmapFont fontExit = FontCreator.createFont(50, Color.WHITE);
     private SpriteBatch batch;
     private String status;
     private Color color;
@@ -34,6 +35,7 @@ public class EndScreen extends ScreenAdapter {
         ScreenUtils.clear(color);
         batch.begin();
         font.draw(batch,status, Gdx.graphics.getHeight()/2,Gdx.graphics.getWidth()/2);
+        fontExit.draw(batch,"Press ESC\n to quit", 5,(Gdx.graphics.getWidth()/2)-100);
         if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
             Gdx.app.exit();
             System.exit(0);
