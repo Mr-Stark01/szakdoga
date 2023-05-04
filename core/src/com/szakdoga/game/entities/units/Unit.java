@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
-import com.szakdoga.game.CompareReturn;
+import com.szakdoga.game.network.CompareReturn;
 import com.szakdoga.game.config.DisplayConfig;
 import com.szakdoga.game.config.EntitiesConfig;
 import java.util.ArrayList;

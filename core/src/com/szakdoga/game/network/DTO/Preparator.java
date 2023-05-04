@@ -1,6 +1,6 @@
 package com.szakdoga.game.network.DTO;
 
-import com.szakdoga.game.Player;
+import com.szakdoga.game.entities.Player;
 import com.szakdoga.game.entities.towers.Tower;
 import com.szakdoga.game.entities.units.Unit;
 import java.util.ArrayList;

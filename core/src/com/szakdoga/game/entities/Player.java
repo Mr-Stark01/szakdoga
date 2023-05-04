@@ -1,9 +1,10 @@
-package com.szakdoga.game;
+package com.szakdoga.game.entities;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.szakdoga.game.network.CompareReturn;
 import com.szakdoga.game.entities.towers.Tower;
 import com.szakdoga.game.entities.units.Unit;
 import java.util.ArrayList;
@@ -21,7 +22,6 @@ public class Player {
     private float health=100;
     private Tower towerInDraggingState;
     private Sprite base;
-
 
 
     public Player(String baseURL,Color color){
@@ -65,7 +65,6 @@ public class Player {
         base.setColor(color);
         base.setSize(1,1);
     }
-
 
     public void exchangeData(DTO dto){
         PlayerDTO playerDTO = dto.getPlayerDTO();

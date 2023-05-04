@@ -1,4 +1,4 @@
-package com.szakdoga.game;
+package com.szakdoga.game.network;
 
 public enum CompareReturn {
     SameIdDifferentValue,
