@@ -1,5 +1,8 @@
 package com.szakdoga.game.screens;
 
+import static com.szakdoga.game.TowerDefence.UIscale;
+import static com.szakdoga.game.TowerDefence.font;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
@@ -11,29 +14,25 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.szakdoga.game.config.DisplayConfig;
 import com.szakdoga.game.FontCreator;
 import com.szakdoga.game.Logger;
 import com.szakdoga.game.TowerDefence;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.szakdoga.game.TowerDefence.UIscale;
-import static com.szakdoga.game.TowerDefence.font;
-
-
 public class OptionScreen extends ScreenAdapter {
-    SpriteBatch spriteBatch = new SpriteBatch();
-    TextField UIscaleField;
     protected TextButton.TextButtonStyle style;
-    TextButton.TextButtonStyle styleHover;
     protected Stage stage;
     protected Table table;
     protected List<Map.Entry<Integer,Integer>> res= new ArrayList<>();
     protected int resCursor=0;
     protected boolean fullScreen=Gdx.graphics.isFullscreen();
     protected TowerDefence game;
+    SpriteBatch spriteBatch = new SpriteBatch();
+    TextField UIscaleField;
+    TextButton.TextButtonStyle styleHover;
     public OptionScreen(TowerDefence game)  {
 
         this.game=game;
@@ -76,13 +75,13 @@ public class OptionScreen extends ScreenAdapter {
             public void clicked(InputEvent event,float x,float y){
                 if(!fullScreen) {
                     Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
-                    fullscreen.setText("Fullscreen: ON");
+                    fullscreen.setText(DisplayConfig.FULLSCREEN_ON_TEXT);
                     fullScreen=true;
                     Logger.writeLogDisplayLog("log","Diplayed switched to fullscreen",this.getClass().getName());
                 }
                 else{
-                    Gdx.graphics.setWindowedMode(1000,540);
-                    fullscreen.setText("Fullscreen: OFF");
+                    Gdx.graphics.setWindowedMode(DisplayConfig.STANDARD_WINDOW_SIZE_WIDTH,DisplayConfig.STANDARD_WINDOW_SIZE_HEIGHT);
+                    fullscreen.setText(DisplayConfig.FULLSCREEN_OFF_TEXT);
                     fullScreen=false;
                     Logger.writeLogDisplayLog("log","Diplayed switched to windowed",this.getClass().getName());
                 }
@@ -94,13 +93,13 @@ public class OptionScreen extends ScreenAdapter {
         UIscaleField.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         UIscaleField.setMessageText("Input");
 
-        table.row().minHeight((float) (game.screenHeight*0.15*UIscale));
+        table.row().minHeight((float) (game.screenHeight*DisplayConfig.HUD_TABLE_ADJUSTMENT*UIscale));
         table.add(UIScale).fill();
-        table.row().minHeight((float) (game.screenHeight*0.15*UIscale));
+        table.row().minHeight((float) (game.screenHeight*DisplayConfig.HUD_TABLE_ADJUSTMENT*UIscale));
         table.add(UIscaleField).fill();
-        table.row().minHeight((float) (game.screenHeight*0.15*UIscale));
+        table.row().minHeight((float) (game.screenHeight*DisplayConfig.HUD_TABLE_ADJUSTMENT*UIscale));
         table.add(fullscreen).fill();
-        table.row().minHeight((float) (game.screenHeight*0.15*UIscale));
+        table.row().minHeight((float) (game.screenHeight*DisplayConfig.HUD_TABLE_ADJUSTMENT*UIscale));
         table.add(exit).fill();
 
 

@@ -1,26 +1,27 @@
-package com.szakdoga.game.units;
-
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import org.datatransferobject.UnitDTO;
-
-import java.util.ArrayList;
+package com.szakdoga.game.entities.units;
 
 import static com.szakdoga.game.network.DTO.Preparator.deepcopy;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.szakdoga.game.config.DisplayConfig;
+import com.szakdoga.game.config.EntitiesConfig;
+import java.util.ArrayList;
+import org.datatransferobject.UnitDTO;
+
 public class PikeUnit extends Unit{
     public PikeUnit(float X,float Y) {
-    super(2,100,5,25,X,Y,"Pike");
-    textureURL="textures/pikeunit.png";
+    super(2,100,5,25,X,Y, EntitiesConfig.PIKE_UNIT);
+    textureURL = DisplayConfig.PIKE_UNIT_TEXTURE;
     sprite.set(new Sprite(new Texture(textureURL)));
     sprite.setSize(1,1);
     sprite.setX(X);
     sprite.setY(Y);
 
     }
-    public PikeUnit(UnitDTO unitDTO){//TODO teljesen átmásolni
+    public PikeUnit(UnitDTO unitDTO){
         super(unitDTO.getSpeed(),unitDTO.getHealth(),unitDTO.getDamage(), unitDTO.getPrice(), unitDTO.getX(), unitDTO.getY(),unitDTO.getUnitClass());
-        textureURL="textures/pikeunit.png";
+        textureURL = DisplayConfig.PIKE_UNIT_TEXTURE;
         sprite.setSize(1,1);
         sprite.setX(unitDTO.getX());
         sprite.setY(unitDTO.getY());

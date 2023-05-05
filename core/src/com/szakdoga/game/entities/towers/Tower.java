@@ -1,19 +1,18 @@
-package com.szakdoga.game.towers;
+package com.szakdoga.game.entities.towers;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.szakdoga.game.CompareReturn;
-import com.szakdoga.game.units.Unit;
+import com.szakdoga.game.network.CompareReturn;
+import com.szakdoga.game.config.DisplayConfig;
+import com.szakdoga.game.config.EntitiesConfig;
+import com.szakdoga.game.entities.units.Unit;
+import java.util.Objects;
 import org.datatransferobject.TowerDTO;
 
-import java.util.Objects;
-
-import static com.szakdoga.game.screens.GameScreen.player;
-
-public abstract class Tower{ //TODO teszt osztály
-    //TODO factory method és construcktorba csinálni egy new texturet
+public abstract class Tower{
     protected float damage;
     protected int price;
     protected int range;
@@ -26,6 +25,8 @@ public abstract class Tower{ //TODO teszt osztály
     protected int X,Y;
     protected boolean hasTexture=false;
     protected String textureURL;
+    protected Projectile projectile;
+    private float deltaSumForShoot;
     public Tower(
             float damage, int price, int range, float attackTime, float spawnX, float spawnY,String towerClass) {
         this.towerClass=towerClass;
@@ -49,11 +50,11 @@ public abstract class Tower{ //TODO teszt osztály
      */
     public static Tower createTowerFromDTO(TowerDTO towerDTO) {
         switch (towerDTO.getTowerClass()){
-            case "Archer":
+            case EntitiesConfig.ARCHER_TOWER:
                 return createArcherTowerFromDTO(towerDTO);
-            case "Wizard":
+            case EntitiesConfig.WIZARD_TOWER:
                 return createWizardTowerFromDTO(towerDTO);
-            case "CrossBow":
+            case EntitiesConfig.CROSSBOW_TOWER:
                 return createCrossBowTowerFromDTO(towerDTO);
         }
         return null;
@@ -61,11 +62,11 @@ public abstract class Tower{ //TODO teszt osztály
 
     public static Tower createTower(float spawnX,float spawnY,String towerClass) {
         switch (towerClass){
-            case "Archer":
+            case EntitiesConfig.ARCHER_TOWER:
                 return createArcherTower(spawnX,spawnY);
-            case "Wizard":
+            case EntitiesConfig.WIZARD_TOWER:
                 return createWizardTower(spawnX,spawnY);
-            case "CrossBow":
+            case EntitiesConfig.CROSSBOW_TOWER:
                 return createCrossBowTower(spawnX,spawnY);
         }
         return null;
@@ -78,13 +79,13 @@ public abstract class Tower{ //TODO teszt osztály
      * @return
      */
     public static Tower createArcherTower(float spawnX,float spawnY){
-        return new ArcherTower(spawnX, spawnY,"Archer");
+        return new ArcherTower(spawnX, spawnY, EntitiesConfig.ARCHER_TOWER);
     }
     public static Tower createWizardTower(float spawnX,float spawnY){
-        return new WizardTower(spawnX, spawnY,"Wizard");
+        return new WizardTower(spawnX, spawnY,EntitiesConfig.WIZARD_TOWER);
     }
     public static Tower createCrossBowTower(float spawnX,float spawnY){
-        return new CrossBowTower(spawnX, spawnY,"CrossBow");
+        return new CrossBowTower(spawnX, spawnY,EntitiesConfig.CROSSBOW_TOWER);
     }
 
     /**
@@ -120,13 +121,44 @@ public abstract class Tower{ //TODO teszt osztály
     public void addTexture(){
         if(!hasTexture){
             float X=getX(),Y=getY();
-            sprite.set(new Sprite(new Texture("textures/tower.png")));
+            sprite.set(new Sprite(new Texture(DisplayConfig.TOWER_TEXTURE)));
             sprite.setX(X);
             sprite.setY(Y);
             sprite.setSize(1,1);
             hasTexture=true;
         }
     }
+
+    public void shot(SpriteBatch batch){
+        deltaSumForShoot+=Gdx.graphics.getDeltaTime();
+        if(target != null && !target.isDead()){
+            int toShotX,toShotY;
+            synchronized (this){
+                if(target!=null &&target.getNextX().size()>2) {
+                    toShotX = target.getNextX().get(1);
+                    toShotY = target.getNextY().get(1);
+                }
+                else{
+                    return ;
+                }
+            }
+            if(deltaSumForShoot*0.8f>attackTime && target.getNextX().size()>2){
+                deltaSumForShoot=0;
+                projectile=new Projectile(X,Y,toShotX,toShotY);
+                projectile.shot(batch);
+            }
+        }
+        else{
+            projectile=null;
+        }
+        if(projectile!=null){
+            projectile.shot(batch);
+            if(projectile.reached()){
+                projectile=null;
+            }
+        }
+    }
+
 
     /**
      * Main render method gets called for every frame everything visual in this class should be called here such as projectiles
@@ -135,6 +167,7 @@ public abstract class Tower{ //TODO teszt osztály
     public void render(SpriteBatch batch, Color color){
         if (id > 0) {
             addTexture();
+            shot(batch);
             sprite.setColor(color);
             sprite.draw(batch);
         }
@@ -146,7 +179,7 @@ public abstract class Tower{ //TODO teszt osztály
      */
     public void setValuesFromDTO(TowerDTO towerDTO) {
         this.id = towerDTO.getId();
-        this.target = towerDTO.getTarget() == null ? null : player.getUnitWithId(towerDTO.getTarget().getId());
+        this.target = towerDTO.getTarget() == null ? null : Unit.createUnitFromDTO(towerDTO.getTarget());
         this.attackTime = towerDTO.getAttackTime();
         this.lastTimeOfAttack=towerDTO.getLastTimeOfAttack();
         this.damage = towerDTO.getDamage();
@@ -225,16 +258,19 @@ public abstract class Tower{ //TODO teszt osztály
         return attackTime;
     }
 
-    public void setX(float X){
-        this.X=(int)X;
-    }
-    public void setY(float Y){
-        this.Y=(int)Y;
-    }
     public float getX(){
         return X;
     }
+
+    public void setX(float X){
+        this.X=(int)X;
+    }
+
     public float getY(){
         return Y;
+    }
+
+    public void setY(float Y){
+        this.Y=(int)Y;
     }
 }

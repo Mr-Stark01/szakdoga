@@ -7,14 +7,22 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.szakdoga.game.config.DisplayConfig;
 import com.szakdoga.game.FontCreator;
 
 public class EndScreen extends ScreenAdapter {
     BitmapFont font = FontCreator.createFont(200, Color.BLACK);
+    BitmapFont fontExit = FontCreator.createFont(50, Color.WHITE);
     private SpriteBatch batch;
     private String status;
+    private Color color;
     public EndScreen(String status){
-        System.out.println("wtfasdasdasdasd");
+        if(status.equals(DisplayConfig.WIN_TEXT)){
+            color=DisplayConfig.BLUE_COLOR;
+        }
+        else{
+            color=DisplayConfig.CRIMSON_COLOR;
+        }
         this.status=status;
     }
     @Override
@@ -24,9 +32,10 @@ public class EndScreen extends ScreenAdapter {
     }
     @Override
     public void render(float delta){
-        ScreenUtils.clear(1, 0, 0, 1);
+        ScreenUtils.clear(color);
         batch.begin();
         font.draw(batch,status, Gdx.graphics.getHeight()/2,Gdx.graphics.getWidth()/2);
+        fontExit.draw(batch,"Press ESC\n to quit", 5,(Gdx.graphics.getWidth()/2)-100);
         if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
             Gdx.app.exit();
             System.exit(0);

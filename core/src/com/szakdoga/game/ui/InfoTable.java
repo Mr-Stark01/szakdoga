@@ -1,16 +1,12 @@
 package com.szakdoga.game.ui;
 
+import static com.szakdoga.game.TowerDefence.UIscale;
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.szakdoga.game.FontCreator;
-import com.szakdoga.game.towers.Tower;
-import com.szakdoga.game.units.Unit;
-
-import static com.szakdoga.game.TowerDefence.UIscale;
-
 
 public class InfoTable {
     private static Table table;

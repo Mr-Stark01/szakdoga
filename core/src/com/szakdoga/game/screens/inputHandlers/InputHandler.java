@@ -1,5 +1,8 @@
 package com.szakdoga.game.screens.inputHandlers;
 
+import static com.szakdoga.game.TowerDefence.UIscale;
+import static com.szakdoga.game.screens.GameScreen.player;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
@@ -10,23 +13,21 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
+import com.szakdoga.game.config.DisplayConfig;
 import com.szakdoga.game.Logger;
-import com.szakdoga.game.towers.TowerRangeCircle;
-import com.szakdoga.game.units.Unit;
-
-import static com.szakdoga.game.TowerDefence.UIscale;
-import static com.szakdoga.game.screens.GameScreen.player;
+import com.szakdoga.game.entities.towers.TowerRangeCircle;
+import com.szakdoga.game.entities.units.Unit;
 
 public class InputHandler implements InputProcessor {
     private static Sprite currentlyDragging;
     private static TowerRangeCircle towerRangeCircle;
     private OrthographicCamera camera;
     private float scale;
-    private float limit=10f*UIscale;
+    private float limit = DisplayConfig.CAMERA_AREA_LIMIT * UIscale;
     private OrthogonalTiledMapRenderer renderer;
 
     public void setView(OrthographicCamera camera, float scale, OrthogonalTiledMapRenderer renderer){
-        this.camera=camera;//Maybe throw already has camera excpetion?
+        this.camera=camera;
         this.scale=scale;
         this.renderer=renderer;
     }

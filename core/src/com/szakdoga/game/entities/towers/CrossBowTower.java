@@ -1,21 +1,22 @@
-package com.szakdoga.game.towers;
+package com.szakdoga.game.entities.towers;
+
+import static com.szakdoga.game.screens.GameScreen.player;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.szakdoga.game.config.DisplayConfig;
 import org.datatransferobject.TowerDTO;
-
-import static com.szakdoga.game.screens.GameScreen.player;
 
 public class CrossBowTower extends Tower{
     public CrossBowTower( float spawnX, float spawnY,String towerClass) {
         super(20, 40, 8,2f, spawnX, spawnY,towerClass);
-        textureURL="textures/crossbowtower.png";
+        textureURL = DisplayConfig.CROSS_BOW_TOWER_TEXTURE;
         sprite.set(new Sprite(new Texture(textureURL)));
         sprite.setSize(1,1);
     }
     public CrossBowTower(TowerDTO towerDTO){
         super(towerDTO.getDamage(), towerDTO.getPrice(), towerDTO.getRange(),towerDTO.getAttackTime(), towerDTO.getX(), towerDTO.getY(),towerDTO.getTowerClass());
-        textureURL="textures/crossbowtower.png";
+        textureURL = DisplayConfig.CROSS_BOW_TOWER_TEXTURE;
         sprite.setSize(1,1);
         this.X=towerDTO.getX();
         this.Y=towerDTO.getY();

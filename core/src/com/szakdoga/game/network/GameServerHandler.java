@@ -1,9 +1,10 @@
 package com.szakdoga.game.network;
 
+import static com.szakdoga.game.screens.GameScreen.enemyPlayer;
+import static com.szakdoga.game.screens.GameScreen.player;
+
 import com.szakdoga.game.Logger;
 import com.szakdoga.game.network.DTO.Preparator;
-import org.datatransferobject.DTO;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -12,23 +13,21 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import static com.szakdoga.game.screens.GameScreen.enemyPlayer;
-import static com.szakdoga.game.screens.GameScreen.player;
-
+import org.datatransferobject.DTO;
 
 public class GameServerHandler implements Runnable{
     private static ObjectOutputStream objectOutputStream ;
     private static ObjectInputStream objectInputStream ;
-    private List<DTO> DTOList= new ArrayList<>();
+    private static AtomicInteger id=new AtomicInteger(0);
     private final Socket clientSocket;
+    private final int TIMEOUT=10000;
+    private List<DTO> DTOList= new ArrayList<>();
     private DTO dtoIn;
     private String name;
-    private static AtomicInteger id=new AtomicInteger(0);
 
     public GameServerHandler(String ip, int port,String name) throws IOException {
         this.clientSocket=new Socket();
-        clientSocket.connect(new InetSocketAddress(ip, port), 10000);
+        clientSocket.connect(new InetSocketAddress(ip, port), TIMEOUT);
         this.name=name;
         try {
             objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
@@ -36,39 +35,45 @@ public class GameServerHandler implements Runnable{
         }catch (IOException e){
             e.printStackTrace();
             Logger.writeLog("error",e.getMessage(),this.getClass().getSimpleName());
-            throw new RuntimeException(e.getMessage());
+            System.exit(-1);
         }
     }
+
+    public static int getId(){
+        return id.get();
+    }
+
     @Override
     public void run() {
-        //TODO alapból kapjon csak egy checket és csak azzután néze meg ehmaybe
             try {
                 sendData();
                 receiveData();
             } catch (IOException | ClassNotFoundException e) {
                 Logger.writeLog("error",e.getMessage(),this.getClass().getSimpleName());
+                System.exit(-1);
             }
     }
+
     @SuppressWarnings("unchecked")
     protected void receiveData() throws IOException, ClassNotFoundException {
         Logger.displayLog("log","Currently waiting for data from server");
         DTOList=((ArrayList<DTO>) objectInputStream.readObject());
         Logger.displayLog("log","Received data from server");
-        Logger.displayLog("log","This client's data:");
-        Logger.displayLog("log","Enemy client's data:");
         id.set(DTOList.get(0).getId());
         player.exchangeData(DTOList.get(0));
         enemyPlayer.exchangeData(DTOList.get(1));
         Logger.displayLog("log","Succesfully received and exchanged data from server");
     }
-        protected void sendData() throws IOException {
-        Logger.displayLog("log","Sending data");
+
+    protected void sendData() throws IOException {
+        Logger.displayLog("log","Sending data to server");
         objectOutputStream.writeObject(new DTO(Preparator.createUnitDTOListFromUnitList(player.getUnits()),
                                                 Preparator.createTowerDTOListFromTowertList(player.getTowers()),
                                                 Preparator.createPlayerDTOFromPlayer(player),id.get(),name));
         objectOutputStream.flush();
-        Logger.displayLog("log","Data sent");
-        }
+        Logger.displayLog("log","Data sent to server");
+    }
+
     public DTO getDtoIn() {
         return dtoIn;
     }
@@ -79,9 +84,6 @@ public class GameServerHandler implements Runnable{
 
     public List<DTO> getDtoOut() {
         return DTOList;
-    }
-    public static int getId(){
-        return id.get();
     }
 }
 

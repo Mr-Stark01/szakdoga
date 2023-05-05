@@ -3,7 +3,6 @@ package com.szakdoga.game.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -12,38 +11,40 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.szakdoga.game.config.DisplayConfig;
 import com.szakdoga.game.Logger;
-import com.szakdoga.game.Player;
+import com.szakdoga.game.entities.Player;
 import com.szakdoga.game.TowerDefence;
+import com.szakdoga.game.network.FileServerHandler;
 import com.szakdoga.game.network.GameServerHandler;
 import com.szakdoga.game.screens.inputHandlers.InputHandler;
 import com.szakdoga.game.ui.Hud;
-
 import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-
 public class GameScreen extends ScreenAdapter {
-
+    private static final String MAP_URI="maps/defmap.tmx";
     public static Player player;
     public static Player enemyPlayer;
+    public static TiledMapTileLayer tileLayer;
     static float tileScale;
     final TowerDefence game;
     private final String ip;
+    private final int port;
     private final String name;
     private SpriteBatch batch;
     private ScheduledExecutorService executor = Executors.newScheduledThreadPool(20);
-    public static TiledMapTileLayer tileLayer;
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
     private InputHandler inputHandler;
     private Hud hud;
     private InputMultiplexer multiplexer;
-    public GameScreen(TowerDefence game,String ip,String name){
+    public GameScreen(TowerDefence game, String ip, Integer port, String name){
         this.ip=ip;
+        this.port=port;
         this.name=name;
         this.game = game;
         this.batch = new SpriteBatch();
@@ -51,19 +52,22 @@ public class GameScreen extends ScreenAdapter {
     }
     @Override
     public void show(){
+        //Acquire map from server
+        new FileServerHandler(ip,port);
         //Importing and creating map
         TmxMapLoader loader = new TmxMapLoader();
-        map = loader.load("maps/defmap.tmx");
+        map = loader.load(MAP_URI);
         tileLayer = (TiledMapTileLayer) map.getLayers().get(0);
         tileScale = (float) tileLayer.getTileWidth();
         renderer = new OrthogonalTiledMapRenderer(map, 1 / tileScale);
 
-        player = new Player("textures/tower.png", Color.BLUE);
-        enemyPlayer = new Player("textures/dragon.png",Color.RED);
+        player = new Player(DisplayConfig.TOWER_TEXTURE,DisplayConfig.BLUE_COLOR);
+        enemyPlayer = new Player(DisplayConfig.DRAGON_TEXTURE,DisplayConfig.RED_COLOR);
+
 
         GameServerHandler gameServerHandler;
         try {
-            gameServerHandler = new GameServerHandler(ip,56227,name);
+            gameServerHandler = new GameServerHandler(ip,port,name);
             Logger.writeLogDisplayLog("LOG","Succesfully connected to server",this.getClass().getSimpleName());
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -121,17 +125,15 @@ public class GameScreen extends ScreenAdapter {
         executor.shutdown();
     }
     public void finished(){
-        if(player.getHealth()<=0) {
-            executor.shutdown();
-            dispose();
-            game.setScreen(new EndScreen("Loss"));
-        }
         if(enemyPlayer.getHealth()<=0) {
             executor.shutdown();
-            dispose();
-            game.setScreen(new EndScreen("Win"));
-
+            game.setScreen(new EndScreen(DisplayConfig.WIN_TEXT));
+            hide();
         }
-
+        if(player.getHealth()<=0) {
+            executor.shutdown();
+            game.setScreen(new EndScreen(DisplayConfig.LOSS_TEXT)); 
+            hide();
+        }
     }
 }

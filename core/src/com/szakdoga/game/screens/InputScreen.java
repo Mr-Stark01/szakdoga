@@ -1,5 +1,8 @@
 package com.szakdoga.game.screens;
 
+import static com.szakdoga.game.TowerDefence.UIscale;
+import static com.szakdoga.game.TowerDefence.font;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
@@ -11,23 +14,26 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.szakdoga.game.config.DisplayConfig;
 import com.szakdoga.game.Logger;
 import com.szakdoga.game.TowerDefence;
-
 import java.util.regex.Pattern;
 
-import static com.szakdoga.game.TowerDefence.UIscale;
-import static com.szakdoga.game.TowerDefence.font;
-
 public class InputScreen extends ScreenAdapter {
-    private TowerDefence game;
+    private static final String IPV4_REGEX = "^(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})$";
+    private static final int LOAD_DELAY_LIMIT=4;
     protected Stage stage;
     protected Table table;
-    protected TextButton.TextButtonStyle style;
-    private TextField ip;
-    private TextField name;
+    protected TextButton startButton;
+    protected TextButton backButton;
     Label.LabelStyle labelStyle= new Label.LabelStyle(font, Color.RED);
     Label message = new Label("",labelStyle);
+    private TowerDefence game;
+    private TextField ip;
+    private TextField port;
+    private TextField name;
+    private boolean startNewScreen=false;
+    private int loadDelayCounter =0;
     public InputScreen(TowerDefence game){
         this.game=game;
         stage = new Stage();
@@ -41,20 +47,22 @@ public class InputScreen extends ScreenAdapter {
         textFieldStyle.fontColor= Color.WHITE;
         TextButton.TextButtonStyle textButtonStyle =new TextButton.TextButtonStyle();
         textButtonStyle.font = font;
-        textButtonStyle.font.setColor(Color.BLUE);
+        textButtonStyle.font.setColor(DisplayConfig.BLUE_COLOR);
 
-        TextButton startButton = new TextButton("Start", textButtonStyle);
+        startButton = new TextButton(DisplayConfig.START_TEXT, textButtonStyle);
+        backButton = new TextButton(DisplayConfig.BACK_TEXT, textButtonStyle);
         ip = new TextField("0.0.0.0",textFieldStyle);
+        port = new TextField("56227",textFieldStyle);
         name = new TextField("Player",textFieldStyle);
 
         startButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if(correctIPCheck(ip.getText())) {
+                if(correctIPCheck(ip.getText(),port.getText())) {
+                    startButton.setText("LOADING");
                     Logger.writeLog("log", "startButton clicked w/ip:" + ip.getText() +
                             "and name:" +name.getText(),this.getClass().getSimpleName());
-                    dispose();
-                    game.setScreen(new GameScreen(game,ip.getText(),name.getText()));
+                    startNewScreen=true;
                 }
                 else{
                     message.setText("The ip input was wrong try again.");
@@ -63,18 +71,30 @@ public class InputScreen extends ScreenAdapter {
                 }
             }
         });
+        backButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+            game.setScreen(new MainMenu(game));
+            dispose();
+            }
+
+        });
         table.add(startButton);
-        table.row().minHeight((float) (game.screenHeight*0.15*UIscale));
+        table.row().minHeight((float) (game.screenHeight*DisplayConfig.HUD_TABLE_ADJUSTMENT *UIscale));
         table.add(ip).width(Gdx.graphics.getWidth());
-        table.row().minHeight((float) (game.screenHeight*0.15*UIscale));
+        table.row().minHeight((float) (game.screenHeight*DisplayConfig.HUD_TABLE_ADJUSTMENT *UIscale));
+        table.add(port).width(Gdx.graphics.getWidth());
+        table.row().minHeight((float) (game.screenHeight*DisplayConfig.HUD_TABLE_ADJUSTMENT *UIscale));
         table.add(name).width(Gdx.graphics.getWidth());
+        table.row().minHeight((float) (game.screenHeight*DisplayConfig.HUD_TABLE_ADJUSTMENT *UIscale));
+        table.add(backButton).width(Gdx.graphics.getWidth());
         stage.addActor(table);
     }
     @Override
     public void render(float delta){
         ScreenUtils.clear(0, 0, 0, 1);
         stage.draw();
-
+        setGameScreen();
     }
     @Override
     public void dispose(){
@@ -82,8 +102,17 @@ public class InputScreen extends ScreenAdapter {
         stage.dispose();
         Logger.writeLogDisplayLog("log","Main Menu disposed",this.getClass().getSimpleName());
     }
-    public boolean correctIPCheck(String text) {
-        String IPV4_REGEX = "^(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})$";
+
+    public void setGameScreen(){
+        if(startNewScreen) {
+            loadDelayCounter++;
+            if(loadDelayCounter>4) {
+                game.setScreen(new GameScreen(game, ip.getText(), Integer.valueOf(port.getText()), name.getText()));
+                dispose();
+            }
+        }
+    }
+    public boolean correctIPCheck(String text,String port) {
         Pattern IPv4_PATTERN = Pattern.compile(IPV4_REGEX);
         if (text == null) {
             return false;
@@ -101,6 +130,9 @@ public class InputScreen extends ScreenAdapter {
                 }
             }
         } catch (NumberFormatException e) {
+            return false;
+        }
+        if(!port.matches("-?\\d+")){
             return false;
         }
         return true;

@@ -1,25 +1,27 @@
-package com.szakdoga.game.units;
-
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import org.datatransferobject.UnitDTO;
-
-import java.util.ArrayList;
+package com.szakdoga.game.entities.units;
 
 import static com.szakdoga.game.network.DTO.Preparator.deepcopy;
 
-public class WizardUnit extends Unit{
-    public WizardUnit(float X,float Y) {
-        super(1,50,20,40,X,Y,"Wizard");//TODO how
-        textureURL="textures/wizardunit.png";
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.szakdoga.game.config.DisplayConfig;
+import com.szakdoga.game.config.EntitiesConfig;
+import java.util.ArrayList;
+import org.datatransferobject.UnitDTO;
+
+public class KnightUnit extends Unit{
+
+    public KnightUnit(float X,float Y) {
+        super(5,300,50,100,X,Y, EntitiesConfig.KNIGHT_UNIT);
+        textureURL = DisplayConfig.KNIGHT_UNIT_TEXTURE;
         sprite.set(new Sprite(new Texture(textureURL)));
         sprite.setSize(1,1);
         sprite.setX(X);
         sprite.setY(Y);
     }
-    public WizardUnit(UnitDTO unitDTO){//TODO teljesen átmásolni
+    public KnightUnit(UnitDTO unitDTO){
         super(unitDTO.getSpeed(),unitDTO.getHealth(),unitDTO.getDamage(), unitDTO.getPrice(), unitDTO.getX(), unitDTO.getY(),unitDTO.getUnitClass());
-        textureURL="textures/wizardunit.png";
+        textureURL = DisplayConfig.KNIGHT_UNIT_TEXTURE;
         sprite.setSize(1,1);
         sprite.setX(unitDTO.getX());
         sprite.setY(unitDTO.getY());

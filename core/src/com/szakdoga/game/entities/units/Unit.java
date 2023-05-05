@@ -1,4 +1,6 @@
-package com.szakdoga.game.units;
+package com.szakdoga.game.entities.units;
+
+import static com.szakdoga.game.network.DTO.Preparator.deepcopy;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -6,16 +8,16 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
-import com.szakdoga.game.CompareReturn;
-import org.datatransferobject.UnitDTO;
-
+import com.szakdoga.game.network.CompareReturn;
+import com.szakdoga.game.config.DisplayConfig;
+import com.szakdoga.game.config.EntitiesConfig;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import static com.szakdoga.game.network.DTO.Preparator.deepcopy;
+import org.datatransferobject.UnitDTO;
 
 public abstract class Unit {
+  protected final int MAX_HEALTH;
   protected float speed;
   protected float health;
   protected float damage;
@@ -38,6 +40,7 @@ public abstract class Unit {
     this.speed = speed;
     this.health = health;
     this.damage = damage;
+    this.MAX_HEALTH= (int) health;
     this.price = price;
     this.PreviousX = (int) X;
     this.PreviousY = (int) Y;
@@ -71,22 +74,22 @@ public abstract class Unit {
    */
   public static Unit createUnitFromDTO(UnitDTO unitDTO) {
     switch (unitDTO.getUnitClass()){
-      case "Pike":
+      case EntitiesConfig.PIKE_UNIT:
         return createPikeUnitFromDTO(unitDTO);
-      case "Wizard":
+      case EntitiesConfig.WIZARD_UNIT:
         return createKnightUnitFromDTO(unitDTO);
-      case "Knight":
+      case EntitiesConfig.KNIGHT_UNIT:
         return createWizardUnitFromDTO(unitDTO);
     }
     return null;
   }
   public static Unit createUnit(int X,int Y,String unitName){
     switch (unitName){
-      case "Pike":
+      case EntitiesConfig.PIKE_UNIT:
         return createPikeUnit(X,Y,unitName);
-      case "Wizard":
+      case EntitiesConfig.WIZARD_UNIT:
         return createWizardUnit(X,Y,unitName);
-      case "Knight":
+      case EntitiesConfig.KNIGHT_UNIT:
         return createKnightUnit(X,Y,unitName);
     }
     return null;
@@ -125,7 +128,7 @@ public abstract class Unit {
    */
   public void step(){
     //If reached destination it stops and waits for destruction
-    if(nextXCoordinates.get(0)==-1 && nextYCoordinates.get(0)==-1){
+    if(nextXCoordinates.get(0)==EntitiesConfig.STOP_COORDINATE && nextYCoordinates.get(0)==EntitiesConfig.STOP_COORDINATE){
       sprite.setX(Math.round(getX()));
       sprite.setY(Math.round(getY()));
       return;
@@ -142,7 +145,7 @@ public abstract class Unit {
   public void addTexture(){
     if(!hasTexture){
       float X=getX(),Y=getY();
-      sprite.set(new Sprite(new Texture("textures/tower.png")));
+      sprite.set(new Sprite(new Texture(DisplayConfig.TOWER_TEXTURE)));
       sprite.setX(X);
       sprite.setY(Y);
       sprite.setSize(1,1);
@@ -155,6 +158,7 @@ public abstract class Unit {
       addTexture();
       step();
       sprite.setColor(color);
+      sprite.setAlpha(health/MAX_HEALTH);
       sprite.draw(batch);
     }
   }
@@ -202,6 +206,8 @@ public abstract class Unit {
             getPrice() == unit.getPrice() && getPreviousX() == unit.getPreviousX() &&
             getPreviousY() == unit.getPreviousY() && getNextX().equals(unit.getNextX()) &&
             getNextY().equals(unit.getNextY()) && Float.compare(unit.getDeltaX(), getDeltaX()) == 0 &&
+            Float.compare(unit.getX(),getX()) == 0 &&
+            Float.compare(unit.getY(),getY()) == 0 &&
             Float.compare(unit.getDeltaY(), getDeltaY()) == 0 &&
             Float.compare(unit.getDistance(), getDistance()) == 0;
   }
@@ -218,15 +224,8 @@ public abstract class Unit {
             getPreviousY() == unit.getPreviousY() &&
             getNextX() == unit.getNextX() && getNextY() == unit.getNextY() &&
             Float.compare(unit.getDeltaX(), getDeltaX()) == 0 && Float.compare(unit.getDeltaY(), getDeltaY()) == 0 &&
-            Float.compare(unit.getDistance(), getDistance()) == 0;
-  }
-
-  public void setDeltaX(float deltaX) {
-    this.deltaX = deltaX;
-  }
-
-  public void setDeltaY(float deltaY) {
-    this.deltaY = deltaY;
+            Float.compare(unit.getDistance(), getDistance()) == 0 &&
+            getId()==unit.getId();
   }
 
   public ArrayList<Integer> getNextX() {
@@ -282,8 +281,16 @@ public abstract class Unit {
     return deltaX;
   }
 
+  public void setDeltaX(float deltaX) {
+    this.deltaX = deltaX;
+  }
+
   public float getDeltaY() {
     return deltaY;
+  }
+
+  public void setDeltaY(float deltaY) {
+    this.deltaY = deltaY;
   }
 
   public float getSpeed() {
@@ -318,7 +325,7 @@ public abstract class Unit {
   }
 
   public boolean isDead() {
-    return health < 0;
+    return health <= 0;
   }
 
   public String getUnitClass() {

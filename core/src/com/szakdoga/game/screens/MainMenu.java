@@ -1,5 +1,7 @@
 package com.szakdoga.game.screens;
 
+import static com.szakdoga.game.TowerDefence.UIscale;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
@@ -10,34 +12,33 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.szakdoga.game.config.DisplayConfig;
 import com.szakdoga.game.FontCreator;
 import com.szakdoga.game.Logger;
 import com.szakdoga.game.TowerDefence;
 
-import static com.szakdoga.game.TowerDefence.UIscale;
-
-
 public class MainMenu extends ScreenAdapter {
     final TowerDefence game;
-    protected TextButton.TextButtonStyle style;
-    protected Stage stage;
-    protected Table table;
-    Texture bg;
-    TextButton.TextButtonStyle styleHover;
+    private TextButton.TextButtonStyle style;
+    private Stage stage;
+    private Table table;
+    private Texture bg;
+    private TextButton.TextButtonStyle styleHover;
     public MainMenu(final TowerDefence game){
         this.game=game;
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         table = new Table();
-        table.setDebug(true);
         table.setFillParent(true);
         style = new TextButton.TextButtonStyle();
-        style.font = FontCreator.createFont(100);
-        table.row().minHeight((float) (game.screenHeight*0.25*UIscale)).minWidth(game.screenWidth);//gets inherited
-        table.add(new TextButton("Szakdoga", style));
-        TextButton startButton = new TextButton("Start", style);
-        TextButton options = new TextButton("Options", style);
-        TextButton exit = new TextButton("Exit", style);
+        style.font = FontCreator.createFont(DisplayConfig.MEDIUM_FONT_SIZE);
+        TextButton.TextButtonStyle styleTitle = new TextButton.TextButtonStyle();
+        styleTitle.font = FontCreator.createFont(DisplayConfig.BIG_FONT_SIZE, DisplayConfig.CRIMSON_COLOR);
+        table.row().minHeight((float) (game.screenHeight*DisplayConfig.MAIN_MENU_TABLE_ADJUSTMENT*UIscale)).minWidth(game.screenWidth);
+        table.add(new TextButton(DisplayConfig.GAME_TITLE, styleTitle));
+        TextButton startButton = new TextButton(DisplayConfig.START_TEXT, style);
+        TextButton options = new TextButton(DisplayConfig.OPTION_TEXT, style);
+        TextButton exit = new TextButton(DisplayConfig.EXIT_TEXT, style);
         startButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -64,11 +65,11 @@ public class MainMenu extends ScreenAdapter {
             }
         });
 
-        table.row().minHeight((float) (game.screenHeight*0.15*UIscale));
+        table.row().minHeight((float) (game.screenHeight*DisplayConfig.HUD_TABLE_ADJUSTMENT*UIscale));
         table.add(startButton).fill();
-        table.row().minHeight((float) (game.screenHeight*0.15*UIscale));
+        table.row().minHeight((float) (game.screenHeight*DisplayConfig.HUD_TABLE_ADJUSTMENT*UIscale));
         table.add(options).fill();
-        table.row().minHeight((float) (game.screenHeight*0.15*UIscale));
+        table.row().minHeight((float) (game.screenHeight*DisplayConfig.HUD_TABLE_ADJUSTMENT*UIscale));
         table.add(exit).fill();
         stage.addActor(table);
         stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
@@ -76,7 +77,7 @@ public class MainMenu extends ScreenAdapter {
     }
     @Override
     public void show(){
-        bg = new Texture("menu/start_menu.png");
+        bg = new Texture(DisplayConfig.MAIN_MENU_BACKGROUND_TEXTURE);
         styleHover = new TextButton.TextButtonStyle();
         styleHover.font = game.fontHover;
     }
