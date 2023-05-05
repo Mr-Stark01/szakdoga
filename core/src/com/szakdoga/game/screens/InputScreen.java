@@ -30,6 +30,7 @@ public class InputScreen extends ScreenAdapter {
     Label message = new Label("",labelStyle);
     private TowerDefence game;
     private TextField ip;
+    private TextField port;
     private TextField name;
     private boolean startNewScreen=false;
     private int loadDelayCounter =0;
@@ -51,12 +52,13 @@ public class InputScreen extends ScreenAdapter {
         startButton = new TextButton(DisplayConfig.START_TEXT, textButtonStyle);
         backButton = new TextButton(DisplayConfig.BACK_TEXT, textButtonStyle);
         ip = new TextField("0.0.0.0",textFieldStyle);
+        port = new TextField("56227",textFieldStyle);
         name = new TextField("Player",textFieldStyle);
 
         startButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if(correctIPCheck(ip.getText())) {
+                if(correctIPCheck(ip.getText(),port.getText())) {
                     startButton.setText("LOADING");
                     Logger.writeLog("log", "startButton clicked w/ip:" + ip.getText() +
                             "and name:" +name.getText(),this.getClass().getSimpleName());
@@ -81,6 +83,8 @@ public class InputScreen extends ScreenAdapter {
         table.row().minHeight((float) (game.screenHeight*DisplayConfig.HUD_TABLE_ADJUSTMENT *UIscale));
         table.add(ip).width(Gdx.graphics.getWidth());
         table.row().minHeight((float) (game.screenHeight*DisplayConfig.HUD_TABLE_ADJUSTMENT *UIscale));
+        table.add(port).width(Gdx.graphics.getWidth());
+        table.row().minHeight((float) (game.screenHeight*DisplayConfig.HUD_TABLE_ADJUSTMENT *UIscale));
         table.add(name).width(Gdx.graphics.getWidth());
         table.row().minHeight((float) (game.screenHeight*DisplayConfig.HUD_TABLE_ADJUSTMENT *UIscale));
         table.add(backButton).width(Gdx.graphics.getWidth());
@@ -103,12 +107,12 @@ public class InputScreen extends ScreenAdapter {
         if(startNewScreen) {
             loadDelayCounter++;
             if(loadDelayCounter>4) {
-                game.setScreen(new GameScreen(game, ip.getText(), name.getText()));
+                game.setScreen(new GameScreen(game, ip.getText(), Integer.valueOf(port.getText()), name.getText()));
                 dispose();
             }
         }
     }
-    public boolean correctIPCheck(String text) {
+    public boolean correctIPCheck(String text,String port) {
         Pattern IPv4_PATTERN = Pattern.compile(IPV4_REGEX);
         if (text == null) {
             return false;
@@ -126,6 +130,9 @@ public class InputScreen extends ScreenAdapter {
                 }
             }
         } catch (NumberFormatException e) {
+            return false;
+        }
+        if(!port.matches("-?\\d+")){
             return false;
         }
         return true;

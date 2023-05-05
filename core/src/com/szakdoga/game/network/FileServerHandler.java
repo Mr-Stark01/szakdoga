@@ -20,7 +20,7 @@ public class FileServerHandler {
             socket.connect(new InetSocketAddress(ip, port), 1000);
             dataInputStream = new DataInputStream(socket.getInputStream());
             dataOutputStream = new DataOutputStream(socket.getOutputStream());
-            receiveFile(Gdx.files.internal("maps/defmap.tmx").path());
+            receiveFile(Gdx.files.local("maps/defmap.tmx").path());
             socket.close();
         }catch (IOException e){
             Logger.displayError("error",e.getMessage());

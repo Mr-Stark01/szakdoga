@@ -15,6 +15,7 @@ import com.szakdoga.game.config.DisplayConfig;
 import com.szakdoga.game.Logger;
 import com.szakdoga.game.entities.Player;
 import com.szakdoga.game.TowerDefence;
+import com.szakdoga.game.network.FileServerHandler;
 import com.szakdoga.game.network.GameServerHandler;
 import com.szakdoga.game.screens.inputHandlers.InputHandler;
 import com.szakdoga.game.ui.Hud;
@@ -31,6 +32,7 @@ public class GameScreen extends ScreenAdapter {
     static float tileScale;
     final TowerDefence game;
     private final String ip;
+    private final int port;
     private final String name;
     private SpriteBatch batch;
     private ScheduledExecutorService executor = Executors.newScheduledThreadPool(20);
@@ -40,8 +42,9 @@ public class GameScreen extends ScreenAdapter {
     private InputHandler inputHandler;
     private Hud hud;
     private InputMultiplexer multiplexer;
-    public GameScreen(TowerDefence game,String ip,String name){
+    public GameScreen(TowerDefence game, String ip, Integer port, String name){
         this.ip=ip;
+        this.port=port;
         this.name=name;
         this.game = game;
         this.batch = new SpriteBatch();
@@ -50,7 +53,7 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void show(){
         //Acquire map from server
-        //new FileServerHandler(ip,56227);
+        new FileServerHandler(ip,port);
         //Importing and creating map
         TmxMapLoader loader = new TmxMapLoader();
         map = loader.load(MAP_URI);
@@ -64,7 +67,7 @@ public class GameScreen extends ScreenAdapter {
 
         GameServerHandler gameServerHandler;
         try {
-            gameServerHandler = new GameServerHandler(ip,56227,name);
+            gameServerHandler = new GameServerHandler(ip,port,name);
             Logger.writeLogDisplayLog("LOG","Succesfully connected to server",this.getClass().getSimpleName());
         } catch (IOException e) {
             throw new RuntimeException(e);
