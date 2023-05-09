@@ -33,7 +33,6 @@ public class InputHandler implements InputProcessor {
     }
     @Override
     public boolean keyDown(int keycode) {
-    System.out.println(keycode);
         if(keycode == Input.Keys.ESCAPE){
             Gdx.app.exit();
             System.exit(-1);

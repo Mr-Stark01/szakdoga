@@ -6,6 +6,7 @@ import static com.szakdoga.game.screens.GameScreen.player;
 import static com.szakdoga.game.ui.InfoTable.InfoTableFactory;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -42,6 +43,7 @@ public class Hud implements Disposable {
     private Stage stage;
     private Table tableTop;
     private Table tableBottom;
+    private Table tableChat;
     private Table infoTable;
     private TextButton.TextButtonStyle style;
     private Label.LabelStyle labelStyle;
@@ -68,6 +70,9 @@ public class Hud implements Disposable {
         tableBottom = new Table();
         tableBottom.setFillParent(true);
         tableBottom.setDebug(true);
+        tableChat = new Table();
+        tableChat.setFillParent(true);
+        tableChat.setDebug(true);
 
 
         style = new TextButton.TextButtonStyle();
@@ -132,32 +137,33 @@ public class Hud implements Disposable {
         tableBottom.add(horizontalGroup).height(Gdx.graphics.getHeight()/6f);
 
 
-        VerticalGroup verticalGroup = new VerticalGroup();
-        verticalGroup.bottom();
-        verticalGroup.left();
-        verticalGroup.setDebug(true);
+        tableChat.center();
+        tableChat.left();
+
 
         chatBottom=new Label("you",labelStyle);
         chatTop=new Label("enemy",labelStyle);
         chatInput=new TextField("Input:",textFieldStyle);
+
         chatInput.addListener(
         new ClickListener() {
         @Override
         public void enter(InputEvent event, float x, float y, int pointer, @Null Actor toActor) {
-            System.out.println("enter");
             stage.setKeyboardFocus(chatInput);
         }
           @Override
           public void exit(InputEvent event, float x, float y, int pointer, @Null Actor toActor) {
-            System.out.println("exit");
             stage.setKeyboardFocus(null);
           }
         });
-        verticalGroup.addActor(chatBottom);
-        verticalGroup.addActor(chatTop);
-        verticalGroup.addActor(chatInput);
+        chatInput.setMaxLength(20);
+        tableChat.add(chatBottom);
+        tableChat.row();
+        tableChat.add(chatTop);
+        tableChat.row();
+        tableChat.add(chatInput);
 
-        stage.addActor(verticalGroup);
+        stage.addActor(tableChat);
         stage.addActor(tableTop);
         stage.addActor(tableBottom);
         style.font.getData().setScale(0.4f,0.4f);
@@ -186,6 +192,7 @@ public class Hud implements Disposable {
         unitNumberLabel.setText(player.getTowers().size());
     }
     public void updateChat(){
+        player.setChat(chatInput.getText());
         if(enemyPlayer.getChat()!=null && !enemyPlayer.getChat().equals(chatBottom.getText())){
             chatTop.setText(enemyPlayer.getChat());
         }

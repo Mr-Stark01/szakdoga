@@ -69,7 +69,6 @@ public class GameServerHandler implements Runnable{
     protected void sendData() throws IOException {
         Logger.displayLog("log","Sending data to server");
         if(player.getSendMessage()){
-        System.out.println("message sent");
             objectOutputStream.writeObject(
                     new DTO(
                             Preparator.createUnitDTOListFromUnitList(player.getUnits()),
