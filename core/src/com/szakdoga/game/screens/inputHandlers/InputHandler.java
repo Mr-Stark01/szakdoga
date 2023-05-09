@@ -33,6 +33,7 @@ public class InputHandler implements InputProcessor {
     }
     @Override
     public boolean keyDown(int keycode) {
+    System.out.println(keycode);
         if(keycode == Input.Keys.ESCAPE){
             Gdx.app.exit();
             System.exit(-1);
@@ -40,6 +41,9 @@ public class InputHandler implements InputProcessor {
         if(keycode == Input.Keys.P){
             player.buyUnit(Unit.createPikeUnit(player.getPositionX(), player.getPositionY(), "PikeUnitPlaceHolder"));
             Logger.writeLogDisplayLog("log","player bought pikeunit",this.getClass().getName());
+        }
+        if(keycode == Input.Keys.ENTER){
+            player.sendMessage();
         }
         return true;
     }

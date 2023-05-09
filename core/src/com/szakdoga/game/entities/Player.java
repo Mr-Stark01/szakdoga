@@ -22,6 +22,8 @@ public class Player {
     private float health=100;
     private Tower towerInDraggingState;
     private Sprite base;
+    private String chat;
+    private boolean sendMessage=false;
 
 
     public Player(String baseURL,Color color){
@@ -170,5 +172,29 @@ public class Player {
             }
         }
         return null;
+    }
+
+    public void sendMessage(){
+        sendMessage=true;
+    }
+    public boolean getSendMessage(){
+        return sendMessage;
+    }
+    public void sentMessage(){
+        sendMessage=false;
+    }
+
+    public String getChat() {
+        return chat;
+    }
+
+    public void setChat(String chat) {
+        this.chat = chat;
+    }
+
+    public void updateChat(String message) {
+        if(message!=null){
+            chat=message;
+        }
     }
 }

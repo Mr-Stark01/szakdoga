@@ -62,15 +62,35 @@ public class GameServerHandler implements Runnable{
         id.set(DTOList.get(0).getId());
         player.exchangeData(DTOList.get(0));
         enemyPlayer.exchangeData(DTOList.get(1));
+        enemyPlayer.updateChat(DTOList.get(1).getMessage());
         Logger.displayLog("log","Succesfully received and exchanged data from server");
     }
 
     protected void sendData() throws IOException {
         Logger.displayLog("log","Sending data to server");
-        objectOutputStream.writeObject(new DTO(Preparator.createUnitDTOListFromUnitList(player.getUnits()),
-                                                Preparator.createTowerDTOListFromTowertList(player.getTowers()),
-                                                Preparator.createPlayerDTOFromPlayer(player),id.get(),name));
-        objectOutputStream.flush();
+        if(player.getSendMessage()){
+        System.out.println("message sent");
+            objectOutputStream.writeObject(
+                    new DTO(
+                            Preparator.createUnitDTOListFromUnitList(player.getUnits()),
+                            Preparator.createTowerDTOListFromTowertList(player.getTowers()),
+                            Preparator.createPlayerDTOFromPlayer(player),
+                            id.get(),
+                            name,
+                            player.getChat()));
+            player.sentMessage();
+        }
+        else{
+      objectOutputStream.writeObject(
+          new DTO(
+              Preparator.createUnitDTOListFromUnitList(player.getUnits()),
+              Preparator.createTowerDTOListFromTowertList(player.getTowers()),
+              Preparator.createPlayerDTOFromPlayer(player),
+              id.get(),
+              name,
+              null));
+    }
+    objectOutputStream.flush();
         Logger.displayLog("log","Data sent to server");
     }
 

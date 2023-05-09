@@ -12,9 +12,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -47,6 +45,10 @@ public class Hud implements Disposable {
     private Table infoTable;
     private TextButton.TextButtonStyle style;
     private Label.LabelStyle labelStyle;
+    private TextField.TextFieldStyle textFieldStyle;
+    private Label chatTop;
+    private Label chatBottom;
+    private TextField chatInput;
     private Label moneyLabel;
     private Label healthLabel;
     private Label enemyHealthLabel;
@@ -69,6 +71,10 @@ public class Hud implements Disposable {
 
 
         style = new TextButton.TextButtonStyle();
+        textFieldStyle=new TextField.TextFieldStyle();
+        textFieldStyle.font=font;
+        textFieldStyle.fontColor=Color.WHITE;
+
         labelStyle = new Label.LabelStyle();
         labelStyle.font=font;
         style.font = font;
@@ -124,6 +130,34 @@ public class Hud implements Disposable {
         tableBottom.add(unitNumberLabel);
 
         tableBottom.add(horizontalGroup).height(Gdx.graphics.getHeight()/6f);
+
+
+        VerticalGroup verticalGroup = new VerticalGroup();
+        verticalGroup.bottom();
+        verticalGroup.left();
+        verticalGroup.setDebug(true);
+
+        chatBottom=new Label("you",labelStyle);
+        chatTop=new Label("enemy",labelStyle);
+        chatInput=new TextField("Input:",textFieldStyle);
+        chatInput.addListener(
+        new ClickListener() {
+        @Override
+        public void enter(InputEvent event, float x, float y, int pointer, @Null Actor toActor) {
+            System.out.println("enter");
+            stage.setKeyboardFocus(chatInput);
+        }
+          @Override
+          public void exit(InputEvent event, float x, float y, int pointer, @Null Actor toActor) {
+            System.out.println("exit");
+            stage.setKeyboardFocus(null);
+          }
+        });
+        verticalGroup.addActor(chatBottom);
+        verticalGroup.addActor(chatTop);
+        verticalGroup.addActor(chatInput);
+
+        stage.addActor(verticalGroup);
         stage.addActor(tableTop);
         stage.addActor(tableBottom);
         style.font.getData().setScale(0.4f,0.4f);
@@ -134,6 +168,7 @@ public class Hud implements Disposable {
         updateMoney();
         updateHealth();
         updateUnitNumber();
+        updateChat();
         stage.act();
         if(infoTable!=null){
             stage.addActor(infoTable);
@@ -149,6 +184,14 @@ public class Hud implements Disposable {
     }
     public void updateUnitNumber(){
         unitNumberLabel.setText(player.getTowers().size());
+    }
+    public void updateChat(){
+        if(enemyPlayer.getChat()!=null && !enemyPlayer.getChat().equals(chatBottom.getText())){
+            chatTop.setText(enemyPlayer.getChat());
+        }
+        if(player.getChat()!=null && player.getSendMessage()){
+            chatBottom.setText(player.getChat());
+        }
     }
     public ClickListener getClickListener(ImageButton imageButton,Unit TMP){
         ClickListener clickListener = new ClickListener(){
