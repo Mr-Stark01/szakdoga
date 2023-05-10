@@ -5,6 +5,7 @@ import static com.szakdoga.game.screens.GameScreen.enemyPlayer;
 import static com.szakdoga.game.screens.GameScreen.player;
 import static com.szakdoga.game.ui.InfoTable.InfoTableFactory;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
@@ -50,6 +51,7 @@ public class Hud implements Disposable {
     private TextField.TextFieldStyle textFieldStyle;
     private Label chatTop;
     private Label chatBottom;
+    private TextButton sendButton;
     private TextField chatInput;
     private Label moneyLabel;
     private Label healthLabel;
@@ -141,27 +143,42 @@ public class Hud implements Disposable {
         tableChat.left();
 
 
-        chatBottom=new Label("you",labelStyle);
-        chatTop=new Label("enemy",labelStyle);
-        chatInput=new TextField("Input:",textFieldStyle);
+        chatBottom = new Label("you",labelStyle);
+        chatTop = new Label("enemy",labelStyle);
+        chatInput = new TextField("Input:",textFieldStyle);
+        sendButton = new TextButton("Send",style);
 
         chatInput.addListener(
         new ClickListener() {
         @Override
         public void enter(InputEvent event, float x, float y, int pointer, @Null Actor toActor) {
+            if(!(Gdx.app.getType() == Application.ApplicationType.Android)){
             stage.setKeyboardFocus(chatInput);
+            }
         }
           @Override
           public void exit(InputEvent event, float x, float y, int pointer, @Null Actor toActor) {
-            stage.setKeyboardFocus(null);
-          }
+              if(!(Gdx.app.getType() == Application.ApplicationType.Android)){
+                 stage.setKeyboardFocus(null);
+              }
+            }
         });
+
+        sendButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                player.sendMessage();
+            }
+        });
+        chatInput.setBlinkTime(1);
         chatInput.setMaxLength(20);
         tableChat.add(chatBottom);
         tableChat.row();
         tableChat.add(chatTop);
         tableChat.row();
         tableChat.add(chatInput);
+        tableChat.row();
+        tableChat.add(sendButton);
 
         stage.addActor(tableChat);
         stage.addActor(tableTop);
