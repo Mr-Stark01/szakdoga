@@ -25,6 +25,16 @@
 
 # Required if using Gdx-Controllers extension
 -keep class com.badlogic.gdx.controllers.android.AndroidControllers
+-keep public class org.datatransferobject.**{
+       public protected *;
+       }
+-keepclassmembers class org.datatransferobject.*{
+    <fields>;
+    <init>();
+    <clinit>();
+    <methods>;
+}
+
 
 # Required if using Box2D extension
 -keepclassmembers class com.badlogic.gdx.physics.box2d.World {
@@ -36,3 +46,12 @@
    boolean reportFixture(long);
    float   reportRayFixture(long, float, float, float, float, float);
 }
+# Base Android exclusions, required for proper function of various components
+-keep public class * extends android.app.Activity
+-keep public class * extends android.app.Application
+-keep public class * extends android.app.Service
+-keep public class * extends android.content.BroadcastReceiver
+-keep public class * extends android.content.ContentProvider
+-keep public class * extends android.preference.Preference
+-keep public class * extends android.app.Fragment
+-keep public class org.datatransferobject.*
